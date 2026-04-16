@@ -2,7 +2,6 @@
 
 import Breadcrumb from "@/components/Common/Breadcrumb";
 import { signIn } from "@/lib/actions/auth";
-import { isRedirectError } from "next/dist/client/components/redirect-error";
 import Link from "next/link";
 import type React from "react";
 import { useState } from "react";
@@ -15,19 +14,16 @@ const Signin = () => {
     e.preventDefault();
     setLoading(true);
     const fd = new FormData(e.currentTarget);
-    try {
-      await signIn(
-        fd.get("email") as string,
-        fd.get("password") as string,
-        "/my-account",
-      );
-    } catch (err: unknown) {
-      if (isRedirectError(err)) throw err;
-      toast.error(
-        err instanceof Error ? err.message : "Credenciales incorrectas",
-      );
+    const result = await signIn(
+      fd.get("email") as string,
+      fd.get("password") as string,
+      "/my-account",
+    );
+    if (result?.error) {
+      toast.error(result.error);
       setLoading(false);
     }
+    // Si no hay error, signIn redirige — el componente se desmontará
   }
 
   return (
