@@ -1,3 +1,4 @@
+import { Plus } from "lucide-react";
 import Link from "next/link";
 import type { ReactNode } from "react";
 
@@ -13,20 +14,21 @@ function isLinkAction(action: unknown): action is { label: string; href: string 
 
 export default function PageHeader({ title, description, action }: Props) {
   return (
-    <div className="flex items-start justify-between mb-8">
+    <div className="flex items-center justify-between mb-7">
       <div>
-        <h1 className="text-2xl font-bold text-dark">{title}</h1>
+        <h1 className="text-xl font-semibold text-gray-900 tracking-tight">{title}</h1>
         {description && (
-          <p className="text-sm text-dark-4 mt-1">{description}</p>
+          <p className="text-[13px] text-gray-400 mt-0.5">{description}</p>
         )}
       </div>
       {action && (
         isLinkAction(action) ? (
           <Link
             href={action.href}
-            className="inline-flex items-center gap-2 bg-blue text-white text-sm font-medium px-4 py-2.5 rounded-lg hover:bg-blue-dark transition-colors"
+            className="inline-flex items-center gap-1.5 bg-gray-900 text-white text-[13px] font-medium px-3.5 py-2 rounded-lg hover:bg-gray-800 transition-colors shadow-sm"
           >
-            + {action.label}
+            <Plus className="w-3.5 h-3.5" />
+            {action.label}
           </Link>
         ) : (
           <>{action as ReactNode}</>

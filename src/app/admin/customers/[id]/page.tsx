@@ -1,12 +1,12 @@
-import { notFound } from "next/navigation";
-import Link from "next/link";
-import { ArrowLeft, User, Phone, Mail, CreditCard, Wrench, ShoppingBag, CheckCircle, XCircle, Clock } from "lucide-react";
-import { getCustomerById, getCustomerHistory, getCustomerRepairs } from "@/lib/actions/customers";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
+import { getCustomerById, getCustomerHistory, getCustomerRepairs } from "@/lib/actions/customers";
 import { formatCurrency, formatDate, formatDateTime } from "@/lib/utils";
 import { getWarrantyStatus } from "@/lib/warranty";
+import { ArrowLeft, CheckCircle, Clock, CreditCard, Mail, Phone, ShoppingBag, User, Wrench, XCircle } from "lucide-react";
+import Link from "next/link";
+import { notFound } from "next/navigation";
 
 export const dynamic = "force-dynamic";
 
@@ -97,7 +97,7 @@ export default async function CustomerDetailPage({ params }: { params: Promise<{
                           ? <span className="inline-flex items-center gap-1 text-green text-xs font-medium"><CheckCircle className="h-3.5 w-3.5" />{w.label}</span>
                           : h.warranty_expires_at
                             ? <span className="inline-flex items-center gap-1 text-red text-xs font-medium"><XCircle className="h-3.5 w-3.5" />{w.label}</span>
-                            : <span className="text-dark-4 text-xs">—</span>}
+                            : <span className="text-dark-4 text-xs"> - </span>}
                       </td>
                     </tr>
                   );

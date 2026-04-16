@@ -1,12 +1,12 @@
 "use client";
 
-import { useState } from "react";
-import { Smartphone } from "lucide-react";
-import { signIn } from "@/lib/actions/auth";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "@/components/ui/toast";
+import { signIn } from "@/lib/actions/auth";
+import { Smartphone } from "lucide-react";
+import { useState } from "react";
 
 export default function LoginPage() {
   const [loading, setLoading] = useState(false);
@@ -17,8 +17,8 @@ export default function LoginPage() {
     const fd = new FormData(e.currentTarget);
     try {
       await signIn(fd.get("email") as string, fd.get("password") as string);
-    } catch (err: any) {
-      toast.error(err.message ?? "Credenciales incorrectas");
+    } catch (err: unknown) {
+      toast.error(err instanceof Error ? err.message : "Credenciales incorrectas");
       setLoading(false);
     }
   }

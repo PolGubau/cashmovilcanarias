@@ -1,6 +1,11 @@
 import React from "react";
+import type { OrderItem } from "./ordersData";
 
-const OrderDetails = ({ orderItem }: any) => {
+interface OrderDetailsProps {
+  orderItem: OrderItem;
+}
+
+const OrderDetails = ({ orderItem }: OrderDetailsProps) => {
   return (
     <>
       <div className="items-center justify-between py-4.5 px-7.5 hidden md:flex ">
@@ -42,15 +47,14 @@ const OrderDetails = ({ orderItem }: any) => {
 
         <div className="min-w-[128px]">
           <p
-            className={`inline-block text-custom-sm  py-0.5 px-2.5 rounded-[30px] capitalize ${
-              orderItem.status === "delivered"
+            className={`inline-block text-custom-sm  py-0.5 px-2.5 rounded-[30px] capitalize ${orderItem.status === "delivered"
                 ? "text-green bg-green-light-6"
                 : orderItem.status === "on-hold"
-                ? "text-red bg-red-light-6"
-                : orderItem.status === "processing"
-                ? "text-yellow bg-yellow-light-4"
-                : "Unknown Status"
-            }`}
+                  ? "text-red bg-red-light-6"
+                  : orderItem.status === "processing"
+                    ? "text-yellow bg-yellow-light-4"
+                    : "Unknown Status"
+              }`}
           >
             {orderItem.status}
           </p>

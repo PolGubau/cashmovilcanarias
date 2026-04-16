@@ -86,21 +86,21 @@ export async function getCustomerRepairs(customerId: string) {
 export async function getCustomerOrders(customerId: string) {
 	const supabase = await createClient();
 	const { data, error } = await supabase
-		.from("v_orders_full" as any)
+		.from("v_orders_full")
 		.select("*")
 		.eq("customer_id", customerId)
 		.order("created_at", { ascending: false });
 	if (error) throw new Error(error.message);
-	return (data ?? []) as any[];
+	return data ?? [];
 }
 
 export async function getCustomerHistory(customerId: string) {
 	const supabase = await createClient();
-	const { data, error } = await (supabase
-		.from("v_customer_history" as any)
+	const { data, error } = await supabase
+		.from("v_customer_history")
 		.select("*")
 		.eq("customer_id", customerId)
-		.order("order_date", { ascending: false }) as any);
+		.order("order_date", { ascending: false });
 	if (error) throw new Error(error.message);
-	return (data ?? []) as import("@/lib/supabase/types").CustomerHistoryItem[];
+	return data ?? [];
 }

@@ -1,8 +1,8 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
 import { createCustomer } from "@/lib/actions/customers";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 export default function CustomerForm() {
   const router = useRouter();
@@ -18,20 +18,20 @@ export default function CustomerForm() {
 
     try {
       await createCustomer({
-        user_id:     null,
-        full_name:   form.get("full_name") as string,
-        phone:       (form.get("phone") as string) || null,
-        email:       (form.get("email") as string) || null,
-        dni:         (form.get("dni") as string) || null,
-        address:     (form.get("address") as string) || null,
-        city:        (form.get("city") as string) || null,
+        user_id: null,
+        full_name: form.get("full_name") as string,
+        phone: (form.get("phone") as string) || null,
+        email: (form.get("email") as string) || null,
+        dni: (form.get("dni") as string) || null,
+        address: (form.get("address") as string) || null,
+        city: (form.get("city") as string) || null,
         postal_code: (form.get("postal_code") as string) || null,
-        notes:       (form.get("notes") as string) || null,
+        notes: (form.get("notes") as string) || null,
         is_supplier: isSupplier,
       });
       router.push("/admin/customers");
-    } catch (err: any) {
-      setError(err.message);
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : "Error desconocido");
     } finally {
       setLoading(false);
     }
@@ -51,7 +51,7 @@ export default function CustomerForm() {
         <div className="flex gap-3">
           {[
             { value: false, label: "Cliente (comprador)" },
-            { value: true,  label: "Proveedor (vendedor)" },
+            { value: true, label: "Proveedor (vendedor)" },
           ].map(({ value, label }) => (
             <button key={String(value)} type="button"
               onClick={() => setIsSupplier(value)}
@@ -66,18 +66,18 @@ export default function CustomerForm() {
         <h2 className="font-semibold text-dark border-b border-gray-3 pb-3">Datos personales</h2>
         <Field name="full_name" label="Nombre completo *" placeholder="Ana García López" required />
         <div className="grid grid-cols-2 gap-4">
-          <Field name="phone" label="Teléfono"   placeholder="+34 600 000 000" />
-          <Field name="email" label="Email"      placeholder="ana@email.com" type="email" />
-          <Field name="dni"   label="DNI / NIE"  placeholder="12345678A" />
+          <Field name="phone" label="Teléfono" placeholder="+34 600 000 000" />
+          <Field name="email" label="Email" placeholder="ana@email.com" type="email" />
+          <Field name="dni" label="DNI / NIE" placeholder="12345678A" />
         </div>
       </div>
 
       <div className="bg-white rounded-xl border border-gray-3 p-6 space-y-4">
         <h2 className="font-semibold text-dark border-b border-gray-3 pb-3">Dirección</h2>
-        <Field name="address"     label="Dirección"      placeholder="Calle Mayor 1" />
+        <Field name="address" label="Dirección" placeholder="Calle Mayor 1" />
         <div className="grid grid-cols-2 gap-4">
-          <Field name="city"        label="Ciudad"         placeholder="Las Palmas" />
-          <Field name="postal_code" label="Código postal"  placeholder="35001" />
+          <Field name="city" label="Ciudad" placeholder="Las Palmas" />
+          <Field name="postal_code" label="Código postal" placeholder="35001" />
         </div>
       </div>
 

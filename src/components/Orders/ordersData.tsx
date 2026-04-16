@@ -1,4 +1,12 @@
-const ordersData = [
+export interface OrderItem {
+  orderId: string;
+  createdAt: string;
+  status: "delivered" | "processing" | "on-hold" | "cancelled";
+  total: string;
+  title: string;
+}
+
+const ordersData: OrderItem[] = [
   {
     orderId: "234c56",
     createdAt: "18th May, 2022",

@@ -1,10 +1,10 @@
 "use client";
 
-import { useState } from "react";
-import { formatCurrency } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { ShoppingBag } from "lucide-react";
 import { toast } from "@/components/ui/toast";
+import { formatCurrency } from "@/lib/utils";
+import { ShoppingBag } from "lucide-react";
+import { useState } from "react";
 
 interface Variant {
   id: string;
@@ -41,8 +41,8 @@ export default function ProductVariantSelector({ variants, conditionLabels }: Pr
       if (error) throw new Error(error);
       // Redirect to checkout with clientSecret
       window.location.href = `/checkout?cs=${clientSecret}&amount=${selected.price}`;
-    } catch (err: any) {
-      toast.error(err.message ?? "Error al iniciar el pago");
+    } catch (err: unknown) {
+      toast.error(err instanceof Error ? err.message : "Error al iniciar el pago");
     } finally {
       setLoading(false);
     }

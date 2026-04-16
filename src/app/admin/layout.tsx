@@ -11,11 +11,19 @@ export const metadata: Metadata = {
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="es">
-      <body className="bg-gray-1">
+      <body className="bg-[#f8f9fb]">
         <div className="flex min-h-screen">
           <AdminSidebar />
-          <main className="flex-1 ml-64 p-8 overflow-auto">
-            {children}
+          <main className="flex-1 ml-60 min-h-screen">
+            {/* Top bar */}
+            <div className="h-16 border-b border-gray-200 bg-white px-8 flex items-center sticky top-0 z-40">
+              <div className="flex items-center gap-2 text-sm text-gray-400">
+                <span className="font-medium text-gray-700">CashMóvil Canarias</span>
+              </div>
+            </div>
+            <div className="p-8">
+              {children}
+            </div>
           </main>
         </div>
         <Toaster />

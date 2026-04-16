@@ -3,25 +3,27 @@ import StatsCard from "@/components/admin/StatsCard";
 import { getInventoryStats } from "@/lib/actions/devices";
 import { getOrderStats } from "@/lib/actions/orders";
 import { createClient } from "@/lib/supabase/server";
-import type { DeviceMargin } from "@/lib/supabase/types";
+import type { DeviceMargin, InventoryStatusView } from "@/lib/supabase/types";
 import { Euro, Package, Percent, TrendingUp } from "lucide-react";
 
 export const dynamic = "force-dynamic";
 
 export default async function StatsPage() {
   const supabase = await createClient();
-  const [inventoryStats, orderStats, margins] = await Promise.all([
-    getInventoryStats().catch(() => []),
+  const [inventoryStats, orderStats, marginsRes] = await Promise.all([
+    getInventoryStats().catch((): InventoryStatusView[] => []),
     getOrderStats().catch(() => ({ total_orders: 0, completed: 0, pending: 0, revenue: 0 })),
-    supabase.from("v_device_margins" as any).select("*").order("paid_at", { ascending: false }).limit(20) as unknown as Promise<{ data: DeviceMargin[] | null; error: unknown }>,
+    supabase.from("v_device_margins").select("*").order("paid_at", { ascending: false }).limit(20),
   ]);
 
-  const totalStockValue = (inventoryStats ?? [])
-    .filter((s: any) => s.status === "in_stock")
-    .reduce((sum: number, s: any) => sum + Number(s.total_cost), 0);
+  const margins: DeviceMargin[] = marginsRes.data ?? [];
 
-  const avgMargin = margins.data?.length
-    ? margins.data.reduce((s, m) => s + Number(m.margin_pct), 0) / margins.data.length
+  const totalStockValue = (inventoryStats ?? [])
+    .filter((s) => s.status === "in_stock")
+    .reduce((sum, s) => sum + Number(s.total_cost), 0);
+
+  const avgMargin = margins.length
+    ? margins.reduce((s, m) => s + Number(m.margin_pct), 0) / margins.length
     : 0;
 
   return (
@@ -71,7 +73,7 @@ export default async function StatsPage() {
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-3">
-              {(margins.data ?? []).map((m) => (
+              {margins.map((m) => (
                 <tr key={m.id} className="hover:bg-gray-1">
                   <td className="py-3 px-2 font-mono text-xs text-dark-4">{m.imei}</td>
                   <td className="py-3 px-2 font-medium text-dark">{m.brand} {m.model}</td>
@@ -90,7 +92,7 @@ export default async function StatsPage() {
                   <td className="py-3 px-2 text-dark-3">{m.buyer_name}</td>
                 </tr>
               ))}
-              {(margins.data ?? []).length === 0 && (
+              {margins.length === 0 && (
                 <tr>
                   <td colSpan={7} className="py-12 text-center text-dark-4">Sin ventas registradas aún</td>
                 </tr>

@@ -1,8 +1,8 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { X } from "lucide-react";
+import { Dialog as DialogPrimitive } from "radix-ui";
 import * as React from "react";
 
 const Dialog = DialogPrimitive.Root;
@@ -40,8 +40,8 @@ const DialogContent = React.forwardRef<
         "data-[state=open]:animate-zoom-in data-[state=closed]:animate-zoom-out",
         "focus:outline-none",
         {
-          "max-w-sm":  size === "sm",
-          "max-w-lg":  size === "md",
+          "max-w-sm": size === "sm",
+          "max-w-lg": size === "md",
           "max-w-2xl": size === "lg",
           "max-w-4xl": size === "xl",
         },

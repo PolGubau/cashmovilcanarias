@@ -1,6 +1,5 @@
+import { Slider } from 'radix-ui';
 import { useState } from 'react';
-import RangeSlider from 'react-range-slider-input';
-import 'react-range-slider-input/dist/style.css';
 
 const PriceDropdown = () => {
   const [toggleDropdown, setToggleDropdown] = useState(true);
@@ -21,9 +20,8 @@ const PriceDropdown = () => {
           onClick={() => setToggleDropdown(!toggleDropdown)}
           id="price-dropdown-btn"
           aria-label="button for price dropdown"
-          className={`text-dark ease-out duration-200 ${
-            toggleDropdown && 'rotate-180'
-          }`}
+          className={`text-dark ease-out duration-200 ${toggleDropdown && 'rotate-180'
+            }`}
         >
           <svg
             className="fill-current"
@@ -47,17 +45,25 @@ const PriceDropdown = () => {
       <div className={`p-6 ${toggleDropdown ? 'block' : 'hidden'}`}>
         <div id="pricingOne">
           <div className="price-range">
-            <RangeSlider
-              id="range-slider-gradient"
-              className="margin-lg"
-              step={'any'}
-              onInput={(e) =>
+            <Slider.Root
+              className="relative flex items-center w-full h-5 mb-3 select-none touch-none"
+              defaultValue={[0, 100]}
+              min={0}
+              max={100}
+              step={1}
+              onValueChange={(values) =>
                 setSelectedPrice({
-                  from: Math.floor(e[0]),
-                  to: Math.ceil(e[1]),
+                  from: Math.floor(values[0]),
+                  to: Math.ceil(values[1]),
                 })
               }
-            />
+            >
+              <Slider.Track className="relative grow rounded-full h-[4px] bg-blue/20">
+                <Slider.Range className="absolute rounded-full h-full bg-blue" />
+              </Slider.Track>
+              <Slider.Thumb className="block w-[18px] h-[18px] bg-white border-2 border-blue rounded-full shadow hover:bg-blue/10 focus:outline-none focus:ring-2 focus:ring-blue/40 cursor-pointer" aria-label="Precio mínimo" />
+              <Slider.Thumb className="block w-[18px] h-[18px] bg-white border-2 border-blue rounded-full shadow hover:bg-blue/10 focus:outline-none focus:ring-2 focus:ring-blue/40 cursor-pointer" aria-label="Precio máximo" />
+            </Slider.Root>
 
             <div className="price-amount flex items-center justify-between pt-4">
               <div className="text-custom-xs text-dark-4 flex rounded border border-gray-3/80">

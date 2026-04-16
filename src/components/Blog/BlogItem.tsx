@@ -1,7 +1,7 @@
-import React from "react";
-import { BlogItem } from "@/types/blogItem";
+import type { BlogItem } from "@/types/blogItem";
 import Image from "next/image";
 import Link from "next/link";
+import React from "react";
 
 const BlogItem = ({ blog }: { blog: BlogItem }) => {
   return (

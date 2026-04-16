@@ -1,4 +1,5 @@
 import { getPublishedProducts } from "@/lib/actions/products";
+import type { ProductWithRelations } from "@/lib/actions/products";
 import { formatCurrency } from "@/lib/utils";
 import { Package, ShoppingBag } from "lucide-react";
 import Link from "next/link";
@@ -19,12 +20,12 @@ export default async function TiendaPage({
 }) {
   const sp = await searchParams;
   const products = await getPublishedProducts({ brand: sp.brand }).catch(
-    () => [],
+    (): ProductWithRelations[] => [],
   );
 
   // Extract unique brands for filter
   const brands = Array.from(
-    new Set((products as any[]).map((p: any) => p.brand as string)),
+    new Set(products.map((p) => p.brand).filter(Boolean) as string[]),
   );
 
   return (
@@ -69,21 +70,21 @@ export default async function TiendaPage({
         </div>
       ) : (
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-5">
-          {(products as any[]).map((p: any) => {
+          {products.map((p: ProductWithRelations) => {
             const variants = p.product_variants ?? [];
             const minPrice = variants.reduce(
-              (m: number, v: any) => Math.min(m, Number(v.price)),
+              (m, v) => Math.min(m, Number(v.price)),
               Number.POSITIVE_INFINITY,
             );
             const totalStock = variants.reduce(
-              (s: number, v: any) => s + Number(v.stock),
+              (s, v) => s + Number(v.stock),
               0,
             );
             const primaryImg =
-              p.product_images?.find((i: any) => i.is_primary)?.url ??
+              p.product_images?.find((i) => i.is_primary)?.url ??
               p.product_images?.[0]?.url;
             const conditions = Array.from(
-              new Set(variants.map((v: any) => v.condition as string)),
+              new Set(variants.map((v) => v.condition).filter(Boolean) as string[]),
             );
 
             return (
@@ -133,7 +134,7 @@ export default async function TiendaPage({
                   </div>
                   <div className="mt-2 flex items-end justify-between">
                     <p className="text-base font-bold text-dark">
-                      {isFinite(minPrice)
+                      {Number.isFinite(minPrice)
                         ? `Desde ${formatCurrency(minPrice)}`
                         : "—"}
                     </p>

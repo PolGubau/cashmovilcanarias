@@ -42,47 +42,84 @@ export type MovementReason =
 
 export interface Database {
 	public: {
+		PostgrestVersion: "12";
 		Tables: {
-			profiles: { Row: Profile; Insert: ProfileInsert; Update: ProfileUpdate };
+			profiles: {
+				Row: Profile;
+				Insert: ProfileInsert;
+				Update: ProfileUpdate;
+				Relationships: [];
+			};
 			customers: {
 				Row: Customer;
 				Insert: CustomerInsert;
 				Update: CustomerUpdate;
+				Relationships: [];
 			};
-			devices: { Row: Device; Insert: DeviceInsert; Update: DeviceUpdate };
+			devices: {
+				Row: Device;
+				Insert: DeviceInsert;
+				Update: DeviceUpdate;
+				Relationships: [];
+			};
 			stock_movements: {
 				Row: StockMovement;
 				Insert: StockMovementInsert;
 				Update: never;
+				Relationships: [];
 			};
-			repairs: { Row: Repair; Insert: RepairInsert; Update: RepairUpdate };
-			orders: { Row: Order; Insert: OrderInsert; Update: OrderUpdate };
+			repairs: {
+				Row: Repair;
+				Insert: RepairInsert;
+				Update: RepairUpdate;
+				Relationships: [];
+			};
+			orders: {
+				Row: Order;
+				Insert: OrderInsert;
+				Update: OrderUpdate;
+				Relationships: [];
+			};
 			order_items: {
 				Row: OrderItem;
 				Insert: OrderItemInsert;
 				Update: OrderItemUpdate;
+				Relationships: [];
 			};
-			products: { Row: Product; Insert: ProductInsert; Update: ProductUpdate };
+			products: {
+				Row: Product;
+				Insert: ProductInsert;
+				Update: ProductUpdate;
+				Relationships: [];
+			};
 			product_variants: {
 				Row: ProductVariant;
 				Insert: ProductVariantInsert;
 				Update: ProductVariantUpdate;
+				Relationships: [];
 			};
 			product_images: {
 				Row: ProductImage;
 				Insert: ProductImageInsert;
 				Update: never;
+				Relationships: [];
 			};
 		};
 		Views: {
-			v_inventory_status: { Row: InventoryStatusView };
-			v_devices_full: { Row: DeviceFull };
-			v_orders_full: { Row: OrderFull };
-			v_repairs_full: { Row: RepairFull };
-			v_device_margins: { Row: DeviceMargin };
-			v_products_full: { Row: ProductFull };
-			v_customer_history: { Row: CustomerHistoryItem };
+			v_inventory_status: { Row: InventoryStatusView; Relationships: [] };
+			v_devices_full: { Row: DeviceFull; Relationships: [] };
+			v_orders_full: { Row: OrderFull; Relationships: [] };
+			v_repairs_full: { Row: RepairFull; Relationships: [] };
+			v_device_margins: { Row: DeviceMargin; Relationships: [] };
+			v_products_full: { Row: ProductFull; Relationships: [] };
+			v_customer_history: { Row: CustomerHistoryItem; Relationships: [] };
 		};
+		Functions: Record<
+			string,
+			{ Args: Record<string, unknown>; Returns: unknown }
+		>;
+		Enums: Record<string, string[]>;
+		CompositeTypes: Record<string, Record<string, unknown>>;
 	};
 }
 

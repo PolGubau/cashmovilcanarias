@@ -1,8 +1,15 @@
-import React, { useRef, useEffect } from "react";
-import OrderDetails from "./OrderDetails";
 import EditOrder from "./EditOrder";
+import OrderDetails from "./OrderDetails";
+import type { OrderItem } from "./ordersData";
 
-const OrderModal = ({ showDetails, showEdit, toggleModal, order }: any) => {
+interface OrderModalProps {
+  showDetails: boolean;
+  showEdit: boolean;
+  toggleModal: (status: boolean) => void;
+  order: OrderItem;
+}
+
+const OrderModal = ({ showDetails, showEdit, toggleModal, order }: OrderModalProps) => {
   if (!showDetails && !showEdit) {
     return null;
   }

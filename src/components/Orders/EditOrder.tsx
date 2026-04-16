@@ -1,13 +1,20 @@
-import React, { useState } from "react";
+import type React from "react";
+import { useState } from "react";
 import toast from "react-hot-toast";
+import type { OrderItem } from "./ordersData";
 
-const EditOrder = ({ order, toggleModal }: any) => {
+interface EditOrderProps {
+  order: OrderItem;
+  toggleModal: (status: boolean) => void;
+}
+
+const EditOrder = ({ order, toggleModal }: EditOrderProps) => {
   const [currentStatus, setCurrentStatus] = useState(order?.status);
-  const handleChanege = (e: any) => {
-    setCurrentStatus(e.target.value);
+  const handleChanege = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setCurrentStatus(e.target.value as OrderItem["status"]);
   };
 
-  const handleSubmit = (e: any) => {
+  const handleSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
 
     if (!currentStatus) {

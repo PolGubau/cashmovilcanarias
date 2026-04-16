@@ -1,8 +1,14 @@
 import React, { useState } from "react";
 import OrderActions from "./OrderActions";
 import OrderModal from "./OrderModal";
+import type { OrderItem } from "./ordersData";
 
-const SingleOrder = ({ orderItem, smallView }: any) => {
+interface SingleOrderProps {
+  orderItem: OrderItem;
+  smallView: boolean;
+}
+
+const SingleOrder = ({ orderItem, smallView }: SingleOrderProps) => {
   const [showDetails, setShowDetails] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
 
@@ -34,15 +40,14 @@ const SingleOrder = ({ orderItem, smallView }: any) => {
 
           <div className="min-w-[128px]">
             <p
-              className={`inline-block text-custom-sm  py-0.5 px-2.5 rounded-[30px] capitalize ${
-                orderItem.status === "delivered"
+              className={`inline-block text-custom-sm  py-0.5 px-2.5 rounded-[30px] capitalize ${orderItem.status === "delivered"
                   ? "text-green bg-green-light-6"
                   : orderItem.status === "on-hold"
-                  ? "text-red bg-red-light-6"
-                  : orderItem.status === "processing"
-                  ? "text-yellow bg-yellow-light-4"
-                  : "Unknown Status"
-              }`}
+                    ? "text-red bg-red-light-6"
+                    : orderItem.status === "processing"
+                      ? "text-yellow bg-yellow-light-4"
+                      : "Unknown Status"
+                }`}
             >
               {orderItem.status}
             </p>
@@ -85,15 +90,14 @@ const SingleOrder = ({ orderItem, smallView }: any) => {
               <p className="text-custom-sm text-dark">
                 <span className="font-bold pr-2">Status:</span>{" "}
                 <span
-                  className={`inline-block text-custom-sm  py-0.5 px-2.5 rounded-[30px] capitalize ${
-                    orderItem.status === "delivered"
+                  className={`inline-block text-custom-sm  py-0.5 px-2.5 rounded-[30px] capitalize ${orderItem.status === "delivered"
                       ? "text-green bg-green-light-6"
                       : orderItem.status === "on-hold"
-                      ? "text-red bg-red-light-6"
-                      : orderItem.status === "processing"
-                      ? "text-yellow bg-yellow-light-4"
-                      : "Unknown Status"
-                  }`}
+                        ? "text-red bg-red-light-6"
+                        : orderItem.status === "processing"
+                          ? "text-yellow bg-yellow-light-4"
+                          : "Unknown Status"
+                    }`}
                 >
                   {orderItem.status}
                 </span>
