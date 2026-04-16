@@ -1377,7 +1377,7 @@ const ShopDetails = () => {
                             rows={5}
                             placeholder="Your comments"
                             className="rounded-md border border-gray-3 bg-gray-1 placeholder:text-dark-5 w-full p-5 outline-none duration-200 focus:border-transparent focus:shadow-input focus:ring-2 focus:ring-blue/20"
-                          ></textarea>
+                          />
 
                           <span className="flex items-center justify-between mt-2.5">
                             <span className="text-custom-sm text-dark-4">
