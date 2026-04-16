@@ -1,11 +1,11 @@
 "use client";
-import React, { use, useEffect, useState } from "react";
-import Breadcrumb from "../Common/Breadcrumb";
-import Image from "next/image";
-import Newsletter from "../Common/Newsletter";
-import RecentlyViewdItems from "./RecentlyViewd";
 import { usePreviewSlider } from "@/app/context/PreviewSliderContext";
 import { useAppSelector } from "@/redux/store";
+import Image from "next/image";
+import React, { use, useEffect, useState } from "react";
+import Breadcrumb from "../Common/Breadcrumb";
+import Newsletter from "../Common/Newsletter";
+import RecentlyViewdItems from "./RecentlyViewd";
 
 const ShopDetails = () => {
   const [activeColor, setActiveColor] = useState("blue");
@@ -401,7 +401,7 @@ const ShopDetails = () => {
                                   <span
                                     className="block w-3 h-3 rounded-full"
                                     style={{ backgroundColor: `${color}` }}
-                                  ></span>
+                                  />
                                 </div>
                               </div>
                             </label>

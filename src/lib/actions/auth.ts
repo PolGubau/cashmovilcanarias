@@ -3,7 +3,10 @@
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 
-type AuthResult = { error: string } | { error: null };
+export type SignInResult = { error: string } | { error: null };
+export type SignUpResult =
+	| { error: string }
+	| { error: null; requiresConfirmation: boolean };
 
 function mapAuthError(message: string): string {
 	if (message.includes("Invalid login credentials"))
@@ -24,27 +27,29 @@ function mapAuthError(message: string): string {
 export async function signIn(
 	email: string,
 	password: string,
-	redirectTo = "/",
-): Promise<AuthResult> {
+): Promise<SignInResult> {
 	const supabase = await createClient();
 	const { error } = await supabase.auth.signInWithPassword({ email, password });
 	if (error) return { error: mapAuthError(error.message) };
-	redirect(redirectTo);
+	return { error: null };
 }
 
 export async function signUp(
 	email: string,
 	password: string,
 	fullName?: string,
-): Promise<AuthResult> {
+): Promise<SignUpResult> {
 	const supabase = await createClient();
-	const { error } = await supabase.auth.signUp({
+	const { data, error } = await supabase.auth.signUp({
 		email,
 		password,
 		options: { data: { full_name: fullName } },
 	});
 	if (error) return { error: mapAuthError(error.message) };
-	redirect("/");
+	// Supabase devuelve éxito con identities vacío cuando el email ya existe
+	if ((data.user?.identities?.length ?? 0) === 0)
+		return { error: "Ya existe una cuenta con este correo." };
+	return { error: null, requiresConfirmation: !data.session };
 }
 
 export async function signOut() {

@@ -6,24 +6,25 @@ import { Label } from "@/components/ui/label";
 import { toast } from "@/components/ui/toast";
 import { signIn } from "@/lib/actions/auth";
 import { Smartphone } from "lucide-react";
-import { isRedirectError } from "next/dist/client/components/redirect-error";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 export default function LoginPage() {
   const [loading, setLoading] = useState(false);
+  const router = useRouter();
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setLoading(true);
     const fd = new FormData(e.currentTarget);
-    try {
-      await signIn(fd.get("email") as string, fd.get("password") as string, "/admin");
-    } catch (err: unknown) {
-      // Next.js redirect() throws a special error - let it propagate so the browser navigates
-      if (isRedirectError(err)) throw err;
-      toast.error(err instanceof Error ? err.message : "Credenciales incorrectas");
+    const result = await signIn(fd.get("email") as string, fd.get("password") as string);
+    if (result.error) {
+      toast.error(result.error);
       setLoading(false);
+      return;
     }
+    toast.success("Sesión iniciada correctamente");
+    router.push("/admin");
   }
 
   return (

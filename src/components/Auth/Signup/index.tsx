@@ -2,14 +2,16 @@
 
 import Breadcrumb from "@/components/Common/Breadcrumb";
 import { signUp } from "@/lib/actions/auth";
-import { isRedirectError } from "next/dist/client/components/redirect-error";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import type React from "react";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import toast from "react-hot-toast";
 
 const Signup = () => {
   const [loading, setLoading] = useState(false);
+  const formRef = useRef<HTMLFormElement>(null);
+  const router = useRouter();
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -24,16 +26,26 @@ const Signup = () => {
       return;
     }
 
-    try {
-      await signUp(
-        fd.get("email") as string,
-        password,
-        fd.get("name") as string,
-      );
-    } catch (err: unknown) {
-      if (isRedirectError(err)) throw err;
-      toast.error(err instanceof Error ? err.message : "Error al crear la cuenta");
+    const result = await signUp(
+      fd.get("email") as string,
+      password,
+      fd.get("name") as string,
+    );
+
+    if (result.error) {
+      toast.error(result.error);
       setLoading(false);
+      return;
+    }
+
+    formRef.current?.reset();
+
+    if (result.requiresConfirmation) {
+      toast.success("¡Cuenta creada! Revisa tu correo y confirma tu email antes de iniciar sesión.");
+      router.push("/signin");
+    } else {
+      toast.success("¡Cuenta creada correctamente! Bienvenido.");
+      router.push("/my-account");
     }
   }
 
@@ -100,12 +112,12 @@ const Signup = () => {
             </div>
 
             <span className="relative z-1 block font-medium text-center mt-4.5">
-              <span className="block absolute -z-1 left-0 top-1/2 h-px w-full bg-gray-3"></span>
+              <span className="block absolute -z-1 left-0 top-1/2 h-px w-full bg-gray-3" />
               <span className="inline-block px-3 bg-white">O</span>
             </span>
 
             <div className="mt-5.5">
-              <form onSubmit={handleSubmit}>
+              <form ref={formRef} onSubmit={handleSubmit}>
                 <div className="mb-5">
                   <label htmlFor="name" className="block mb-2.5">
                     Nombre completo <span className="text-red">*</span>
