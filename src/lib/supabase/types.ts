@@ -42,7 +42,6 @@ export type MovementReason =
 
 export interface Database {
 	public: {
-		PostgrestVersion: "12";
 		Tables: {
 			profiles: {
 				Row: Profile;

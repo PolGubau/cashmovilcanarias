@@ -1,41 +1,46 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Product } from "@/types/product";
+import type { ProductFull } from "@/lib/supabase/types";
+import { createSlice } from "@reduxjs/toolkit";
 
 type InitialState = {
-  value: Product;
+	value: ProductFull;
 };
 
-const initialState = {
-  value: {
-    title: "",
-    reviews: 0,
-    price: 0,
-    discountedPrice: 0,
-    img: "",
-    id: 0,
-    images: [],
-    imgs: { thumbnails: [], previews: [] },
-  } as Product,
-} as InitialState;
+const emptyProduct: ProductFull = {
+	id: "",
+	name: "",
+	brand: "",
+	base_model: "",
+	description: null,
+	warranty_months: 0,
+	is_published: false,
+	created_at: "",
+	updated_at: "",
+	primary_image_url: null,
+	variant_count: 0,
+	total_stock: 0,
+	price_from: null,
+};
+
+const initialState: InitialState = { value: emptyProduct };
 
 export const quickView = createSlice({
-  name: "quickView",
-  initialState,
-  reducers: {
-    updateQuickView: (_, action) => {
-      return {
-        value: {
-          ...action.payload,
-        },
-      };
-    },
+	name: "quickView",
+	initialState,
+	reducers: {
+		updateQuickView: (_, action) => {
+			return {
+				value: {
+					...action.payload,
+				},
+			};
+		},
 
-    resetQuickView: () => {
-      return {
-        value: initialState.value,
-      };
-    },
-  },
+		resetQuickView: () => {
+			return {
+				value: initialState.value,
+			};
+		},
+	},
 });
 
 export const { updateQuickView, resetQuickView } = quickView.actions;

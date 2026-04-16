@@ -7,17 +7,15 @@ const Login = () => {
     <div className="bg-white shadow-1 rounded-[10px]">
       <div
         onClick={() => setDropdown(!dropdown)}
-        className={`cursor-pointer flex items-center gap-0.5 py-5 px-5.5 ${
-          dropdown && "border-b border-gray-3"
-        }`}
+        className={`cursor-pointer flex items-center gap-0.5 py-5 px-5.5 ${dropdown && "border-b border-gray-3"
+          }`}
       >
-        Returning customer?
+        ¿Ya eres cliente?
         <span className="flex items-center gap-2.5 pl-1 font-medium text-dark">
-          Click here to login
+          Haz clic aquí para iniciar sesión
           <svg
-            className={`${
-              dropdown && "rotate-180"
-            } fill-current ease-out duration-200`}
+            className={`${dropdown && "rotate-180"
+              } fill-current ease-out duration-200`}
             width="22"
             height="22"
             viewBox="0 0 22 22"
@@ -36,17 +34,16 @@ const Login = () => {
 
       {/* <!-- dropdown menu --> */}
       <div
-        className={`${
-          dropdown ? "block" : "hidden"
-        } pt-7.5 pb-8.5 px-4 sm:px-8.5`}
+        className={`${dropdown ? "block" : "hidden"
+          } pt-7.5 pb-8.5 px-4 sm:px-8.5`}
       >
         <p className="text-custom-sm mb-6">
-          If you didn&apos;t Logged in, Please Log in first.
+          Si aún no has iniciado sesión, por favor hazlo antes de continuar.
         </p>
 
         <div className="mb-5">
           <label htmlFor="name" className="block mb-2.5">
-            Username or Email
+            Usuario o correo electrónico
           </label>
 
           <input
@@ -59,7 +56,7 @@ const Login = () => {
 
         <div className="mb-5">
           <label htmlFor="password" className="block mb-2.5">
-            Password
+            Contraseña
           </label>
 
           <input
@@ -75,7 +72,7 @@ const Login = () => {
           type="submit"
           className="inline-flex font-medium text-white bg-blue py-3 px-10.5 rounded-md ease-out duration-200 hover:bg-blue-dark"
         >
-          Login
+          Iniciar sesión
         </button>
       </div>
     </div>

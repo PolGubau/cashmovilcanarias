@@ -1,12 +1,12 @@
-import React, { useState } from "react";
 import Image from "next/image";
+import React, { useState } from "react";
 
 const ShippingMethod = () => {
   const [shippingMethod, setShippingMethod] = useState("free");
   return (
     <div className="bg-white shadow-1 rounded-[10px] mt-7.5">
       <div className="border-b border-gray-3 py-5 px-4 sm:px-8.5">
-        <h3 className="font-medium text-xl text-dark">Shipping Method</h3>
+        <h3 className="font-medium text-xl text-dark">Método de envío</h3>
       </div>
 
       <div className="p-4 sm:p-8.5">
@@ -25,14 +25,13 @@ const ShippingMethod = () => {
               />
               {/* selectShipping === 'free' ? 'border-4 border-blue' : 'border border-gray-4' */}
               <div
-                className={`flex h-4 w-4 items-center justify-center rounded-full ${
-                  shippingMethod === "free"
+                className={`flex h-4 w-4 items-center justify-center rounded-full ${shippingMethod === "free"
                     ? "border-4 border-blue"
                     : "border border-gray-4"
-                }`}
+                  }`}
               ></div>
             </div>
-            Free Shipping
+            Envío gratuito
           </label>
 
           <label
@@ -48,11 +47,10 @@ const ShippingMethod = () => {
                 onChange={() => setShippingMethod("fedex")}
               />
               <div
-                className={`flex h-4 w-4 items-center justify-center rounded-full ${
-                  shippingMethod === "fedex"
+                className={`flex h-4 w-4 items-center justify-center rounded-full ${shippingMethod === "fedex"
                     ? "border-4 border-blue"
                     : "border border-gray-4"
-                }`}
+                  }`}
               ></div>
             </div>
 
@@ -69,7 +67,7 @@ const ShippingMethod = () => {
 
                 <div className="border-l border-gray-4 pl-4">
                   <p className="font-semibold text-dark">$10.99</p>
-                  <p className="text-custom-xs">Standard Shipping</p>
+                  <p className="text-custom-xs">Envío estándar</p>
                 </div>
               </div>
             </div>
@@ -88,11 +86,10 @@ const ShippingMethod = () => {
                 onChange={() => setShippingMethod("dhl")}
               />
               <div
-                className={`flex h-4 w-4 items-center justify-center rounded-full ${
-                  shippingMethod === "dhl"
+                className={`flex h-4 w-4 items-center justify-center rounded-full ${shippingMethod === "dhl"
                     ? "border-4 border-blue"
                     : "border border-gray-4"
-                }`}
+                  }`}
               ></div>
             </div>
 
@@ -109,7 +106,7 @@ const ShippingMethod = () => {
 
                 <div className="border-l border-gray-4 pl-4">
                   <p className="font-semibold text-dark">$12.50</p>
-                  <p className="text-custom-xs">Standard Shipping</p>
+                  <p className="text-custom-xs">Envío estándar</p>
                 </div>
               </div>
             </div>

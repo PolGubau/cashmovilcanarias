@@ -1,35 +1,40 @@
+import type { ProductFull } from "@/lib/supabase/types";
 import { createSlice } from "@reduxjs/toolkit";
-import { Product } from "@/types/product";
 
 type InitialState = {
-  value: Product;
+	value: ProductFull;
 };
 
-const initialState = {
-  value: {
-    title: "",
-    reviews: 0,
-    price: 0,
-    discountedPrice: 0,
-    img: "",
-    images: [],
-    id: 0,
-    imgs: { thumbnails: [], previews: [] },
-  },
-} as InitialState;
+const emptyProduct: ProductFull = {
+	id: "",
+	name: "",
+	brand: "",
+	base_model: "",
+	description: null,
+	warranty_months: 0,
+	is_published: false,
+	created_at: "",
+	updated_at: "",
+	primary_image_url: null,
+	variant_count: 0,
+	total_stock: 0,
+	price_from: null,
+};
+
+const initialState: InitialState = { value: emptyProduct };
 
 export const productDetails = createSlice({
-  name: "productDetails",
-  initialState,
-  reducers: {
-    updateproductDetails: (_, action) => {
-      return {
-        value: {
-          ...action.payload,
-        },
-      };
-    },
-  },
+	name: "productDetails",
+	initialState,
+	reducers: {
+		updateproductDetails: (_, action) => {
+			return {
+				value: {
+					...action.payload,
+				},
+			};
+		},
+	},
 });
 
 export const { updateproductDetails } = productDetails.actions;

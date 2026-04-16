@@ -1,5 +1,6 @@
+// Matches a potential Supabase view/query that aggregates product brands as categories.
 export type Category = {
-  title: string;
-  id: number;
-  img: string;
+	id: string;
+	name: string;
+	image_url: string | null;
 };

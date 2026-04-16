@@ -1,63 +1,51 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { type PayloadAction, createSlice } from "@reduxjs/toolkit";
 
 type InitialState = {
-  items: WishListItem[];
+	items: WishListItem[];
 };
 
-type WishListItem = {
-  id: number;
-  title: string;
-  price: number;
-  discountedPrice: number;
-  quantity: number;
-  status?: string;
-  imgs?: {
-    thumbnails: string[];
-    previews: string[];
-  };
+// WishListItem mirrors ProductFull fields needed for display.
+export type WishListItem = {
+	id: string;
+	name: string;
+	brand: string;
+	price: number;
+	primary_image_url: string | null;
+	quantity: number;
 };
 
 const initialState: InitialState = {
-  items: [],
+	items: [],
 };
 
 export const wishlist = createSlice({
-  name: "wishlist",
-  initialState,
-  reducers: {
-    addItemToWishlist: (state, action: PayloadAction<WishListItem>) => {
-      const { id, title, price, quantity, imgs, discountedPrice, status } =
-        action.payload;
-      const existingItem = state.items.find((item) => item.id === id);
+	name: "wishlist",
+	initialState,
+	reducers: {
+		addItemToWishlist: (state, action: PayloadAction<WishListItem>) => {
+			const existingItem = state.items.find(
+				(item) => item.id === action.payload.id,
+			);
+			if (existingItem) {
+				existingItem.quantity += action.payload.quantity;
+			} else {
+				state.items.push({ ...action.payload });
+			}
+		},
+		removeItemFromWishlist: (state, action: PayloadAction<string>) => {
+			const itemId = action.payload;
+			state.items = state.items.filter((item) => item.id !== itemId);
+		},
 
-      if (existingItem) {
-        existingItem.quantity += quantity;
-      } else {
-        state.items.push({
-          id,
-          title,
-          price,
-          quantity,
-          imgs,
-          discountedPrice,
-          status,
-        });
-      }
-    },
-    removeItemFromWishlist: (state, action: PayloadAction<number>) => {
-      const itemId = action.payload;
-      state.items = state.items.filter((item) => item.id !== itemId);
-    },
-
-    removeAllItemsFromWishlist: (state) => {
-      state.items = [];
-    },
-  },
+		removeAllItemsFromWishlist: (state) => {
+			state.items = [];
+		},
+	},
 });
 
 export const {
-  addItemToWishlist,
-  removeItemFromWishlist,
-  removeAllItemsFromWishlist,
+	addItemToWishlist,
+	removeItemFromWishlist,
+	removeAllItemsFromWishlist,
 } = wishlist.actions;
 export default wishlist.reducer;

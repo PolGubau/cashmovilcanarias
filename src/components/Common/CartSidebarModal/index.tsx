@@ -7,10 +7,10 @@ import {
   selectTotalPrice,
 } from "@/redux/features/cart-slice";
 import { useAppSelector } from "@/redux/store";
-import { useSelector } from "react-redux";
-import SingleItem from "./SingleItem";
 import Link from "next/link";
+import { useSelector } from "react-redux";
 import EmptyCart from "./EmptyCart";
+import SingleItem from "./SingleItem";
 
 const CartSidebarModal = () => {
   const { isCartModalOpen, closeCartModal } = useCartModalContext();
@@ -37,15 +37,14 @@ const CartSidebarModal = () => {
 
   return (
     <div
-      className={`fixed top-0 left-0 z-99999 overflow-y-auto no-scrollbar w-full h-screen bg-dark/70 ease-linear duration-300 ${
-        isCartModalOpen ? "translate-x-0" : "translate-x-full"
-      }`}
+      className={`fixed top-0 left-0 z-99999 overflow-y-auto no-scrollbar w-full h-screen bg-dark/70 ease-linear duration-300 ${isCartModalOpen ? "translate-x-0" : "translate-x-full"
+        }`}
     >
       <div className="flex items-center justify-end">
         <div className="w-full max-w-[500px] shadow-1 bg-white px-4 sm:px-7.5 lg:px-11 relative modal-content">
           <div className="sticky top-0 bg-white flex items-center justify-between pb-7 pt-4 sm:pt-7.5 lg:pt-11 border-b border-gray-3 mb-7.5">
             <h2 className="font-medium text-dark text-lg sm:text-2xl">
-              Cart View
+              Carrito
             </h2>
             <button
               onClick={() => closeCartModal()}
@@ -95,6 +94,7 @@ const CartSidebarModal = () => {
             <div className="flex items-center justify-between gap-5 mb-6">
               <p className="font-medium text-xl text-dark">Subtotal:</p>
 
+
               <p className="font-medium text-xl text-dark">${totalPrice}</p>
             </div>
 
@@ -104,14 +104,14 @@ const CartSidebarModal = () => {
                 href="/cart"
                 className="w-full flex justify-center font-medium text-white bg-blue py-[13px] px-6 rounded-md ease-out duration-200 hover:bg-blue-dark"
               >
-                View Cart
+                Ver carrito
               </Link>
 
               <Link
                 href="/checkout"
                 className="w-full flex justify-center font-medium text-white bg-dark py-[13px] px-6 rounded-md ease-out duration-200 hover:bg-opacity-95"
               >
-                Checkout
+                Finalizar compra
               </Link>
             </div>
           </div>

@@ -6,6 +6,7 @@ import { Label } from "@/components/ui/label";
 import { toast } from "@/components/ui/toast";
 import { signIn } from "@/lib/actions/auth";
 import { Smartphone } from "lucide-react";
+import { isRedirectError } from "next/dist/client/components/redirect-error";
 import { useState } from "react";
 
 export default function LoginPage() {
@@ -18,6 +19,8 @@ export default function LoginPage() {
     try {
       await signIn(fd.get("email") as string, fd.get("password") as string);
     } catch (err: unknown) {
+      // Next.js redirect() throws a special error — let it propagate so the browser navigates
+      if (isRedirectError(err)) throw err;
       toast.error(err instanceof Error ? err.message : "Credenciales incorrectas");
       setLoading(false);
     }
