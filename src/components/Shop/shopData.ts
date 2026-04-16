@@ -1,141 +1,136 @@
-import { Product } from "@/types/product";
-const shopData: Product[] = [
-  {
-    title: "Havit HV-G69 USB Gamepad",
-    reviews: 15,
-    price: 59.0,
-    discountedPrice: 29.0,
-    id: 1,
-    imgs: {
-      thumbnails: [
-        "/images/products/product-1-sm-1.png",
-        "/images/products/product-1-sm-2.png",
-      ],
-      previews: [
-        "/images/products/product-1-bg-1.png",
-        "/images/products/product-1-bg-2.png",
-      ],
-    },
-  },
-  {
-    title: "iPhone 14 Plus , 6/128GB",
-    reviews: 5,
-    price: 899.0,
-    discountedPrice: 99.0,
-    id: 2,
-    imgs: {
-      thumbnails: [
-        "/images/products/product-2-sm-1.png",
-        "/images/products/product-2-sm-2.png",
-      ],
-      previews: [
-        "/images/products/product-2-bg-1.png",
-        "/images/products/product-2-bg-2.png",
-      ],
-    },
-  },
-  {
-    title: "Apple iMac M1 24-inch 2021",
-    reviews: 5,
-    price: 59.0,
-    discountedPrice: 29.0,
-    id: 3,
-    imgs: {
-      thumbnails: [
-        "/images/products/product-3-sm-1.png",
-        "/images/products/product-3-sm-2.png",
-      ],
-      previews: [
-        "/images/products/product-3-bg-1.png",
-        "/images/products/product-3-bg-2.png",
-      ],
-    },
-  },
-  {
-    title: "MacBook Air M1 chip, 8/256GB",
-    reviews: 6,
-    price: 59.0,
-    discountedPrice: 29.0,
-    id: 4,
-    imgs: {
-      thumbnails: [
-        "/images/products/product-4-sm-1.png",
-        "/images/products/product-4-sm-2.png",
-      ],
-      previews: [
-        "/images/products/product-4-bg-1.png",
-        "/images/products/product-4-bg-2.png",
-      ],
-    },
-  },
-  {
-    title: "Apple Watch Ultra",
-    reviews: 3,
-    price: 99.0,
-    discountedPrice: 29.0,
-    id: 5,
-    imgs: {
-      thumbnails: [
-        "/images/products/product-5-sm-1.png",
-        "/images/products/product-5-sm-2.png",
-      ],
-      previews: [
-        "/images/products/product-5-bg-1.png",
-        "/images/products/product-5-bg-2.png",
-      ],
-    },
-  },
-  {
-    title: "Logitech MX Master 3 Mouse",
-    reviews: 15,
-    price: 59.0,
-    discountedPrice: 29.0,
-    id: 6,
-    imgs: {
-      thumbnails: [
-        "/images/products/product-6-sm-1.png",
-        "/images/products/product-6-sm-2.png",
-      ],
-      previews: [
-        "/images/products/product-6-bg-1.png",
-        "/images/products/product-6-bg-2.png",
-      ],
-    },
-  },
-  {
-    title: "Apple iPad Air 5th Gen - 64GB",
-    reviews: 15,
-    price: 59.0,
-    discountedPrice: 29.0,
-    id: 7,
-    imgs: {
-      thumbnails: [
-        "/images/products/product-7-sm-1.png",
-        "/images/products/product-7-sm-2.png",
-      ],
-      previews: [
-        "/images/products/product-7-bg-1.png",
-        "/images/products/product-7-bg-2.png",
-      ],
-    },
-  },
-  {
-    title: "Asus RT Dual Band Router",
-    reviews: 15,
-    price: 59.0,
-    discountedPrice: 29.0,
-    id: 8,
-    imgs: {
-      thumbnails: [
-        "/images/products/product-8-sm-1.png",
-        "/images/products/product-8-sm-2.png",
-      ],
-      previews: [
-        "/images/products/product-8-bg-1.png",
-        "/images/products/product-8-bg-2.png",
-      ],
-    },
-  },
+// Mock data matching ProductFull from Supabase.
+// Replace with real Supabase queries when backend is ready.
+import type { ProductFull } from "@/lib/supabase/types";
+
+const shopData: ProductFull[] = [
+	{
+		id: "a1b2c3d4-0001-0000-0000-000000000001",
+		name: "iPhone 15 Pro 256GB",
+		brand: "Apple",
+		base_model: "iPhone 15 Pro",
+		description:
+			"iPhone 15 Pro con chip A17 Pro, cámara de 48 MP y titanio. Reacondicionado en estado excelente.",
+		warranty_months: 12,
+		is_published: true,
+		primary_image_url: "/images/products/product-1-bg-1.png",
+		variant_count: 3,
+		total_stock: 10,
+		price_from: 949.0,
+		created_at: "2024-01-01T00:00:00.000Z",
+		updated_at: "2024-01-01T00:00:00.000Z",
+	},
+	{
+		id: "a1b2c3d4-0002-0000-0000-000000000002",
+		name: "iPhone 14 128GB",
+		brand: "Apple",
+		base_model: "iPhone 14",
+		description:
+			'iPhone 14 reacondicionado en perfecto estado. Pantalla Super Retina XDR de 6,1". Batería >85%.',
+		warranty_months: 12,
+		is_published: true,
+		primary_image_url: "/images/products/product-2-bg-1.png",
+		variant_count: 4,
+		total_stock: 14,
+		price_from: 599.0,
+		created_at: "2024-01-01T00:00:00.000Z",
+		updated_at: "2024-01-01T00:00:00.000Z",
+	},
+	{
+		id: "a1b2c3d4-0003-0000-0000-000000000003",
+		name: "Samsung Galaxy S24 Ultra 256GB",
+		brand: "Samsung",
+		base_model: "Galaxy S24 Ultra",
+		description:
+			'Galaxy S24 Ultra con S Pen integrado, cámara de 200 MP y pantalla Dynamic AMOLED 2X de 6,8".',
+		warranty_months: 12,
+		is_published: true,
+		primary_image_url: "/images/products/product-3-bg-1.png",
+		variant_count: 2,
+		total_stock: 6,
+		price_from: 1099.0,
+		created_at: "2024-01-01T00:00:00.000Z",
+		updated_at: "2024-01-01T00:00:00.000Z",
+	},
+	{
+		id: "a1b2c3d4-0004-0000-0000-000000000004",
+		name: "Samsung Galaxy A55 128GB",
+		brand: "Samsung",
+		base_model: "Galaxy A55",
+		description:
+			'Galaxy A55 con pantalla Super AMOLED de 6,6", triple cámara de 50 MP y batería de 5000 mAh.',
+		warranty_months: 12,
+		is_published: true,
+		primary_image_url: "/images/products/product-4-bg-1.png",
+		variant_count: 2,
+		total_stock: 18,
+		price_from: 349.0,
+		created_at: "2024-01-01T00:00:00.000Z",
+		updated_at: "2024-01-01T00:00:00.000Z",
+	},
+	{
+		id: "a1b2c3d4-0005-0000-0000-000000000005",
+		name: "Xiaomi 14 Pro 512GB",
+		brand: "Xiaomi",
+		base_model: "Xiaomi 14 Pro",
+		description:
+			'Xiaomi 14 Pro con cámaras Leica, pantalla LTPO AMOLED de 6,73" y carga rápida de 120W.',
+		warranty_months: 12,
+		is_published: true,
+		primary_image_url: "/images/products/product-5-bg-1.png",
+		variant_count: 1,
+		total_stock: 5,
+		price_from: 899.0,
+		created_at: "2024-01-01T00:00:00.000Z",
+		updated_at: "2024-01-01T00:00:00.000Z",
+	},
+	{
+		id: "a1b2c3d4-0006-0000-0000-000000000006",
+		name: "Xiaomi Redmi Note 13 Pro 256GB",
+		brand: "Xiaomi",
+		base_model: "Redmi Note 13 Pro",
+		description:
+			'Redmi Note 13 Pro con cámara de 200 MP, pantalla AMOLED de 6,67" y carga de 67W.',
+		warranty_months: 12,
+		is_published: true,
+		primary_image_url: "/images/products/product-6-bg-1.png",
+		variant_count: 2,
+		total_stock: 22,
+		price_from: 249.0,
+		created_at: "2024-01-01T00:00:00.000Z",
+		updated_at: "2024-01-01T00:00:00.000Z",
+	},
+	{
+		id: "a1b2c3d4-0007-0000-0000-000000000007",
+		name: 'Apple iPad Pro M4 11" 256GB',
+		brand: "Apple",
+		base_model: "iPad Pro M4 11-inch",
+		description:
+			'iPad Pro con chip M4, pantalla Ultra Retina XDR OLED de 11" y conectividad WiFi 6E.',
+		warranty_months: 12,
+		is_published: true,
+		primary_image_url: "/images/products/product-7-bg-1.png",
+		variant_count: 2,
+		total_stock: 7,
+		price_from: 1099.0,
+		created_at: "2024-01-01T00:00:00.000Z",
+		updated_at: "2024-01-01T00:00:00.000Z",
+	},
+	{
+		id: "a1b2c3d4-0008-0000-0000-000000000008",
+		name: "Samsung Galaxy Tab S9 FE 128GB",
+		brand: "Samsung",
+		base_model: "Galaxy Tab S9 FE",
+		description:
+			'Galaxy Tab S9 FE con pantalla TFT LCD de 10,9", S Pen incluido y batería de 8000 mAh.',
+		warranty_months: 12,
+		is_published: true,
+		primary_image_url: "/images/products/product-8-bg-1.png",
+		variant_count: 2,
+		total_stock: 11,
+		price_from: 379.0,
+		created_at: "2024-01-01T00:00:00.000Z",
+		updated_at: "2024-01-01T00:00:00.000Z",
+	},
 ];
 
 export default shopData;

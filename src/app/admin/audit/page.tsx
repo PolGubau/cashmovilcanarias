@@ -5,25 +5,25 @@ import Link from "next/link";
 export const dynamic = "force-dynamic";
 
 const REASON_LABELS: Record<string, string> = {
-  purchase:               "Compra",
-  sale:                   "Venta",
-  repair_in:              "Entrada a reparación",
-  repair_out:             "Salida de reparación",
-  return:                 "Devolución",
-  write_off:              "Baja",
-  correction:             "Corrección manual",
-  reservation:            "Reserva",
-  reservation_cancelled:  "Reserva cancelada",
+  purchase: "Compra",
+  sale: "Venta",
+  repair_in: "Entrada a reparación",
+  repair_out: "Salida de reparación",
+  return: "Devolución",
+  write_off: "Baja",
+  correction: "Corrección manual",
+  reservation: "Reserva",
+  reservation_cancelled: "Reserva cancelada",
 };
 
 const REASON_COLORS: Record<string, string> = {
-  purchase:    "bg-blue-light-5 text-blue-dark",
-  sale:        "bg-green-light-5 text-green-dark",
-  repair_in:   "bg-orange/10 text-orange-dark",
-  repair_out:  "bg-teal/10 text-teal-dark",
-  return:      "bg-yellow-light-2 text-yellow-dark-2",
-  write_off:   "bg-red-light-5 text-red-dark",
-  correction:  "bg-gray-2 text-gray-7",
+  purchase: "bg-blue-light-5 text-blue-dark",
+  sale: "bg-green-light-5 text-green-dark",
+  repair_in: "bg-orange/10 text-orange-dark",
+  repair_out: "bg-teal/10 text-teal-dark",
+  return: "bg-yellow-light-2 text-yellow-dark-2",
+  write_off: "bg-red-light-5 text-red-dark",
+  correction: "bg-gray-2 text-gray-7",
   reservation: "bg-blue-light-4 text-blue",
   reservation_cancelled: "bg-red-light-6 text-red",
 };
@@ -68,13 +68,13 @@ export default async function AuditPage() {
                         <Link href={`/admin/inventory/${m.device_id}`} className="hover:text-blue">
                           {m.devices.brand} {m.devices.model}
                         </Link>
-                      ) : "—"}
+                      ) : "-"}
                     </td>
                     <td className="px-4 py-3 font-mono text-xs text-dark-4">
-                      {m.devices?.imei ?? "—"}
+                      {m.devices?.imei ?? "-"}
                     </td>
                     <td className="px-4 py-3 text-xs text-dark-4">
-                      {m.from_status?.replace("_", " ") ?? "—"}
+                      {m.from_status?.replace("_", " ") ?? "-"}
                     </td>
                     <td className="px-4 py-3 text-xs font-medium text-dark">
                       {m.to_status.replace("_", " ")}

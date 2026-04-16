@@ -1,7 +1,7 @@
-import { getDeviceById } from "@/lib/actions/devices";
-import { getDeviceAuditTrail } from "@/lib/actions/audit";
 import PageHeader from "@/components/admin/PageHeader";
 import StatusBadge from "@/components/admin/StatusBadge";
+import { getDeviceAuditTrail } from "@/lib/actions/audit";
+import { getDeviceById } from "@/lib/actions/devices";
 import { notFound } from "next/navigation";
 
 export const dynamic = "force-dynamic";
@@ -30,10 +30,10 @@ export default async function DeviceDetailPage({ params }: { params: { id: strin
               {device.imei2 && <Info label="IMEI 2" value={device.imei2} mono />}
               <Info label="Marca" value={device.brand} />
               <Info label="Modelo" value={device.model} />
-              <Info label="Almacenamiento" value={device.storage_gb ? `${device.storage_gb} GB` : "—"} />
-              <Info label="Color" value={device.color ?? "—"} />
+              <Info label="Almacenamiento" value={device.storage_gb ? `${device.storage_gb} GB` : "-"} />
+              <Info label="Color" value={device.color ?? "-"} />
               <Info label="Condición" value={device.condition} />
-              <Info label="Estado SIM" value={device.unlock_status ?? "—"} />
+              <Info label="Estado SIM" value={device.unlock_status ?? "-"} />
               {device.battery_health && <Info label="Batería" value={`${device.battery_health}%`} />}
             </Grid>
           </Section>
@@ -42,9 +42,9 @@ export default async function DeviceDetailPage({ params }: { params: { id: strin
             <Grid>
               <Info label="Precio coste" value={`${Number(device.cost_price).toLocaleString("es-ES", { style: "currency", currency: "EUR" })}`} />
               <Info label="Fecha compra" value={new Date(device.purchase_date).toLocaleDateString("es-ES")} />
-              <Info label="Proveedor" value={device.supplier_name ?? "—"} />
-              <Info label="DNI proveedor" value={device.supplier_dni ?? "—"} />
-              <Info label="Factura compra" value={device.purchase_invoice ?? "—"} />
+              <Info label="Proveedor" value={device.supplier_name ?? "-"} />
+              <Info label="DNI proveedor" value={device.supplier_dni ?? "-"} />
+              <Info label="Factura compra" value={device.purchase_invoice ?? "-"} />
             </Grid>
           </Section>
 
@@ -53,8 +53,8 @@ export default async function DeviceDetailPage({ params }: { params: { id: strin
               <Grid>
                 <Info label="Precio venta" value={`${Number(device.sale_price).toLocaleString("es-ES", { style: "currency", currency: "EUR" })}`} />
                 <Info label="Margen" value={`${Number(device.sale_price! - device.cost_price).toLocaleString("es-ES", { style: "currency", currency: "EUR" })}`} />
-                <Info label="Comprador" value={device.buyer_name ?? "—"} />
-                <Info label="Fecha venta" value={device.sold_at ? new Date(device.sold_at).toLocaleDateString("es-ES") : "—"} />
+                <Info label="Comprador" value={device.buyer_name ?? "-"} />
+                <Info label="Fecha venta" value={device.sold_at ? new Date(device.sold_at).toLocaleDateString("es-ES") : "-"} />
               </Grid>
             </Section>
           )}

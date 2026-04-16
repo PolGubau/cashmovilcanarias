@@ -128,11 +128,11 @@ export default async function CustomerDetailPage({ params }: { params: Promise<{
               <tbody className="divide-y divide-gray-3">
                 {(repairs as any[]).map((r) => (
                   <tr key={r.id} className="hover:bg-gray-1">
-                    <td className="py-3 px-4 text-dark">{r.device_brand ?? "—"} {r.device_model ?? ""}</td>
+                    <td className="py-3 px-4 text-dark">{r.device_brand ?? "-"} {r.device_model ?? ""}</td>
                     <td className="py-3 px-4 text-dark-3 max-w-xs truncate">{r.description}</td>
                     <td className="py-3 px-4 text-dark-3">{formatDate(r.received_at)}</td>
                     <td className="py-3 px-4"><Badge variant={REPAIR_BADGE[r.status] ?? "default"}>{REPAIR_STATUS_LABEL[r.status] ?? r.status}</Badge></td>
-                    <td className="py-3 px-4 text-dark-3">{r.cost ? formatCurrency(r.cost) : "—"}</td>
+                    <td className="py-3 px-4 text-dark-3">{r.cost ? formatCurrency(r.cost) : "-"}</td>
                   </tr>
                 ))}
               </tbody>

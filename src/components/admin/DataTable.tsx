@@ -51,7 +51,7 @@ export default function DataTable<T extends Record<string, unknown>>({
                 <tr key={i} className="hover:bg-gray-50/70 transition-colors group">
                   {columns.map((col) => (
                     <td key={col.key} className="px-5 py-3.5 text-[13px] text-gray-600 whitespace-nowrap">
-                      {col.render ? col.render(row) : (row[col.key] as ReactNode) ?? <span className="text-gray-300">—</span>}
+                      {col.render ? col.render(row) : (row[col.key] as ReactNode) ?? <span className="text-gray-300">-</span>}
                     </td>
                   ))}
                 </tr>

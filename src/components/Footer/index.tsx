@@ -11,7 +11,7 @@ const Footer = () => {
         <div className="flex flex-wrap xl:flex-nowrap gap-10 xl:gap-19 xl:justify-between pt-17.5 xl:pt-22.5 pb-10 xl:pb-15">
           <div className="max-w-[330px] w-full">
             <h2 className="mb-7.5 text-custom-1 font-medium text-dark">
-              Help & Support
+              Ayuda y Soporte
             </h2>
 
             <ul className="flex flex-col gap-3">
@@ -32,11 +32,11 @@ const Footer = () => {
                     />
                   </svg>
                 </span>
-                685 Market Street,Las Vegas, LA 95820,United States.
+                Calle Mayor 10, Las Palmas de Gran Canaria, España.
               </li>
 
               <li>
-                <a href="#" className="flex items-center gap-4.5">
+                <a href="tel:+34099532786" className="flex items-center gap-4.5">
                   <svg
                     width="24"
                     height="24"
@@ -66,7 +66,7 @@ const Footer = () => {
               </li>
 
               <li>
-                <a href="#" className="flex items-center gap-4.5">
+                <a href="mailto:support@cashmovil.es" className="flex items-center gap-4.5">
                   <svg
                     width="24"
                     height="24"
@@ -81,7 +81,7 @@ const Footer = () => {
                       fill="#3C50E0"
                     />
                   </svg>
-                  support@example.com
+                  support@cashmovil.es
                 </a>
               </li>
             </ul>
@@ -198,33 +198,33 @@ const Footer = () => {
 
           <div className="w-full sm:w-auto">
             <h2 className="mb-7.5 text-custom-1 font-medium text-dark">
-              Account
+              Mi Cuenta
             </h2>
 
             <ul className="flex flex-col gap-3.5">
               <li>
-                <a className="ease-out duration-200 hover:text-blue" href="#">
-                  My Account
+                <a className="ease-out duration-200 hover:text-blue" href="/my-account">
+                  Mi Cuenta
                 </a>
               </li>
               <li>
-                <a className="ease-out duration-200 hover:text-blue" href="#">
-                  Login / Register
+                <a className="ease-out duration-200 hover:text-blue" href="/signin">
+                  Iniciar sesión / Registrarse
                 </a>
               </li>
               <li>
-                <a className="ease-out duration-200 hover:text-blue" href="#">
-                  Cart
+                <a className="ease-out duration-200 hover:text-blue" href="/cart">
+                  Carrito
                 </a>
               </li>
               <li>
-                <a className="ease-out duration-200 hover:text-blue" href="#">
-                  Wishlist
+                <a className="ease-out duration-200 hover:text-blue" href="/wishlist">
+                  Lista de deseos
                 </a>
               </li>
               <li>
-                <a className="ease-out duration-200 hover:text-blue" href="#">
-                  Shop
+                <a className="ease-out duration-200 hover:text-blue" href="/tienda">
+                  Tienda
                 </a>
               </li>
             </ul>
@@ -232,33 +232,33 @@ const Footer = () => {
 
           <div className="w-full sm:w-auto">
             <h2 className="mb-7.5 text-custom-1 font-medium text-dark">
-              Quick Link
+              Accesos Rápidos
             </h2>
 
             <ul className="flex flex-col gap-3">
               <li>
                 <a className="ease-out duration-200 hover:text-blue" href="#">
-                  Privacy Policy
+                  Política de privacidad
                 </a>
               </li>
               <li>
                 <a className="ease-out duration-200 hover:text-blue" href="#">
-                  Refund Policy
+                  Política de devoluciones
                 </a>
               </li>
               <li>
                 <a className="ease-out duration-200 hover:text-blue" href="#">
-                  Terms of Use
+                  Términos de uso
                 </a>
               </li>
               <li>
                 <a className="ease-out duration-200 hover:text-blue" href="#">
-                  FAQ’s
+                  Preguntas comunes
                 </a>
               </li>
               <li>
-                <a className="ease-out duration-200 hover:text-blue" href="#">
-                  Contact
+                <a className="ease-out duration-200 hover:text-blue" href="/contact">
+                  Contacto
                 </a>
               </li>
             </ul>
@@ -274,11 +274,11 @@ const Footer = () => {
         <div className="max-w-[1170px] mx-auto px-4 sm:px-8 xl:px-0">
           <div className="flex gap-5 flex-wrap items-center justify-between">
             <p className="text-dark font-medium">
-              &copy; {year}. All rights reserved by CashCanarias.
+              &copy; {year}. Todos los derechos reservados - CashMóvil Canarias.
             </p>
 
             <div className="flex flex-wrap items-center gap-4">
-              <p className="font-medium">We Accept:</p>
+              <p className="font-medium">Aceptamos:</p>
 
               <div className="flex flex-wrap items-center gap-6">
                 <a href="#" aria-label="payment system with visa card">

@@ -1,33 +1,70 @@
-export interface OrderItem {
-  orderId: string;
-  createdAt: string;
-  status: "delivered" | "processing" | "on-hold" | "cancelled";
-  total: string;
-  title: string;
-}
+// Mock data matching OrderFull from Supabase.
+// Replace with real Supabase queries when backend is ready.
+import type { OrderFull } from "@/lib/supabase/types";
 
-const ordersData: OrderItem[] = [
+export type { OrderFull as OrderItem };
+
+const ordersData: OrderFull[] = [
   {
-    orderId: "234c56",
-    createdAt: "18th May, 2022",
-    status: "delivered",
-    total: "$100",
-    title: "Sunglasses",
+    id: "ord-0001-0000-0000-000000000001",
+    customer_id: "cust-0001-0000-0000-000000000001",
+    status: "completed",
+    subtotal: 699.0,
+    discount: 0,
+    total: 699.0,
+    payment_method: "card",
+    payment_reference: null,
+    paid_at: "2024-05-18T10:00:00.000Z",
+    invoice_number: "INV-2024-001",
+    notes: null,
+    created_by: null,
+    created_at: "2024-05-18T09:00:00.000Z",
+    updated_at: "2024-05-18T10:00:00.000Z",
+    customer_name: "María García",
+    customer_phone: "+34 600 000 001",
+    customer_email: "maria@example.com",
+    item_count: 1,
   },
   {
-    orderId: "234c56",
-    createdAt: "18th May, 2022",
-    status: "processing",
-    total: "$100",
-    title: "Watchs",
+    id: "ord-0002-0000-0000-000000000002",
+    customer_id: "cust-0002-0000-0000-000000000002",
+    status: "confirmed",
+    subtotal: 799.0,
+    discount: 50,
+    total: 749.0,
+    payment_method: "transfer",
+    payment_reference: null,
+    paid_at: null,
+    invoice_number: "INV-2024-002",
+    notes: "Entregar por la tarde.",
+    created_by: null,
+    created_at: "2024-05-20T11:00:00.000Z",
+    updated_at: "2024-05-20T11:00:00.000Z",
+    customer_name: "Carlos Martínez",
+    customer_phone: "+34 600 000 002",
+    customer_email: "carlos@example.com",
+    item_count: 2,
   },
   {
-    orderId: "234c56",
-    createdAt: "18th May, 2022",
-    status: "delivered",
-    total: "$100",
-    title: "Cancelled",
-  }
+    id: "ord-0003-0000-0000-000000000003",
+    customer_id: "cust-0003-0000-0000-000000000003",
+    status: "cancelled",
+    subtotal: 499.0,
+    discount: 0,
+    total: 499.0,
+    payment_method: null,
+    payment_reference: null,
+    paid_at: null,
+    invoice_number: null,
+    notes: null,
+    created_by: null,
+    created_at: "2024-05-22T08:30:00.000Z",
+    updated_at: "2024-05-22T09:00:00.000Z",
+    customer_name: "Ana López",
+    customer_phone: null,
+    customer_email: "ana@example.com",
+    item_count: 1,
+  },
 ];
 
 export default ordersData;

@@ -1,17 +1,17 @@
 "use client";
 
+import { AlertCircle, AlertTriangle, CheckCircle, Info } from "lucide-react";
+import React from "react";
 /**
  * Toast centralizado sobre react-hot-toast.
  * Uso: import { toast } from "@/components/ui/toast"
  *      toast.success("Guardado"), toast.error("Error"), etc.
  */
 import {
-  toast as _toast,
-  Toaster as _Toaster,
   type ToastOptions,
+  Toaster as _Toaster,
+  toast as _toast,
 } from "react-hot-toast";
-import { CheckCircle, AlertCircle, Info, AlertTriangle } from "lucide-react";
-import React from "react";
 
 const baseStyle: ToastOptions = {
   duration: 4000,
@@ -63,7 +63,7 @@ export const toast = {
   promise: _toast.promise,
 };
 
-/** Drop-in <Toaster /> — mount once in root layout */
+/** Drop-in <Toaster /> - mount once in root layout */
 export function Toaster() {
   return (
     <_Toaster

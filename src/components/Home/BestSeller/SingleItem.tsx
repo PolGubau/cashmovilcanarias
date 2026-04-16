@@ -1,16 +1,15 @@
 "use client";
-import React from "react";
-import { Product } from "@/types/product";
 import { useModalContext } from "@/app/context/QuickViewModalContext";
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "@/redux/store";
-import { updateQuickView } from "@/redux/features/quickView-slice";
+import type { ProductFull } from "@/lib/supabase/types";
 import { addItemToCart } from "@/redux/features/cart-slice";
+import { updateQuickView } from "@/redux/features/quickView-slice";
+import { addItemToWishlist } from "@/redux/features/wishlist-slice";
+import type { AppDispatch } from "@/redux/store";
 import Image from "next/image";
 import Link from "next/link";
-import { addItemToWishlist } from "@/redux/features/wishlist-slice";
+import { useDispatch } from "react-redux";
 
-const SingleItem = ({ item }: { item: Product }) => {
+const SingleItem = ({ item }: { item: ProductFull }) => {
   const { openModal } = useModalContext();
   const dispatch = useDispatch<AppDispatch>();
 
@@ -23,19 +22,26 @@ const SingleItem = ({ item }: { item: Product }) => {
   const handleAddToCart = () => {
     dispatch(
       addItemToCart({
-        ...item,
+        id: item.id,
+        name: item.name,
+        brand: item.brand,
+        price: item.price_from ?? 0,
+        primary_image_url: item.primary_image_url,
         quantity: 1,
-      })
+      }),
     );
   };
 
   const handleItemToWishList = () => {
     dispatch(
       addItemToWishlist({
-        ...item,
-        status: "available",
+        id: item.id,
+        name: item.name,
+        brand: item.brand,
+        price: item.price_from ?? 0,
+        primary_image_url: item.primary_image_url,
         quantity: 1,
-      })
+      }),
     );
   };
 
@@ -77,21 +83,20 @@ const SingleItem = ({ item }: { item: Product }) => {
               />
             </div>
 
-            <p className="text-custom-sm">({item.reviews})</p>
+            <p className="text-custom-sm">({item.variant_count} variante{item.variant_count !== 1 ? "s" : ""})</p>
           </div>
 
           <h3 className="font-medium text-dark ease-out duration-200 hover:text-blue mb-1.5">
-            <Link href="/shop-details"> {item.title} </Link>
+            <Link href={`/tienda/${item.id}`}> {item.name} </Link>
           </h3>
 
           <span className="flex items-center justify-center gap-2 font-medium text-lg">
-            <span className="text-dark">${item.discountedPrice}</span>
-            <span className="text-dark-4 line-through">${item.price}</span>
+            <span className="text-dark">${item.price_from ?? 0}</span>
           </span>
         </div>
 
         <div className="flex justify-center items-center">
-          <Image src={item.imgs.previews[0]} alt="" width={280} height={280} />
+          <Image src={item.primary_image_url ?? "/images/products/placeholder.png"} alt="" width={280} height={280} />
         </div>
 
         <div className="absolute right-0 bottom-0 translate-x-full u-w-full flex flex-col gap-2 p-5.5 ease-linear duration-300 group-hover:translate-x-0">

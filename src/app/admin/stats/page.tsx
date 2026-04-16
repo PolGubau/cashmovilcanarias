@@ -60,7 +60,7 @@ export default async function StatsPage() {
 
       {/* Últimas ventas con margen */}
       <div className="bg-white rounded-xl border border-gray-3 p-6">
-        <h2 className="font-semibold text-dark mb-4">Últimas ventas — margen por dispositivo</h2>
+        <h2 className="font-semibold text-dark mb-4">Últimas ventas - margen por dispositivo</h2>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>

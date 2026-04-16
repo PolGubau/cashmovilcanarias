@@ -19,7 +19,7 @@ export default function LoginPage() {
     try {
       await signIn(fd.get("email") as string, fd.get("password") as string);
     } catch (err: unknown) {
-      // Next.js redirect() throws a special error — let it propagate so the browser navigates
+      // Next.js redirect() throws a special error - let it propagate so the browser navigates
       if (isRedirectError(err)) throw err;
       toast.error(err instanceof Error ? err.message : "Credenciales incorrectas");
       setLoading(false);

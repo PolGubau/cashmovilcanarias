@@ -1,17 +1,17 @@
 "use client";
-import React from "react";
-import Image from "next/image";
-import { Product } from "@/types/product";
 import { useModalContext } from "@/app/context/QuickViewModalContext";
-import { updateQuickView } from "@/redux/features/quickView-slice";
+import type { ProductFull } from "@/lib/supabase/types";
 import { addItemToCart } from "@/redux/features/cart-slice";
-import { addItemToWishlist } from "@/redux/features/wishlist-slice";
 import { updateproductDetails } from "@/redux/features/product-details";
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "@/redux/store";
+import { updateQuickView } from "@/redux/features/quickView-slice";
+import { addItemToWishlist } from "@/redux/features/wishlist-slice";
+import type { AppDispatch } from "@/redux/store";
+import Image from "next/image";
 import Link from "next/link";
+import React from "react";
+import { useDispatch } from "react-redux";
 
-const ProductItem = ({ item }: { item: Product }) => {
+const ProductItem = ({ item }: { item: ProductFull }) => {
   const { openModal } = useModalContext();
 
   const dispatch = useDispatch<AppDispatch>();
@@ -25,19 +25,26 @@ const ProductItem = ({ item }: { item: Product }) => {
   const handleAddToCart = () => {
     dispatch(
       addItemToCart({
-        ...item,
+        id: item.id,
+        name: item.name,
+        brand: item.brand,
+        price: item.price_from ?? 0,
+        primary_image_url: item.primary_image_url,
         quantity: 1,
-      })
+      }),
     );
   };
 
   const handleItemToWishList = () => {
     dispatch(
       addItemToWishlist({
-        ...item,
-        status: "available",
+        id: item.id,
+        name: item.name,
+        brand: item.brand,
+        price: item.price_from ?? 0,
+        primary_image_url: item.primary_image_url,
         quantity: 1,
-      })
+      }),
     );
   };
 
@@ -48,7 +55,12 @@ const ProductItem = ({ item }: { item: Product }) => {
   return (
     <div className="group">
       <div className="relative overflow-hidden flex items-center justify-center rounded-lg bg-[#F6F7FB] min-h-[270px] mb-4">
-        <Image src={item.imgs.previews[0]} alt="" width={250} height={250} />
+        <Image
+          src={item.primary_image_url ?? "/images/products/placeholder.png"}
+          alt=""
+          width={250}
+          height={250}
+        />
 
         <div className="absolute left-0 bottom-0 translate-y-full w-full flex items-center justify-center gap-2.5 pb-5 ease-linear duration-200 group-hover:translate-y-0">
           <button
@@ -87,7 +99,7 @@ const ProductItem = ({ item }: { item: Product }) => {
             onClick={() => handleAddToCart()}
             className="inline-flex font-medium text-custom-sm py-[7px] px-5 rounded-[5px] bg-blue text-white ease-out duration-200 hover:bg-blue-dark"
           >
-            Add to cart
+            Añadir al carrito
           </button>
 
           <button
@@ -149,19 +161,18 @@ const ProductItem = ({ item }: { item: Product }) => {
           />
         </div>
 
-        <p className="text-custom-sm">({item.reviews})</p>
+        <p className="text-custom-sm">({item.variant_count} variante{item.variant_count !== 1 ? "s" : ""})</p>
       </div>
 
       <h3
         className="font-medium text-dark ease-out duration-200 hover:text-blue mb-1.5"
         onClick={() => handleProductDetails()}
       >
-        <Link href="/shop-details"> {item.title} </Link>
+        <Link href={`/tienda/${item.id}`}> {item.name} </Link>
       </h3>
 
       <span className="flex items-center gap-2 font-medium text-lg">
-        <span className="text-dark">${item.discountedPrice}</span>
-        <span className="text-dark-4 line-through">${item.price}</span>
+        <span className="text-dark">${item.price_from ?? 0}</span>
       </span>
     </div>
   );

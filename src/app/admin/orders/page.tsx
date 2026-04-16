@@ -21,7 +21,7 @@ export default async function OrdersPage({
       label: "Factura",
       render: (o: OrderFull) => (
         <Link href={`/admin/orders/${o.id}`} className="font-mono text-blue hover:underline text-xs">
-          {o.invoice_number ?? "—"}
+          {o.invoice_number ?? "-"}
         </Link>
       ),
     },
@@ -31,7 +31,7 @@ export default async function OrdersPage({
       render: (o: OrderFull) => (
         <div>
           <p className="font-medium text-gray-900">{o.customer_name}</p>
-          <p className="text-xs text-gray-400">{o.customer_phone ?? "—"}</p>
+          <p className="text-xs text-gray-400">{o.customer_phone ?? "-"}</p>
         </div>
       ),
     },
@@ -54,7 +54,7 @@ export default async function OrdersPage({
     {
       key: "payment_method",
       label: "Pago",
-      render: (o: OrderFull) => o.payment_method ?? "—",
+      render: (o: OrderFull) => o.payment_method ?? "-",
     },
     {
       key: "created_at",

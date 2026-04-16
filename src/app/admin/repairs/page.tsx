@@ -1,6 +1,6 @@
+import DataTable from "@/components/admin/DataTable";
 import PageHeader from "@/components/admin/PageHeader";
 import StatusBadge from "@/components/admin/StatusBadge";
-import DataTable from "@/components/admin/DataTable";
 import { getRepairs } from "@/lib/actions/repairs";
 import type { RepairFull } from "@/lib/supabase/types";
 import Link from "next/link";
@@ -23,7 +23,7 @@ export default async function RepairsPage({
       render: (r: RepairFull) => (
         <div>
           <p className="font-medium text-dark">{r.customer_name}</p>
-          <p className="text-xs text-dark-4">{r.customer_phone ?? "—"}</p>
+          <p className="text-xs text-dark-4">{r.customer_phone ?? "-"}</p>
         </div>
       ),
     },
@@ -55,7 +55,7 @@ export default async function RepairsPage({
       render: (r: RepairFull) =>
         r.budget
           ? Number(r.budget).toLocaleString("es-ES", { style: "currency", currency: "EUR" })
-          : "—",
+          : "-",
     },
     {
       key: "received_at",

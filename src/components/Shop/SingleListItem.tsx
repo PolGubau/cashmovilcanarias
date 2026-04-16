@@ -1,17 +1,17 @@
 "use client";
 import React from "react";
 
-import { Product } from "@/types/product";
 import { useModalContext } from "@/app/context/QuickViewModalContext";
-import { updateQuickView } from "@/redux/features/quickView-slice";
+import type { ProductFull } from "@/lib/supabase/types";
 import { addItemToCart } from "@/redux/features/cart-slice";
+import { updateQuickView } from "@/redux/features/quickView-slice";
 import { addItemToWishlist } from "@/redux/features/wishlist-slice";
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "@/redux/store";
-import Link from "next/link";
+import type { AppDispatch } from "@/redux/store";
 import Image from "next/image";
+import Link from "next/link";
+import { useDispatch } from "react-redux";
 
-const SingleListItem = ({ item }: { item: Product }) => {
+const SingleListItem = ({ item }: { item: ProductFull }) => {
   const { openModal } = useModalContext();
   const dispatch = useDispatch<AppDispatch>();
 
@@ -24,19 +24,26 @@ const SingleListItem = ({ item }: { item: Product }) => {
   const handleAddToCart = () => {
     dispatch(
       addItemToCart({
-        ...item,
+        id: item.id,
+        name: item.name,
+        brand: item.brand,
+        price: item.price_from ?? 0,
+        primary_image_url: item.primary_image_url,
         quantity: 1,
-      })
+      }),
     );
   };
 
   const handleItemToWishList = () => {
     dispatch(
       addItemToWishlist({
-        ...item,
-        status: "available",
+        id: item.id,
+        name: item.name,
+        brand: item.brand,
+        price: item.price_from ?? 0,
+        primary_image_url: item.primary_image_url,
         quantity: 1,
-      })
+      }),
     );
   };
 
@@ -44,7 +51,12 @@ const SingleListItem = ({ item }: { item: Product }) => {
     <div className="group rounded-lg bg-white shadow-1">
       <div className="flex">
         <div className="shadow-list relative overflow-hidden flex items-center justify-center max-w-[270px] w-full sm:min-h-[270px] p-4">
-          <Image src={item.imgs.previews[0]} alt="" width={250} height={250} />
+          <Image
+            src={item.primary_image_url ?? "/images/products/placeholder.png"}
+            alt=""
+            width={250}
+            height={250}
+          />
 
           <div className="absolute left-0 bottom-0 translate-y-full w-full flex items-center justify-center gap-2.5 pb-5 ease-linear duration-200 group-hover:translate-y-0">
             <button
@@ -82,7 +94,7 @@ const SingleListItem = ({ item }: { item: Product }) => {
               onClick={() => handleAddToCart()}
               className="inline-flex font-medium text-custom-sm py-[7px] px-5 rounded-[5px] bg-blue text-white ease-out duration-200 hover:bg-blue-dark"
             >
-              Add to cart
+              Añadir al carrito
             </button>
 
             <button
@@ -112,12 +124,11 @@ const SingleListItem = ({ item }: { item: Product }) => {
         <div className="w-full flex flex-col gap-5 sm:flex-row sm:items-center justify-center sm:justify-between py-5 px-4 sm:px-7.5 lg:pl-11 lg:pr-12">
           <div>
             <h3 className="font-medium text-dark ease-out duration-200 hover:text-blue mb-1.5">
-              <Link href="/shop-details"> {item.title} </Link>
+              <Link href={`/tienda/${item.id}`}> {item.name} </Link>
             </h3>
 
             <span className="flex items-center gap-2 font-medium text-lg">
-              <span className="text-dark">${item.discountedPrice}</span>
-              <span className="text-dark-4 line-through">${item.price}</span>
+              <span className="text-dark">${item.price_from ?? 0}</span>
             </span>
           </div>
 
@@ -155,7 +166,10 @@ const SingleListItem = ({ item }: { item: Product }) => {
               />
             </div>
 
-            <p className="text-custom-sm">({item.reviews})</p>
+            <p className="text-custom-sm">
+              ({item.variant_count} variante
+              {item.variant_count !== 1 ? "s" : ""})
+            </p>
           </div>
         </div>
       </div>

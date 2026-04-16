@@ -1,5 +1,7 @@
+import shopData from "@/components/Shop/shopData";
 import { getPublishedProducts } from "@/lib/actions/products";
 import type { ProductWithRelations } from "@/lib/actions/products";
+import type { ProductCondition } from "@/lib/supabase/types";
 import { formatCurrency } from "@/lib/utils";
 import { Package, ShoppingBag } from "lucide-react";
 import Link from "next/link";
@@ -19,9 +21,52 @@ export default async function TiendaPage({
   searchParams: Promise<{ brand?: string; condition?: string }>;
 }) {
   const sp = await searchParams;
-  const products = await getPublishedProducts({ brand: sp.brand }).catch(
+  const fromDb = await getPublishedProducts({ brand: sp.brand }).catch(
     (): ProductWithRelations[] => [],
   );
+
+  // Fall back to mock data when Supabase has no products yet
+  const products: ProductWithRelations[] =
+    fromDb.length > 0
+      ? fromDb
+      : shopData
+        .filter((p) => !sp.brand || p.brand?.toLowerCase() === sp.brand.toLowerCase())
+        .map((p) => ({
+          ...p,
+          description: p.description ?? null,
+          product_variants: p.price_from
+            ? [
+              {
+                id: `mock-v-${p.id}`,
+                product_id: p.id,
+                capacity: null,
+                color: null,
+                condition: "excellent" as ProductCondition,
+                battery_health: null,
+                stock: p.total_stock,
+                price: p.price_from,
+                purchase_price: null,
+                sku: null,
+                is_active: true,
+                created_at: p.created_at,
+                updated_at: p.updated_at,
+              },
+            ]
+            : [],
+          product_images: p.primary_image_url
+            ? [
+              {
+                id: `mock-i-${p.id}`,
+                product_id: p.id,
+                url: p.primary_image_url,
+                alt: p.name,
+                sort_order: 0,
+                is_primary: true,
+                created_at: p.created_at,
+              },
+            ]
+            : [],
+        }));
 
   // Extract unique brands for filter
   const brands = Array.from(
@@ -136,7 +181,7 @@ export default async function TiendaPage({
                     <p className="text-base font-bold text-dark">
                       {Number.isFinite(minPrice)
                         ? `Desde ${formatCurrency(minPrice)}`
-                        : "—"}
+                        : "-"}
                     </p>
                     <span className="text-xs text-green font-medium">
                       {p.warranty_months}m garantía

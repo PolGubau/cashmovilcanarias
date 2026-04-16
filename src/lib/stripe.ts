@@ -1,7 +1,7 @@
 import { loadStripe } from "@stripe/stripe-js";
 import Stripe from "stripe";
 
-/** Server-side Stripe client — lazy to avoid build-time errors when key is missing */
+/** Server-side Stripe client - lazy to avoid build-time errors when key is missing */
 let _stripe: Stripe | null = null;
 export function getStripeServer(): Stripe {
 	if (!_stripe) {

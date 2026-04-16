@@ -1,8 +1,8 @@
 "use client";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { useCallback, useRef } from "react";
-import testimonialsData from "./testimonialsData";
 import Image from "next/image";
+import { useCallback, useRef } from "react";
+import { Swiper, SwiperSlide } from "swiper/react";
+import testimonialsData from "./testimonialsData";
 
 // Import Swiper styles
 import "swiper/css/navigation";
@@ -37,10 +37,10 @@ const Testimonials = () => {
                     width={17}
                     height={17}
                   />
-                  Testimonials
+                  Testimonios
                 </span>
                 <h2 className="font-semibold text-xl xl:text-heading-5 text-dark">
-                  User Feedbacks
+                  Lo que dicen nuestros clientes
                 </h2>
               </div>
 

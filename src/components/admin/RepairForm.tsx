@@ -1,8 +1,8 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
 import { createRepair } from "@/lib/actions/repairs";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 export default function RepairForm() {
   const router = useRouter();
@@ -17,29 +17,29 @@ export default function RepairForm() {
 
     try {
       await createRepair({
-        device_id:           (form.get("device_id") as string) || null,
-        customer_id:         form.get("customer_id") as string,
-        device_brand:        (form.get("device_brand") as string) || null,
-        device_model:        (form.get("device_model") as string) || null,
-        device_imei:         (form.get("device_imei") as string) || null,
-        status:              "received",
-        description:         form.get("description") as string,
-        diagnosis:           null,
-        solution:            null,
-        parts_used:          null,
-        budget:              form.get("budget") ? Number(form.get("budget")) : null,
-        cost:                null,
-        deposit_paid:        Number(form.get("deposit_paid") || 0),
-        warranty_days:       90,
+        device_id: (form.get("device_id") as string) || null,
+        customer_id: form.get("customer_id") as string,
+        device_brand: (form.get("device_brand") as string) || null,
+        device_model: (form.get("device_model") as string) || null,
+        device_imei: (form.get("device_imei") as string) || null,
+        status: "received",
+        description: form.get("description") as string,
+        diagnosis: null,
+        solution: null,
+        parts_used: null,
+        budget: form.get("budget") ? Number(form.get("budget")) : null,
+        cost: null,
+        deposit_paid: Number(form.get("deposit_paid") || 0),
+        warranty_days: 90,
         warranty_expires_at: null,
-        received_at:         new Date().toISOString(),
-        diagnosed_at:        null,
-        completed_at:        null,
-        delivered_at:        null,
-        estimated_ready_at:  (form.get("estimated_ready_at") as string) || null,
-        assigned_to:         null,
-        created_by:          null,
-        notes:               (form.get("notes") as string) || null,
+        received_at: new Date().toISOString(),
+        diagnosed_at: null,
+        completed_at: null,
+        delivered_at: null,
+        estimated_ready_at: (form.get("estimated_ready_at") as string) || null,
+        assigned_to: null,
+        created_by: null,
+        notes: (form.get("notes") as string) || null,
       });
       router.push("/admin/repairs");
     } catch (err: any) {
@@ -65,11 +65,11 @@ export default function RepairForm() {
       <div className="bg-white rounded-xl border border-gray-3 p-6 space-y-4">
         <h2 className="font-semibold text-dark border-b border-gray-3 pb-3">Dispositivo</h2>
         <p className="text-xs text-dark-4">Si el dispositivo está en inventario, usa el ID. Si es externo, rellena marca/modelo/IMEI.</p>
-        <Field name="device_id"    label="ID dispositivo (inventario)" placeholder="UUID — opcional" />
+        <Field name="device_id" label="ID dispositivo (inventario)" placeholder="UUID - opcional" />
         <div className="grid grid-cols-3 gap-4">
-          <Field name="device_brand" label="Marca"   placeholder="Samsung" />
-          <Field name="device_model" label="Modelo"  placeholder="Galaxy S23" />
-          <Field name="device_imei"  label="IMEI"    placeholder="350000000000000" />
+          <Field name="device_brand" label="Marca" placeholder="Samsung" />
+          <Field name="device_model" label="Modelo" placeholder="Galaxy S23" />
+          <Field name="device_imei" label="IMEI" placeholder="350000000000000" />
         </div>
       </div>
 
@@ -81,9 +81,9 @@ export default function RepairForm() {
             className="w-full border border-gray-3 rounded-lg px-3 py-2.5 text-sm text-dark focus:outline-none focus:ring-2 focus:ring-blue/20 focus:border-blue resize-none" />
         </div>
         <div className="grid grid-cols-3 gap-4">
-          <Field name="budget"             label="Presupuesto (€)"   placeholder="0.00" type="number" />
-          <Field name="deposit_paid"       label="Señal recibida (€)" placeholder="0.00" type="number" />
-          <Field name="estimated_ready_at" label="Lista estimada"     type="date" />
+          <Field name="budget" label="Presupuesto (€)" placeholder="0.00" type="number" />
+          <Field name="deposit_paid" label="Señal recibida (€)" placeholder="0.00" type="number" />
+          <Field name="estimated_ready_at" label="Lista estimada" type="date" />
         </div>
         <Field name="notes" label="Notas internas" placeholder="Observaciones del técnico..." />
       </div>

@@ -52,7 +52,7 @@ export default async function InventoryPage({
     {
       key: "supplier_name",
       label: "Proveedor",
-      render: (d: DeviceFull) => d.supplier_name ?? "—",
+      render: (d: DeviceFull) => d.supplier_name ?? "-",
     },
     {
       key: "purchase_date",

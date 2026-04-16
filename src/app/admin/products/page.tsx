@@ -1,12 +1,12 @@
-import Link from "next/link";
-import { Plus, Package, Eye, EyeOff } from "lucide-react";
+import PageHeader from "@/components/admin/PageHeader";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { getProducts } from "@/lib/actions/products";
 import { toggleProductPublished } from "@/lib/actions/products";
-import PageHeader from "@/components/admin/PageHeader";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { formatCurrency } from "@/lib/utils";
 import type { ProductFull } from "@/lib/supabase/types";
+import { formatCurrency } from "@/lib/utils";
+import { Eye, EyeOff, Package, Plus } from "lucide-react";
+import Link from "next/link";
 
 export const dynamic = "force-dynamic";
 
@@ -71,7 +71,7 @@ export default async function ProductsPage() {
                     </Badge>
                   </td>
                   <td className="py-3 px-4 text-dark-3">
-                    {p.price_from ? formatCurrency(p.price_from) : "—"}
+                    {p.price_from ? formatCurrency(p.price_from) : "-"}
                   </td>
                   <td className="py-3 px-4 text-dark-3">{p.warranty_months} meses</td>
                   <td className="py-3 px-4">

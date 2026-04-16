@@ -1,8 +1,8 @@
 "use client";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { useCallback, useRef, useEffect } from "react";
-import data from "./categoryData";
 import Image from "next/image";
+import { useCallback, useEffect, useRef } from "react";
+import { Swiper, SwiperSlide } from "swiper/react";
+import data from "./categoryData";
 
 // Import Swiper styles
 import "swiper/css/navigation";
@@ -70,10 +70,10 @@ const Categories = () => {
                     </clipPath>
                   </defs>
                 </svg>
-                Categories
+                Categorías
               </span>
               <h2 className="font-semibold text-xl xl:text-heading-5 text-dark">
-                Browse by Category
+                Explorar por categoría
               </h2>
             </div>
 

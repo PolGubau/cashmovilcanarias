@@ -1,5 +1,5 @@
-import PageHeader from "@/components/admin/PageHeader";
 import DataTable from "@/components/admin/DataTable";
+import PageHeader from "@/components/admin/PageHeader";
 import { getCustomers } from "@/lib/actions/customers";
 import type { Customer } from "@/lib/supabase/types";
 import Link from "next/link";
@@ -24,9 +24,9 @@ export default async function CustomersPage({
         </Link>
       ),
     },
-    { key: "phone", label: "Teléfono", render: (c: Customer) => c.phone ?? "—" },
-    { key: "email", label: "Email",    render: (c: Customer) => c.email ?? "—" },
-    { key: "dni",   label: "DNI/NIE",  render: (c: Customer) => c.dni ?? "—" },
+    { key: "phone", label: "Teléfono", render: (c: Customer) => c.phone ?? "-" },
+    { key: "email", label: "Email", render: (c: Customer) => c.email ?? "-" },
+    { key: "dni", label: "DNI/NIE", render: (c: Customer) => c.dni ?? "-" },
     {
       key: "is_supplier",
       label: "Tipo",
@@ -60,9 +60,9 @@ export default async function CustomersPage({
 
       <div className="flex gap-2 mb-6">
         {[
-          { href: "/admin/customers",              label: "Todos",       active: !searchParams.type },
-          { href: "/admin/customers?type=buyer",   label: "Clientes",    active: searchParams.type === "buyer" },
-          { href: "/admin/customers?type=supplier",label: "Proveedores", active: searchParams.type === "supplier" },
+          { href: "/admin/customers", label: "Todos", active: !searchParams.type },
+          { href: "/admin/customers?type=buyer", label: "Clientes", active: searchParams.type === "buyer" },
+          { href: "/admin/customers?type=supplier", label: "Proveedores", active: searchParams.type === "supplier" },
         ].map(({ href, label, active }) => (
           <Link key={href} href={href}
             className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors ${active ? "bg-dark text-white border-dark" : "bg-white text-dark-4 border-gray-3 hover:border-dark"}`}>

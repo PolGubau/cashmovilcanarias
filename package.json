@@ -1,7 +1,7 @@
 {
 	"name": "cashmovilcanarias",
 	"version": "1.0.0",
-	"description": "Sistema ERP/CRM y ecommerce unificado para CashMóvil Canarias — gestión de stock IMEI, reparaciones, CRM de clientes y tienda online",
+	"description": "Sistema ERP/CRM y ecommerce unificado para CashMóvil Canarias - gestión de stock IMEI, reparaciones, CRM de clientes y tienda online",
 	"private": true,
 	"author": {
 		"name": "Pol Gubau Amores",
