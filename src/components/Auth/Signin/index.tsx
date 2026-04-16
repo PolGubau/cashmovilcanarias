@@ -1,8 +1,35 @@
+"use client";
+
 import Breadcrumb from "@/components/Common/Breadcrumb";
+import { signIn } from "@/lib/actions/auth";
+import { isRedirectError } from "next/dist/client/components/redirect-error";
 import Link from "next/link";
-import React from "react";
+import type React from "react";
+import { useState } from "react";
+import toast from "react-hot-toast";
 
 const Signin = () => {
+  const [loading, setLoading] = useState(false);
+
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setLoading(true);
+    const fd = new FormData(e.currentTarget);
+    try {
+      await signIn(
+        fd.get("email") as string,
+        fd.get("password") as string,
+        "/my-account",
+      );
+    } catch (err: unknown) {
+      if (isRedirectError(err)) throw err;
+      toast.error(
+        err instanceof Error ? err.message : "Credenciales incorrectas",
+      );
+      setLoading(false);
+    }
+  }
+
   return (
     <>
       <Breadcrumb title={"Iniciar sesión"} pages={["Iniciar sesión"]} />
@@ -17,7 +44,7 @@ const Signin = () => {
             </div>
 
             <div>
-              <form>
+              <form onSubmit={handleSubmit}>
                 <div className="mb-5">
                   <label htmlFor="email" className="block mb-2.5">
                     Correo electrónico
@@ -49,9 +76,10 @@ const Signin = () => {
 
                 <button
                   type="submit"
-                  className="w-full flex justify-center font-medium text-white bg-dark py-3 px-6 rounded-lg ease-out duration-200 hover:bg-blue mt-7.5"
+                  disabled={loading}
+                  className="w-full flex justify-center font-medium text-white bg-dark py-3 px-6 rounded-lg ease-out duration-200 hover:bg-blue mt-7.5 disabled:opacity-60 disabled:cursor-not-allowed"
                 >
-                  Iniciar sesión
+                  {loading ? "Iniciando sesión..." : "Iniciar sesión"}
                 </button>
 
                 <a

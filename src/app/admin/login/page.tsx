@@ -17,7 +17,7 @@ export default function LoginPage() {
     setLoading(true);
     const fd = new FormData(e.currentTarget);
     try {
-      await signIn(fd.get("email") as string, fd.get("password") as string);
+      await signIn(fd.get("email") as string, fd.get("password") as string, "/admin");
     } catch (err: unknown) {
       // Next.js redirect() throws a special error - let it propagate so the browser navigates
       if (isRedirectError(err)) throw err;

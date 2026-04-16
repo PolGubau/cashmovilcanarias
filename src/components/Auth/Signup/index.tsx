@@ -1,8 +1,42 @@
+"use client";
+
 import Breadcrumb from "@/components/Common/Breadcrumb";
+import { signUp } from "@/lib/actions/auth";
+import { isRedirectError } from "next/dist/client/components/redirect-error";
 import Link from "next/link";
-import React from "react";
+import type React from "react";
+import { useState } from "react";
+import toast from "react-hot-toast";
 
 const Signup = () => {
+  const [loading, setLoading] = useState(false);
+
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setLoading(true);
+    const fd = new FormData(e.currentTarget);
+    const password = fd.get("password") as string;
+    const confirm = fd.get("re-type-password") as string;
+
+    if (password !== confirm) {
+      toast.error("Las contraseñas no coinciden");
+      setLoading(false);
+      return;
+    }
+
+    try {
+      await signUp(
+        fd.get("email") as string,
+        password,
+        fd.get("name") as string,
+      );
+    } catch (err: unknown) {
+      if (isRedirectError(err)) throw err;
+      toast.error(err instanceof Error ? err.message : "Error al crear la cuenta");
+      setLoading(false);
+    }
+  }
+
   return (
     <>
       <Breadcrumb title={"Registrarse"} pages={["Registrarse"]} />
@@ -87,7 +121,7 @@ const Signup = () => {
             </span>
 
             <div className="mt-5.5">
-              <form>
+              <form onSubmit={handleSubmit}>
                 <div className="mb-5">
                   <label htmlFor="name" className="block mb-2.5">
                     Nombre completo <span className="text-red">*</span>
@@ -148,9 +182,10 @@ const Signup = () => {
 
                 <button
                   type="submit"
-                  className="w-full flex justify-center font-medium text-white bg-dark py-3 px-6 rounded-lg ease-out duration-200 hover:bg-blue mt-7.5"
+                  disabled={loading}
+                  className="w-full flex justify-center font-medium text-white bg-dark py-3 px-6 rounded-lg ease-out duration-200 hover:bg-blue mt-7.5 disabled:opacity-60 disabled:cursor-not-allowed"
                 >
-                  Crear cuenta
+                  {loading ? "Creando cuenta..." : "Crear cuenta"}
                 </button>
 
                 <p className="text-center mt-6">
