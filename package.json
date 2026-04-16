@@ -1,7 +1,38 @@
 {
-	"name": "cash-canarias",
+	"name": "cashmovilcanarias",
 	"version": "1.0.0",
+	"description": "Sistema ERP/CRM y ecommerce unificado para CashMóvil Canarias — gestión de stock IMEI, reparaciones, CRM de clientes y tienda online",
 	"private": true,
+	"author": {
+		"name": "Pol Gubau Amores",
+		"email": "pol@polgubau.com",
+		"url": "https://polgubau.com"
+	},
+	"keywords": [
+		"erp",
+		"crm",
+		"ecommerce",
+		"next.js",
+		"supabase",
+		"stripe",
+		"imei",
+		"reparaciones",
+		"moviles",
+		"canarias"
+	],
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/PolGubau/cashmovilcanarias.git"
+	},
+	"bugs": {
+		"url": "https://github.com/PolGubau/cashmovilcanarias/issues"
+	},
+	"homepage": "https://cashmovilcanarias.vercel.app",
+	"license": "SEE LICENSE IN LICENSE",
+	"engines": {
+		"node": ">=20.0.0",
+		"pnpm": ">=9.0.0"
+	},
 	"scripts": {
 		"dev": "next dev",
 		"build": "next build",
