@@ -1,7 +1,7 @@
 import { cn } from "@/lib/utils";
-import { cva, type VariantProps } from "class-variance-authority";
+import { type VariantProps, cva } from "class-variance-authority";
 import { Loader2 } from "lucide-react";
-import * as React from "react";
+import type * as React from "react";
 
 const buttonVariants = cva(
   "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue/40 disabled:pointer-events-none disabled:opacity-50",
@@ -14,14 +14,12 @@ const buttonVariants = cva(
           "bg-gray-2 text-dark hover:bg-gray-3 active:bg-gray-3 border border-gray-3",
         outline:
           "border border-gray-3 bg-white text-dark hover:bg-gray-1 active:bg-gray-2",
-        ghost:
-          "text-dark hover:bg-gray-1 active:bg-gray-2",
+        ghost: "text-dark hover:bg-gray-1 active:bg-gray-2",
         destructive:
           "bg-red text-white hover:bg-red-dark active:bg-red-dark shadow-sm",
         success:
           "bg-green text-white hover:bg-green-dark active:bg-green-dark shadow-sm",
-        link:
-          "text-blue underline-offset-4 hover:underline p-0 h-auto",
+        link: "text-blue underline-offset-4 hover:underline p-0 h-auto",
       },
       size: {
         sm: "h-8 px-3 text-xs",
@@ -41,17 +39,18 @@ const buttonVariants = cva(
 
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
-    VariantProps<typeof buttonVariants> {
+  VariantProps<typeof buttonVariants> {
   loading?: boolean;
   leftIcon?: React.ReactNode;
   rightIcon?: React.ReactNode;
 }
 
-const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant, size, loading, leftIcon, rightIcon, children, disabled, ...props }, ref) => {
+const Button = (
+  ({ className, variant, size, loading, leftIcon, rightIcon, children, disabled, ...props }: ButtonProps) => {
     return (
       <button
         ref={ref}
+        type={props.type ?? "button"}
         className={cn(buttonVariants({ variant, size }), className)}
         disabled={disabled ?? loading}
         {...props}
@@ -65,8 +64,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         {!loading && rightIcon && <span className="shrink-0">{rightIcon}</span>}
       </button>
     );
-  },
+  }
 );
-Button.displayName = "Button";
 
 export { Button, buttonVariants };

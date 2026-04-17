@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui";
 import { selectTotalPrice } from "@/redux/features/cart-slice";
 import { useAppSelector } from "@/redux/store";
 import React from "react";
@@ -55,12 +56,9 @@ const OrderSummary = () => {
           </div>
 
           {/* <!-- checkout button --> */}
-          <button
-            type="submit"
-            className="w-full flex justify-center font-medium text-white bg-blue py-3 px-6 rounded-md ease-out duration-200 hover:bg-blue-dark mt-7.5"
-          >
+          <Button type="submit" size="lg" className="w-full mt-7.5">
             Finalizar compra
-          </button>
+          </Button>
         </div>
       </div>
     </div>

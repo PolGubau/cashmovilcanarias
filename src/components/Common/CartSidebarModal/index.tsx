@@ -1,13 +1,14 @@
 "use client";
-import React, { useEffect, useState } from "react";
-
 import { useCartModalContext } from "@/app/context/CartSidebarModalContext";
+import { Button } from "@/components/ui";
 import {
   removeItemFromCart,
   selectTotalPrice,
 } from "@/redux/features/cart-slice";
 import { useAppSelector } from "@/redux/store";
+import { X } from "lucide-react";
 import Link from "next/link";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import EmptyCart from "./EmptyCart";
 import SingleItem from "./SingleItem";
@@ -46,31 +47,16 @@ const CartSidebarModal = () => {
             <h2 className="font-medium text-dark text-lg sm:text-2xl">
               Carrito
             </h2>
-            <button
-              onClick={() => closeCartModal()}
-              aria-label="button for close modal"
-              className="flex items-center justify-center ease-in duration-150 bg-meta text-dark-5 hover:text-dark"
+            <Button
+              type="button"
+              variant="ghost"
+              size="icon"
+              onClick={closeCartModal}
+              aria-label="Cerrar carrito"
+              className="text-dark-5 hover:text-dark"
             >
-              <svg
-                className="fill-current"
-                width="30"
-                height="30"
-                viewBox="0 0 30 30"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M12.5379 11.2121C12.1718 10.846 11.5782 10.846 11.212 11.2121C10.8459 11.5782 10.8459 12.1718 11.212 12.5379L13.6741 15L11.2121 17.4621C10.846 17.8282 10.846 18.4218 11.2121 18.7879C11.5782 19.154 12.1718 19.154 12.5379 18.7879L15 16.3258L17.462 18.7879C17.8281 19.154 18.4217 19.154 18.7878 18.7879C19.154 18.4218 19.154 17.8282 18.7878 17.462L16.3258 15L18.7879 12.5379C19.154 12.1718 19.154 11.5782 18.7879 11.2121C18.4218 10.846 17.8282 10.846 17.462 11.2121L15 13.6742L12.5379 11.2121Z"
-                  fill=""
-                />
-                <path
-                  fillRule="evenodd"
-                  clipRule="evenodd"
-                  d="M15 1.5625C7.57867 1.5625 1.5625 7.57867 1.5625 15C1.5625 22.4213 7.57867 28.4375 15 28.4375C22.4213 28.4375 28.4375 22.4213 28.4375 15C28.4375 7.57867 22.4213 1.5625 15 1.5625ZM3.4375 15C3.4375 8.61421 8.61421 3.4375 15 3.4375C21.3858 3.4375 26.5625 8.61421 26.5625 15C26.5625 21.3858 21.3858 26.5625 15 26.5625C8.61421 26.5625 3.4375 21.3858 3.4375 15Z"
-                  fill=""
-                />
-              </svg>
-            </button>
+              <X className="w-6 h-6" />
+            </Button>
           </div>
 
           <div className="h-[66vh] overflow-y-auto no-scrollbar">
