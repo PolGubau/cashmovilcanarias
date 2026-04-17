@@ -1,5 +1,6 @@
 "use client";
 import { useModalContext } from "@/app/context/QuickViewModalContext";
+import { StarRating } from "@/components/ui";
 import type { ProductFull } from "@/lib/supabase/types";
 import { addItemToCart } from "@/redux/features/cart-slice";
 import { updateQuickView } from "@/redux/features/quickView-slice";
@@ -122,42 +123,11 @@ const SingleGridItem = ({ item }: { item: ProductFull }) => {
         </div>
       </div>
 
-      <div className="flex items-center gap-2.5 mb-2">
-        <div className="flex items-center gap-1">
-          <Image
-            src="/images/icons/icon-star.svg"
-            alt="star icon"
-            width={15}
-            height={15}
-          />
-          <Image
-            src="/images/icons/icon-star.svg"
-            alt="star icon"
-            width={15}
-            height={15}
-          />
-          <Image
-            src="/images/icons/icon-star.svg"
-            alt="star icon"
-            width={15}
-            height={15}
-          />
-          <Image
-            src="/images/icons/icon-star.svg"
-            alt="star icon"
-            width={15}
-            height={15}
-          />
-          <Image
-            src="/images/icons/icon-star.svg"
-            alt="star icon"
-            width={15}
-            height={15}
-          />
-        </div>
-
-        <p className="text-custom-sm">({item.variant_count} variante{item.variant_count !== 1 ? "s" : ""})</p>
-      </div>
+      <StarRating
+        rating={5}
+        label={`(${item.variant_count} variante${item.variant_count !== 1 ? "s" : ""})`}
+        className="mb-2"
+      />
 
       <h3 className="font-medium text-dark ease-out duration-200 hover:text-blue mb-1.5">
         <Link href={`/tienda/${item.id}`}> {item.name} </Link>

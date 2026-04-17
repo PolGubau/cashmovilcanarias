@@ -1,10 +1,10 @@
-import { Button } from "@/components/ui";
+import { Button, QuantityStepper } from "@/components/ui";
 import {
   removeItemFromCart,
   updateCartItemQuantity,
 } from "@/redux/features/cart-slice";
 import type { AppDispatch } from "@/redux/store";
-import { Minus, Plus, Trash2 } from "lucide-react";
+import { Trash2 } from "lucide-react";
 import Image from "next/image";
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
@@ -62,31 +62,13 @@ const SingleItem = ({ item }) => {
       </div>
 
       <div className="min-w-[275px]">
-        <div className="w-max flex items-center rounded-md border border-gray-3">
-          <Button
-            type="button"
-            variant="ghost"
-            onClick={handleDecreaseQuantity}
-            aria-label="Reducir cantidad"
-            className="w-11.5 h-11.5 rounded-none rounded-l-md hover:text-blue"
-          >
-            <Minus className="w-4 h-4" />
-          </Button>
-
-          <span className="flex items-center justify-center w-16 h-11.5 border-x border-gray-4">
-            {quantity}
-          </span>
-
-          <Button
-            type="button"
-            variant="ghost"
-            onClick={handleIncreaseQuantity}
-            aria-label="Aumentar cantidad"
-            className="w-11.5 h-11.5 rounded-none rounded-r-md hover:text-blue"
-          >
-            <Plus className="w-4 h-4" />
-          </Button>
-        </div>
+        <QuantityStepper
+          value={quantity}
+          onDecrease={handleDecreaseQuantity}
+          onIncrease={handleIncreaseQuantity}
+          min={1}
+          size="lg"
+        />
       </div>
 
       <div className="min-w-[200px]">
