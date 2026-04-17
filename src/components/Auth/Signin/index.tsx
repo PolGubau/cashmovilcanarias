@@ -1,7 +1,7 @@
 "use client";
 
 import Breadcrumb from "@/components/Common/Breadcrumb";
-import { Button } from "@/components/ui";
+import { Button, FormField, Input } from "@/components/ui";
 import { signIn } from "@/lib/actions/auth";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -45,34 +45,26 @@ const Signin = () => {
 
             <div>
               <form onSubmit={handleSubmit}>
-                <div className="mb-5">
-                  <label htmlFor="email" className="block mb-2.5">
-                    Correo electrónico
-                  </label>
-
-                  <input
+                <FormField label="Correo electrónico" htmlFor="email" required className="mb-5">
+                  <Input
                     type="email"
                     name="email"
                     id="email"
                     placeholder="Introduce tu correo electrónico"
-                    className="rounded-lg border border-gray-3 bg-gray-1 placeholder:text-dark-5 w-full py-3 px-5 outline-none duration-200 focus:border-transparent focus:shadow-input focus:ring-2 focus:ring-blue/20"
+                    className="py-3 px-5 h-auto"
                   />
-                </div>
+                </FormField>
 
-                <div className="mb-5">
-                  <label htmlFor="password" className="block mb-2.5">
-                    Contraseña
-                  </label>
-
-                  <input
+                <FormField label="Contraseña" htmlFor="password" required className="mb-5">
+                  <Input
                     type="password"
                     name="password"
                     id="password"
                     placeholder="Introduce tu contraseña"
-                    autoComplete="on"
-                    className="rounded-lg border border-gray-3 bg-gray-1 placeholder:text-dark-5 w-full py-3 px-5 outline-none duration-200 focus:border-transparent focus:shadow-input focus:ring-2 focus:ring-blue/20"
+                    autoComplete="current-password"
+                    className="py-3 px-5 h-auto"
                   />
-                </div>
+                </FormField>
 
                 <Button
                   type="submit"

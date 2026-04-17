@@ -36,22 +36,22 @@ const OrderDetails = ({ orderItem }: OrderDetailsProps) => {
       <div className="items-center justify-between border-t border-gray-3 py-5 px-7.5 hidden md:flex">
         <div className="min-w-[111px]">
           <p className="text-custom-sm text-red">
-            #{orderItem.orderId.slice(-8)}
+            #{orderItem.id.slice(-8)}
           </p>
         </div>
         <div className="min-w-[175px]">
           <p className="text-custom-sm text-dark">
-            {orderItem.createdAt}
+            {orderItem.created_at}
           </p>
         </div>
 
         <div className="min-w-[128px]">
           <p
-            className={`inline-block text-custom-sm  py-0.5 px-2.5 rounded-[30px] capitalize ${orderItem.status === "delivered"
+            className={`inline-block text-custom-sm  py-0.5 px-2.5 rounded-[30px] capitalize ${orderItem.status === "completed"
                 ? "text-green bg-green-light-6"
-                : orderItem.status === "on-hold"
+                : orderItem.status === "cancelled"
                   ? "text-red bg-red-light-6"
-                  : orderItem.status === "processing"
+                  : orderItem.status === "confirmed"
                     ? "text-yellow bg-yellow-light-4"
                     : "Unknown Status"
               }`}

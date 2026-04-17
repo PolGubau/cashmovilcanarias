@@ -1,7 +1,7 @@
 "use client";
 
 import Breadcrumb from "@/components/Common/Breadcrumb";
-import { Button } from "@/components/ui";
+import { Button, FormField, Input } from "@/components/ui";
 import { signUp } from "@/lib/actions/auth";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -41,7 +41,7 @@ const Signup = () => {
 
     formRef.current?.reset();
 
-    if (result.requiresConfirmation) {
+    if ("requiresConfirmation" in result && result.requiresConfirmation) {
       toast.success("¡Cuenta creada! Revisa tu correo y confirma tu email antes de iniciar sesión.");
       router.push("/signin");
     } else {
@@ -119,63 +119,47 @@ const Signup = () => {
 
             <div className="mt-5.5">
               <form ref={formRef} onSubmit={handleSubmit}>
-                <div className="mb-5">
-                  <label htmlFor="name" className="block mb-2.5">
-                    Nombre completo <span className="text-red">*</span>
-                  </label>
-
-                  <input
+                <FormField label="Nombre completo" htmlFor="name" required className="mb-5">
+                  <Input
                     type="text"
                     name="name"
                     id="name"
                     placeholder="Introduce tu nombre completo"
-                    className="rounded-lg border border-gray-3 bg-gray-1 placeholder:text-dark-5 w-full py-3 px-5 outline-none duration-200 focus:border-transparent focus:shadow-input focus:ring-2 focus:ring-blue/20"
+                    className="py-3 px-5 h-auto"
                   />
-                </div>
+                </FormField>
 
-                <div className="mb-5">
-                  <label htmlFor="email" className="block mb-2.5">
-                    Correo electrónico <span className="text-red">*</span>
-                  </label>
-
-                  <input
+                <FormField label="Correo electrónico" htmlFor="email" required className="mb-5">
+                  <Input
                     type="email"
                     name="email"
                     id="email"
                     placeholder="Introduce tu correo electrónico"
-                    className="rounded-lg border border-gray-3 bg-gray-1 placeholder:text-dark-5 w-full py-3 px-5 outline-none duration-200 focus:border-transparent focus:shadow-input focus:ring-2 focus:ring-blue/20"
+                    className="py-3 px-5 h-auto"
                   />
-                </div>
+                </FormField>
 
-                <div className="mb-5">
-                  <label htmlFor="password" className="block mb-2.5">
-                    Contraseña <span className="text-red">*</span>
-                  </label>
-
-                  <input
+                <FormField label="Contraseña" htmlFor="password" required className="mb-5">
+                  <Input
                     type="password"
                     name="password"
                     id="password"
                     placeholder="Introduce tu contraseña"
-                    autoComplete="on"
-                    className="rounded-lg border border-gray-3 bg-gray-1 placeholder:text-dark-5 w-full py-3 px-5 outline-none duration-200 focus:border-transparent focus:shadow-input focus:ring-2 focus:ring-blue/20"
+                    autoComplete="new-password"
+                    className="py-3 px-5 h-auto"
                   />
-                </div>
+                </FormField>
 
-                <div className="mb-5.5">
-                  <label htmlFor="re-type-password" className="block mb-2.5">
-                    Repetir contraseña <span className="text-red">*</span>
-                  </label>
-
-                  <input
+                <FormField label="Repetir contraseña" htmlFor="re-type-password" required className="mb-5.5">
+                  <Input
                     type="password"
                     name="re-type-password"
                     id="re-type-password"
                     placeholder="Repite tu contraseña"
-                    autoComplete="on"
-                    className="rounded-lg border border-gray-3 bg-gray-1 placeholder:text-dark-5 w-full py-3 px-5 outline-none duration-200 focus:border-transparent focus:shadow-input focus:ring-2 focus:ring-blue/20"
+                    autoComplete="new-password"
+                    className="py-3 px-5 h-auto"
                   />
-                </div>
+                </FormField>
 
                 <Button
                   type="submit"

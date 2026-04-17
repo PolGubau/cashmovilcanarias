@@ -31,20 +31,20 @@ const SingleOrder = ({ orderItem, smallView }: SingleOrderProps) => {
         <div className="items-center justify-between border-t border-gray-3 py-5 px-7.5 hidden md:flex">
           <div className="min-w-[111px]">
             <p className="text-custom-sm text-red">
-              #{orderItem.orderId.slice(-8)}
+              #{orderItem.id.slice(-8)}
             </p>
           </div>
           <div className="min-w-[175px]">
-            <p className="text-custom-sm text-dark">{orderItem.createdAt}</p>
+            <p className="text-custom-sm text-dark">{orderItem.created_at}</p>
           </div>
 
           <div className="min-w-[128px]">
             <p
-              className={`inline-block text-custom-sm  py-0.5 px-2.5 rounded-[30px] capitalize ${orderItem.status === "delivered"
+              className={`inline-block text-custom-sm  py-0.5 px-2.5 rounded-[30px] capitalize ${orderItem.status === "completed"
                   ? "text-green bg-green-light-6"
-                  : orderItem.status === "on-hold"
+                  : orderItem.status === "cancelled"
                     ? "text-red bg-red-light-6"
-                    : orderItem.status === "processing"
+                    : orderItem.status === "confirmed"
                       ? "text-yellow bg-yellow-light-4"
                       : "Unknown Status"
                 }`}
@@ -54,7 +54,7 @@ const SingleOrder = ({ orderItem, smallView }: SingleOrderProps) => {
           </div>
 
           <div className="min-w-[213px]">
-            <p className="text-custom-sm text-dark">{orderItem.title}</p>
+            <p className="text-custom-sm text-dark">{orderItem.customer_name}</p>
           </div>
 
           <div className="min-w-[113px]">
@@ -76,13 +76,13 @@ const SingleOrder = ({ orderItem, smallView }: SingleOrderProps) => {
             <div className="">
               <p className="text-custom-sm text-dark">
                 <span className="font-bold pr-2"> Order:</span> #
-                {orderItem.orderId.slice(-8)}
+                {orderItem.id.slice(-8)}
               </p>
             </div>
             <div className="">
               <p className="text-custom-sm text-dark">
                 <span className="font-bold pr-2">Date:</span>{" "}
-                {orderItem.createdAt}
+                {orderItem.created_at}
               </p>
             </div>
 
@@ -90,11 +90,11 @@ const SingleOrder = ({ orderItem, smallView }: SingleOrderProps) => {
               <p className="text-custom-sm text-dark">
                 <span className="font-bold pr-2">Status:</span>{" "}
                 <span
-                  className={`inline-block text-custom-sm  py-0.5 px-2.5 rounded-[30px] capitalize ${orderItem.status === "delivered"
+                  className={`inline-block text-custom-sm  py-0.5 px-2.5 rounded-[30px] capitalize ${orderItem.status === "completed"
                       ? "text-green bg-green-light-6"
-                      : orderItem.status === "on-hold"
+                      : orderItem.status === "cancelled"
                         ? "text-red bg-red-light-6"
-                        : orderItem.status === "processing"
+                        : orderItem.status === "confirmed"
                           ? "text-yellow bg-yellow-light-4"
                           : "Unknown Status"
                     }`}
@@ -106,7 +106,7 @@ const SingleOrder = ({ orderItem, smallView }: SingleOrderProps) => {
 
             <div className="">
               <p className="text-custom-sm text-dark">
-                <span className="font-bold pr-2">Title:</span> {orderItem.title}
+                <span className="font-bold pr-2">Cliente:</span> {orderItem.customer_name}
               </p>
             </div>
 

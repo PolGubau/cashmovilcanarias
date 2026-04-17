@@ -8,7 +8,7 @@ export async function getCustomers(filters?: {
 	search?: string;
 	is_supplier?: boolean;
 }) {
-	const supabase = await createClient();
+	const supabase = (await createClient()) as any;
 	let query = supabase.from("customers").select("*").order("full_name");
 
 	if (filters?.search) {
@@ -26,7 +26,7 @@ export async function getCustomers(filters?: {
 }
 
 export async function getCustomerById(id: string) {
-	const supabase = await createClient();
+	const supabase = (await createClient()) as any;
 	const { data, error } = await supabase
 		.from("customers")
 		.select("*")
@@ -37,7 +37,7 @@ export async function getCustomerById(id: string) {
 }
 
 export async function createCustomer(customer: CustomerInsert) {
-	const supabase = await createClient();
+	const supabase = (await createClient()) as any;
 	const { data, error } = await supabase
 		.from("customers")
 		.insert(customer)
@@ -49,7 +49,7 @@ export async function createCustomer(customer: CustomerInsert) {
 }
 
 export async function updateCustomer(id: string, updates: CustomerUpdate) {
-	const supabase = await createClient();
+	const supabase = (await createClient()) as any;
 	const { data, error } = await supabase
 		.from("customers")
 		.update(updates)
@@ -62,7 +62,7 @@ export async function updateCustomer(id: string, updates: CustomerUpdate) {
 }
 
 export async function getCustomerDevices(customerId: string) {
-	const supabase = await createClient();
+	const supabase = (await createClient()) as any;
 	const { data, error } = await supabase
 		.from("devices")
 		.select("*")
@@ -73,7 +73,7 @@ export async function getCustomerDevices(customerId: string) {
 }
 
 export async function getCustomerRepairs(customerId: string) {
-	const supabase = await createClient();
+	const supabase = (await createClient()) as any;
 	const { data, error } = await supabase
 		.from("repairs")
 		.select("*")
@@ -84,7 +84,7 @@ export async function getCustomerRepairs(customerId: string) {
 }
 
 export async function getCustomerOrders(customerId: string) {
-	const supabase = await createClient();
+	const supabase = (await createClient()) as any;
 	const { data, error } = await supabase
 		.from("v_orders_full")
 		.select("*")
@@ -95,7 +95,7 @@ export async function getCustomerOrders(customerId: string) {
 }
 
 export async function getCustomerHistory(customerId: string) {
-	const supabase = await createClient();
+	const supabase = (await createClient()) as any;
 	const { data, error } = await supabase
 		.from("v_customer_history")
 		.select("*")

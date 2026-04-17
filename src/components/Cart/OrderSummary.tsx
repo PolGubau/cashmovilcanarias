@@ -29,14 +29,14 @@ const OrderSummary = () => {
           </div>
 
           {/* <!-- product item --> */}
-          {cartItems.map((item, key) => (
-            <div key={key} className="flex items-center justify-between py-5 border-b border-gray-3">
+          {cartItems.map((item) => (
+            <div key={item.id} className="flex items-center justify-between py-5 border-b border-gray-3">
               <div>
-                <p className="text-dark">{item.title}</p>
+                <p className="text-dark">{item.name}</p>
               </div>
               <div>
                 <p className="text-dark text-right">
-                  ${item.discountedPrice * item.quantity}
+                  ${item.price * item.quantity}
                 </p>
               </div>
             </div>
