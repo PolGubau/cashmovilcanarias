@@ -37,7 +37,7 @@ export default function ScrollToTop() {
           className={`items-center justify-center w-10 h-10 rounded-[4px] shadow-lg bg-blue ease-out duration-200 hover:bg-blue-dark fixed bottom-8 right-8 z-999 ${isVisible ? "flex" : "hidden"
             }`}
         >
-          <ChevronUp className="w-5 h-5 text-white" />
+          <ChevronUp className="size-5 text-white" />
         </button>
       )}
     </>

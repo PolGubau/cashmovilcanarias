@@ -25,7 +25,7 @@ export async function getProducts(filters?: {
 	brand?: string;
 	search?: string;
 }): Promise<ProductFull[]> {
-	const supabase = await createClient();
+	const supabase = (await createClient()) as any;
 	let query = supabase
 		.from("v_products_full")
 		.select("*")
@@ -47,7 +47,7 @@ export async function getProductById(id: string): Promise<{
 	variants: ProductVariant[];
 	images: ProductImage[];
 }> {
-	const supabase = await createClient();
+	const supabase = (await createClient()) as any;
 	const [productRes, variantsRes, imagesRes] = await Promise.all([
 		supabase.from("products").select("*").eq("id", id).single(),
 		supabase
@@ -74,7 +74,7 @@ export async function createProduct(
 	product: ProductInsert,
 	variants: Omit<ProductVariantInsert, "product_id">[],
 ): Promise<Product> {
-	const supabase = await createClient();
+	const supabase = (await createClient()) as any;
 	const { data: prod, error } = await supabase
 		.from("products")
 		.insert(product)
@@ -96,7 +96,7 @@ export async function updateProduct(
 	id: string,
 	updates: ProductUpdate,
 ): Promise<Product> {
-	const supabase = await createClient();
+	const supabase = (await createClient()) as any;
 	const { data, error } = await supabase
 		.from("products")
 		.update(updates)
@@ -121,7 +121,7 @@ export async function toggleProductPublished(
 export async function createVariant(
 	variant: ProductVariantInsert,
 ): Promise<ProductVariant> {
-	const supabase = await createClient();
+	const supabase = (await createClient()) as any;
 	const { data, error } = await supabase
 		.from("product_variants")
 		.insert(variant)
@@ -137,7 +137,7 @@ export async function updateVariant(
 	updates: ProductVariantUpdate,
 	productId: string,
 ): Promise<ProductVariant> {
-	const supabase = await createClient();
+	const supabase = (await createClient()) as any;
 	const { data, error } = await supabase
 		.from("product_variants")
 		.update(updates)
@@ -153,7 +153,7 @@ export async function deleteVariant(
 	id: string,
 	productId: string,
 ): Promise<void> {
-	const supabase = await createClient();
+	const supabase = (await createClient()) as any;
 	const { error } = await supabase
 		.from("product_variants")
 		.update({ is_active: false })
@@ -169,7 +169,7 @@ export async function getPublishedProducts(filters?: {
 	condition?: string;
 	maxPrice?: number;
 }): Promise<ProductWithRelations[]> {
-	const supabase = await createClient();
+	const supabase = (await createClient()) as any;
 	let query = supabase
 		.from("products")
 		.select("*, product_variants(*), product_images(*)")

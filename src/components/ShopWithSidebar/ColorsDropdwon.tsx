@@ -63,7 +63,7 @@ const ColorsDropdwon = () => {
                 style={{ borderColor: `${color}` }}
               >
                 <span
-                  className="block w-3 h-3 rounded-full"
+                  className="block size-3 rounded-full"
                   style={{ backgroundColor: `${color}` }}
                 />
               </div>

@@ -292,7 +292,7 @@ const QuickViewModal = () => {
                 <Button
                   type="button"
                   variant="secondary"
-                  leftIcon={<Heart className="w-5 h-5" />}
+                  leftIcon={<Heart className="size-5-5" />}
                   className="bg-dark text-white border-dark hover:bg-dark/90"
                 >
                   Añadir a favoritos

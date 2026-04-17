@@ -12,7 +12,7 @@ export async function getOrders(filters?: {
 	status?: string;
 	search?: string;
 }) {
-	const supabase = await createClient();
+	const supabase = (await createClient()) as any;
 	let query = supabase
 		.from("v_orders_full")
 		.select("*")
@@ -31,7 +31,7 @@ export async function getOrders(filters?: {
 }
 
 export async function getOrderById(id: string) {
-	const supabase = await createClient();
+	const supabase = (await createClient()) as any;
 	const [order, items] = await Promise.all([
 		supabase.from("v_orders_full").select("*").eq("id", id).single(),
 		supabase
@@ -48,7 +48,7 @@ export async function createOrder(
 	order: OrderInsert,
 	items: Array<{ device_id: string; price_sold: number }>,
 ) {
-	const supabase = await createClient();
+	const supabase = (await createClient()) as any;
 
 	// Reserve devices
 	for (const item of items) {
@@ -89,7 +89,7 @@ export async function updateOrderStatus(
 	status: string,
 	extras?: Partial<OrderUpdate>,
 ) {
-	const supabase = await createClient();
+	const supabase = (await createClient()) as any;
 	const updates: OrderUpdate = { status: status as any, ...extras };
 	if (status === "completed" && !updates.paid_at)
 		updates.paid_at = new Date().toISOString();
@@ -106,7 +106,7 @@ export async function updateOrderStatus(
 }
 
 export async function getOrderStats() {
-	const supabase = await createClient();
+	const supabase = (await createClient()) as any;
 	const { data, error } = await supabase.from("orders").select("status, total");
 	if (error) throw new Error(error.message);
 

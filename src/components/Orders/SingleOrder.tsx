@@ -41,12 +41,12 @@ const SingleOrder = ({ orderItem, smallView }: SingleOrderProps) => {
           <div className="min-w-[128px]">
             <p
               className={`inline-block text-custom-sm  py-0.5 px-2.5 rounded-[30px] capitalize ${orderItem.status === "completed"
-                  ? "text-green bg-green-light-6"
-                  : orderItem.status === "cancelled"
-                    ? "text-red bg-red-light-6"
-                    : orderItem.status === "confirmed"
-                      ? "text-yellow bg-yellow-light-4"
-                      : "Unknown Status"
+                ? "text-green bg-green-light-6"
+                : orderItem.status === "cancelled"
+                  ? "text-red bg-red-light-6"
+                  : orderItem.status === "confirmed"
+                    ? "text-yellow bg-yellow-light-4"
+                    : "Unknown Status"
                 }`}
             >
               {orderItem.status}
@@ -91,12 +91,12 @@ const SingleOrder = ({ orderItem, smallView }: SingleOrderProps) => {
                 <span className="font-bold pr-2">Status:</span>{" "}
                 <span
                   className={`inline-block text-custom-sm  py-0.5 px-2.5 rounded-[30px] capitalize ${orderItem.status === "completed"
-                      ? "text-green bg-green-light-6"
-                      : orderItem.status === "cancelled"
-                        ? "text-red bg-red-light-6"
-                        : orderItem.status === "confirmed"
-                          ? "text-yellow bg-yellow-light-4"
-                          : "Unknown Status"
+                    ? "text-green bg-green-light-6"
+                    : orderItem.status === "cancelled"
+                      ? "text-red bg-red-light-6"
+                      : orderItem.status === "confirmed"
+                        ? "text-yellow bg-yellow-light-4"
+                        : "Unknown Status"
                     }`}
                 >
                   {orderItem.status}

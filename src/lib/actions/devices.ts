@@ -9,7 +9,7 @@ export async function getDevices(filters?: {
 	brand?: string;
 	search?: string;
 }) {
-	const supabase = await createClient();
+	const supabase = (await createClient()) as any;
 	let query = supabase
 		.from("v_devices_full")
 		.select("*")
@@ -29,7 +29,7 @@ export async function getDevices(filters?: {
 }
 
 export async function getDeviceByImei(imei: string) {
-	const supabase = await createClient();
+	const supabase = (await createClient()) as any;
 	const { data, error } = await supabase
 		.from("v_devices_full")
 		.select("*")
@@ -40,7 +40,7 @@ export async function getDeviceByImei(imei: string) {
 }
 
 export async function getDeviceById(id: string) {
-	const supabase = await createClient();
+	const supabase = (await createClient()) as any;
 	const { data, error } = await supabase
 		.from("v_devices_full")
 		.select("*")
@@ -51,7 +51,7 @@ export async function getDeviceById(id: string) {
 }
 
 export async function createDevice(device: DeviceInsert) {
-	const supabase = await createClient();
+	const supabase = (await createClient()) as any;
 	const { data, error } = await supabase
 		.from("devices")
 		.insert(device)
@@ -63,7 +63,7 @@ export async function createDevice(device: DeviceInsert) {
 }
 
 export async function updateDevice(id: string, updates: DeviceUpdate) {
-	const supabase = await createClient();
+	const supabase = (await createClient()) as any;
 	const { data, error } = await supabase
 		.from("devices")
 		.update(updates)
@@ -76,7 +76,7 @@ export async function updateDevice(id: string, updates: DeviceUpdate) {
 }
 
 export async function updateDeviceStatus(id: string, status: string) {
-	const supabase = await createClient();
+	const supabase = (await createClient()) as any;
 	const { error } = await supabase
 		.from("devices")
 		.update({ status })
@@ -86,7 +86,7 @@ export async function updateDeviceStatus(id: string, status: string) {
 }
 
 export async function getInventoryStats() {
-	const supabase = await createClient();
+	const supabase = (await createClient()) as any;
 	const { data, error } = await supabase.from("v_inventory_status").select("*");
 	if (error) throw new Error(error.message);
 	return data;

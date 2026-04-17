@@ -67,7 +67,7 @@ export default async function AdminDashboard() {
           <div className="flex items-center justify-between mb-5">
             <h2 className="text-[14px] font-semibold text-gray-800">Estado del inventario</h2>
             <Link href="/admin/inventory" className="text-[12px] text-gray-400 hover:text-gray-700 flex items-center gap-1 transition-colors">
-              Ver todo <ArrowRight className="w-3 h-3" />
+              Ver todo <ArrowRight className="size-3" />
             </Link>
           </div>
           <div className="space-y-3">

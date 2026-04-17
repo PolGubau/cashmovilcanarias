@@ -35,7 +35,7 @@ const SingleItem = ({ item }) => {
           aria-label="Eliminar de la lista de deseos"
           className="h-9.5 hover:bg-red-light-6 hover:border-red-light-4 hover:text-red"
         >
-          <Trash2 className="w-4 h-4" />
+          <Trash2 className="size-4" />
         </Button>
       </div>
 

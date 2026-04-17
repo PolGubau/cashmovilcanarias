@@ -17,9 +17,9 @@ interface QuantityStepperProps {
 
 const sizeMap = {
   sm: { btn: "w-9 h-9", display: "w-12 h-9", icon: "w-3.5 h-3.5" },
-  md: { btn: "w-10 h-10", display: "w-16 h-10", icon: "w-4 h-4" },
-  lg: { btn: "w-11.5 h-11.5", display: "w-16 h-11.5", icon: "w-4 h-4" },
-  xl: { btn: "w-12 h-12", display: "w-16 h-12", icon: "w-4 h-4" },
+  md: { btn: "w-10 h-10", display: "w-16 h-10", icon: "size-4" },
+  lg: { btn: "w-11.5 h-11.5", display: "w-16 h-11.5", icon: "size-4" },
+  xl: { btn: "w-12 h-12", display: "w-16 h-12", icon: "size-4" },
 };
 
 const QuantityStepper = ({

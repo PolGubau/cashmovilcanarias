@@ -43,7 +43,7 @@ export default function AdminSidebar() {
       <div className="h-16 px-5 flex items-center border-b border-gray-100">
         <div className="flex items-center gap-3">
           <div className="w-8 h-8 bg-blue rounded-xl flex items-center justify-center shadow-sm">
-            <Smartphone className="w-4 h-4 text-white" />
+            <Smartphone className="size-4 text-white" />
           </div>
           <div>
             <p className="font-semibold text-[13px] text-gray-900 leading-tight">CashMóvil</p>
@@ -69,11 +69,11 @@ export default function AdminSidebar() {
                     key={href}
                     href={href}
                     className={`group flex items-center gap-3 px-3 py-2 rounded-lg text-[13px] font-medium transition-all ${isActive
-                        ? "bg-blue/8 text-blue border border-blue/12"
-                        : "text-gray-600 hover:bg-gray-50 hover:text-gray-900 border border-transparent"
+                      ? "bg-blue/8 text-blue border border-blue/12"
+                      : "text-gray-600 hover:bg-gray-50 hover:text-gray-900 border border-transparent"
                       }`}
                   >
-                    <Icon className={`w-4 h-4 flex-shrink-0 ${isActive ? "text-blue" : "text-gray-400 group-hover:text-gray-600"}`} />
+                    <Icon className={`size-4 flex-shrink-0 ${isActive ? "text-blue" : "text-gray-400 group-hover:text-gray-600"}`} />
                     {label}
                   </Link>
                 );
@@ -90,7 +90,7 @@ export default function AdminSidebar() {
             type="submit"
             className="group flex items-center gap-3 w-full px-3 py-2 rounded-lg text-[13px] font-medium text-gray-500 hover:bg-red-50 hover:text-red-600 transition-all border border-transparent"
           >
-            <LogOut className="w-4 h-4 flex-shrink-0 text-gray-400 group-hover:text-red-500" />
+            <LogOut className="size-4 flex-shrink-0 text-gray-400 group-hover:text-red-500" />
             Cerrar sesión
           </button>
         </form>

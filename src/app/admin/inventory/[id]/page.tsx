@@ -79,7 +79,7 @@ export default async function DeviceDetailPage({ params }: { params: { id: strin
               <ol className="relative border-l border-gray-3 space-y-4 ml-2">
                 {trail?.map((m: any) => (
                   <li key={m.id} className="ml-4">
-                    <div className="absolute -left-1.5 w-3 h-3 rounded-full bg-blue-light-3 border-2 border-blue" />
+                    <div className="absolute -left-1.5 size-3 rounded-full bg-blue-light-3 border-2 border-blue" />
                     <p className="text-xs font-medium text-dark">{m.to_status.replace("_", " ")}</p>
                     <p className="text-xs text-dark-4">{m.reason.replace("_", " ")}</p>
                     <p className="text-xs text-dark-5">{new Date(m.created_at).toLocaleString("es-ES")}</p>
