@@ -1,5 +1,4 @@
 import type { ProductFull } from "@/lib/supabase/types";
-import React from "react";
 import Newsletter from "../Common/Newsletter";
 import BestSeller from "./BestSeller";
 import Categories from "./Categories";

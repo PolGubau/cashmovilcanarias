@@ -1,5 +1,6 @@
 "use client";
 import { useCartModalContext } from "@/app/context/CartSidebarModalContext";
+import { Button } from "@/components/ui";
 import { selectTotalPrice } from "@/redux/features/cart-slice";
 import { useAppSelector } from "@/redux/store";
 import { Heart, Phone, Search, ShoppingCart, User } from "lucide-react";
@@ -89,13 +90,16 @@ const Header = () => {
                       className="custom-search w-full rounded-r-[5px] bg-gray-1 !border-l-0 border border-gray-3 py-2.5 pl-4 pr-10 outline-none ease-in duration-200"
                     />
 
-                    <button
+                    <Button
                       id="search-btn"
+                      type="submit"
+                      variant="ghost"
+                      size="icon"
                       aria-label="Search"
-                      className="flex items-center justify-center absolute right-3 top-1/2 -translate-y-1/2 ease-in duration-200 hover:text-blue"
+                      className="absolute right-0 top-1/2 -translate-y-1/2 h-full hover:text-blue"
                     >
                       <Search className="size-4.5" />
-                    </button>
+                    </Button>
                   </div>
                 </div>
               </form>
@@ -136,6 +140,7 @@ const Header = () => {
                 </Link>
 
                 <button
+                  type="button"
                   onClick={handleOpenCartModal}
                   className="flex items-center gap-2.5"
                 >
@@ -160,6 +165,7 @@ const Header = () => {
 
               {/* <!-- Hamburger Toggle BTN --> */}
               <button
+                type="button"
                 id="Toggle"
                 aria-label="Toggler"
                 className="xl:hidden block"

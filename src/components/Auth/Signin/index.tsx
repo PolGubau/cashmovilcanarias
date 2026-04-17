@@ -1,6 +1,7 @@
 "use client";
 
 import Breadcrumb from "@/components/Common/Breadcrumb";
+import { Button } from "@/components/ui";
 import { signIn } from "@/lib/actions/auth";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -73,13 +74,14 @@ const Signin = () => {
                   />
                 </div>
 
-                <button
+                <Button
                   type="submit"
-                  disabled={loading}
-                  className="w-full flex justify-center font-medium text-white bg-dark py-3 px-6 rounded-lg ease-out duration-200 hover:bg-blue mt-7.5 disabled:opacity-60 disabled:cursor-not-allowed"
+                  loading={loading}
+                  size="lg"
+                  className="w-full mt-7.5"
                 >
-                  {loading ? "Iniciando sesión..." : "Iniciar sesión"}
-                </button>
+                  Iniciar sesión
+                </Button>
 
                 <a
                   href="#"
@@ -94,7 +96,7 @@ const Signin = () => {
                 </span>
 
                 <div className="flex flex-col gap-4.5 mt-4.5">
-                  <button className="flex justify-center items-center gap-3.5 rounded-lg border border-gray-3 bg-gray-1 p-3 ease-out duration-200 hover:bg-gray-2">
+                  <Button type="button" variant="outline" className="w-full gap-3.5 py-6">
                     <svg
                       width="20"
                       height="20"
@@ -139,7 +141,7 @@ const Signin = () => {
                       </defs>
                     </svg>
                     Iniciar sesión con Google
-                  </button>
+                  </Button>
 
 
                 </div>

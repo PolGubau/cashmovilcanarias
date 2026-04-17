@@ -49,7 +49,6 @@ const Button = (
   ({ className, variant, size, loading, leftIcon, rightIcon, children, disabled, ...props }: ButtonProps) => {
     return (
       <button
-        ref={ref}
         type={props.type ?? "button"}
         className={cn(buttonVariants({ variant, size }), className)}
         disabled={disabled ?? loading}

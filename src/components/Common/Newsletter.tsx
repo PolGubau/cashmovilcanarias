@@ -1,5 +1,6 @@
-import React from "react";
+import { Button } from "@/components/ui";
 import Image from "next/image";
+import React from "react";
 
 const Newsletter = () => {
   return (
@@ -37,12 +38,7 @@ const Newsletter = () => {
                     placeholder="Enter your email"
                     className="w-full bg-gray-1 border border-gray-3 outline-none rounded-md placeholder:text-dark-4 py-3 px-5"
                   />
-                  <button
-                    type="submit"
-                    className="inline-flex justify-center py-3 px-7 text-white bg-blue font-medium rounded-md ease-out duration-200 hover:bg-blue-dark"
-                  >
-                    Subscribe
-                  </button>
+                  <Button type="submit">Subscribe</Button>
                 </div>
               </form>
             </div>

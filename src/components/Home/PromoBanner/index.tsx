@@ -1,7 +1,7 @@
+import type { ProductFull } from "@/types/product";
 import Image from "next/image";
-import React from "react";
 
-const PromoBanner = () => {
+const PromoBanner = ({ products }: { products: ProductFull[] }) => {
   return (
     <section className="overflow-hidden py-20">
       <div className="max-w-292.5 w-full mx-auto px-4 sm:px-8 xl:px-0">
@@ -21,7 +21,7 @@ const PromoBanner = () => {
               camara de 200 MP y el S Pen integrado. Potencia sin limites.
             </p>
             {/*’s in iPhone 13 Pro,
-*/}
+						 */}
             <a
               href="/tienda"
               className="inline-flex font-medium text-custom-sm text-white bg-blue py-2.75 px-9.5 rounded-md ease-out duration-200 hover:bg-blue-dark mt-7.5"
