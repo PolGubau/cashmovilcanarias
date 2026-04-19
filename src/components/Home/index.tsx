@@ -3,7 +3,6 @@ import BestSeller from "./BestSeller";
 import Categories from "./Categories";
 import Hero from "./Hero";
 import NewArrival from "./NewArrivals";
-import Testimonials from "./Testimonials";
 
 const Home = ({ products }: { products: ProductFull[] }) => {
   return (
@@ -12,7 +11,6 @@ const Home = ({ products }: { products: ProductFull[] }) => {
       <Categories />
       <NewArrival products={products} />
       <BestSeller products={products} />
-      <Testimonials />
     </main>
   );
 };

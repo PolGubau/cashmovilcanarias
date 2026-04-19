@@ -18,20 +18,20 @@ const Footer = () => {
             <ul className="flex flex-col gap-3">
               <li className="flex gap-4.5">
                 <MapPin className="w-6 h-6 text-blue shrink-0" />
-                Calle Mayor 10, Las Palmas de Gran Canaria, España.
+                CC Añaza Carrefour Planta 1 Local 20, 38111 Santa Cruz de Tenerife
               </li>
 
               <li>
-                <a href="tel:+34099532786" className="flex items-center gap-4.5">
+                <a href="tel:+34922890790" className="flex items-center gap-4.5">
                   <Phone className="w-6 h-6 text-blue shrink-0" />
-                  (+099) 532-786-9843
+                  922 890 790
                 </a>
               </li>
 
               <li>
-                <a href="mailto:support@cashmovil.es" className="flex items-center gap-4.5">
+                <a href="mailto:hola@cashmovilcanarias.com" className="flex items-center gap-4.5">
                   <Mail className="w-6 h-6 text-blue shrink-0" />
-                  support@cashmovil.es
+                  hola@cashmovilcanarias.com
                 </a>
               </li>
             </ul>
@@ -105,13 +105,18 @@ const Footer = () => {
                 </a>
               </li>
               <li>
-                <a className="ease-out duration-200 hover:text-blue" href="#">
-                  Términos de uso
+                <a className="ease-out duration-200 hover:text-blue" href="/envios">
+                  Envíos
                 </a>
               </li>
               <li>
-                <a className="ease-out duration-200 hover:text-blue" href="#">
-                  Preguntas comunes
+                <a className="ease-out duration-200 hover:text-blue" href="/terminos-y-condiciones">
+                  Términos y condiciones
+                </a>
+              </li>
+              <li>
+                <a className="ease-out duration-200 hover:text-blue" href="/aviso-legal">
+                  Aviso legal
                 </a>
               </li>
               <li>

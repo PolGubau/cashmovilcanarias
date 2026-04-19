@@ -206,6 +206,8 @@ export interface Device {
 	created_by: string | null;
 	created_at: string;
 	updated_at: string;
+	/** FK → product_variants.id — links this physical device to a catalog variant */
+	product_variant_id: string | null;
 }
 export type DeviceInsert = Omit<Device, "id" | "created_at" | "updated_at">;
 export type DeviceUpdate = Partial<DeviceInsert>;
@@ -302,6 +304,14 @@ export interface DeviceFull extends Device {
 	supplier_dni: string | null;
 	buyer_name: string | null;
 	buyer_phone: string | null;
+	// Joined from product_variants + products via product_variant_id
+	product_id: string | null;
+	product_name: string | null;
+	product_category: string | null;
+	variant_capacity: string | null;
+	variant_color: string | null;
+	variant_condition: string | null;
+	variant_price: number | null;
 }
 export interface OrderFull extends Order {
 	customer_name: string;

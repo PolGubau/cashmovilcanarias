@@ -165,6 +165,70 @@ export async function deleteVariant(
 	revalidatePath(`/admin/products/${productId}`);
 }
 
+// ─── Selectors (for forms) ───────────────────────────────────────────────────
+
+export interface ProductOption {
+	id: string;
+	name: string;
+	brand: string;
+	base_model: string;
+}
+
+export interface VariantOption {
+	id: string;
+	product_id: string;
+	capacity: string | null;
+	color: string | null;
+	condition: string | null;
+	price: number;
+	/** Stock from linked devices (in_stock status) */
+	device_stock: number;
+}
+
+export async function getProductsForSelect(): Promise<ProductOption[]> {
+	const supabase = (await createClient()) as any;
+	const { data, error } = await supabase
+		.from("products")
+		.select("id, name, brand, base_model")
+		.order("brand")
+		.order("name");
+	if (error) throw new Error(error.message);
+	return data ?? [];
+}
+
+export async function getVariantsForSelect(
+	productId: string,
+): Promise<VariantOption[]> {
+	const supabase = (await createClient()) as any;
+	const { data, error } = await supabase
+		.from("product_variants")
+		.select("id, product_id, capacity, color, condition, price")
+		.eq("product_id", productId)
+		.eq("is_active", true)
+		.order("price");
+	if (error) throw new Error(error.message);
+
+	// Enrich with live device stock count
+	const variantIds = (data ?? []).map((v: any) => v.id);
+	if (variantIds.length === 0) return [];
+
+	const { data: devices } = await supabase
+		.from("devices")
+		.select("product_variant_id")
+		.in("product_variant_id", variantIds)
+		.eq("status", "in_stock");
+
+	const stockMap: Record<string, number> = {};
+	for (const d of devices ?? []) {
+		stockMap[d.product_variant_id] = (stockMap[d.product_variant_id] ?? 0) + 1;
+	}
+
+	return (data ?? []).map((v: any) => ({
+		...v,
+		device_stock: stockMap[v.id] ?? 0,
+	}));
+}
+
 // ─── Public catalog ──────────────────────────────────────────────────────────
 
 export async function getPublishedProducts(filters?: {
@@ -192,11 +256,12 @@ export async function getPublishedProducts(filters?: {
 	if (error) throw new Error(error.message);
 
 	// condition filter applied in-memory on variants
+	// Stock is now derived from physical devices; v.stock is kept for legacy compat
 	let results = (data ?? []) as ProductWithRelations[];
 	if (filters?.condition) {
 		results = results.filter((p) =>
 			p.product_variants?.some(
-				(v) => v.condition === filters.condition && v.is_active && v.stock > 0,
+				(v) => v.condition === filters.condition && v.is_active,
 			),
 		);
 	}

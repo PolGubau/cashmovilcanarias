@@ -33,7 +33,7 @@ export default function RootLayout({
           <>
             <>
               <Header />
-              <main className="pt-30">
+              <main style={{ paddingTop: "var(--header-height, 120px)" }}>
                 {children}
               </main>
               <QuickViewModal />

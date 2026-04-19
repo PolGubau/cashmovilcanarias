@@ -22,17 +22,17 @@ const Contact = () => {
                 <div className="flex flex-col gap-4">
                   <p className="flex items-center gap-4">
                     <Mail className="w-[22px] h-[22px] text-blue shrink-0" />
-                    Name: James Septimus
+                    <a href="mailto:hola@cashmovilcanarias.com">hola@cashmovilcanarias.com</a>
                   </p>
 
                   <p className="flex items-center gap-4">
                     <Phone className="w-[22px] h-[22px] text-blue shrink-0" />
-                    Phone: 1234 567890
+                    <a href="tel:+34922890790">922 890 790</a>
                   </p>
 
                   <p className="flex gap-4">
                     <MapPin className="mt-0.5 w-[22px] h-[22px] text-blue shrink-0" />
-                    Address: 7398 Smoke Ranch RoadLas Vegas, Nevada 89128
+                    CC Añaza Carrefour Planta 1 Local 20, 38111 Santa Cruz de Tenerife
                   </p>
                 </div>
               </div>

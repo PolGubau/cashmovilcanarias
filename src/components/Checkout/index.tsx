@@ -324,7 +324,7 @@ const Checkout = () => {
 
                 <p className="mt-4 text-xs text-center text-dark-5">
                   Al completar tu compra aceptas nuestros{" "}
-                  <a href="/terms" className="underline hover:text-dark">términos y condiciones</a>.
+                  <a href="/terminos-y-condiciones" className="underline hover:text-dark">términos y condiciones</a>.
                 </p>
               </div>
             </div>
