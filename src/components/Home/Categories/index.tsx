@@ -1,5 +1,4 @@
 "use client";
-import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { useCallback, useEffect, useRef } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -79,7 +78,7 @@ const Categories = () => {
             </div>
 
             <div className="flex items-center gap-3">
-              <Button size="icon" variant="ghost" onClick={handlePrev} aria-label="Anterior" className="swiper-button-prev w-9 h-9 hover:text-blue hover:bg-gray-2">
+              <button onClick={handlePrev} className="swiper-button-prev">
                 <svg
                   className="fill-current"
                   width="24"
@@ -95,9 +94,9 @@ const Categories = () => {
                     fill=""
                   />
                 </svg>
-              </Button>
+              </button>
 
-              <Button size="icon" variant="ghost" onClick={handleNext} aria-label="Siguiente" className="swiper-button-next w-9 h-9 hover:text-blue hover:bg-gray-2">
+              <button onClick={handleNext} className="swiper-button-next">
                 <svg
                   className="fill-current"
                   width="24"
@@ -113,7 +112,7 @@ const Categories = () => {
                     fill=""
                   />
                 </svg>
-              </Button>
+              </button>
             </div>
           </div>
 

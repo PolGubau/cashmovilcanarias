@@ -93,12 +93,11 @@ const MyAccount = ({ user }: MyAccountProps) => {
                       </svg>
                       Dashboard
                     </Button>
-                    <Button
+                    <button
                       onClick={() => setActiveTab("orders")}
-                      variant="ghost"
-                      className={`w-full justify-start gap-2.5 py-3 px-4.5 rounded-md ${activeTab === "orders"
-                        ? "bg-blue text-white hover:bg-blue hover:text-white"
-                        : "text-dark-2 bg-gray-1 hover:bg-blue hover:text-white"
+                      className={`flex items-center rounded-md gap-2.5 py-3 px-4.5 ease-out duration-200 hover:bg-blue hover:text-white ${activeTab === "orders"
+                        ? "text-white bg-blue"
+                        : "text-dark-2 bg-gray-1"
                         }`}
                     >
                       <svg
@@ -129,14 +128,13 @@ const MyAccount = ({ user }: MyAccountProps) => {
                         />
                       </svg>
                       Orders
-                    </Button>
+                    </button>
 
-                    <Button
+                    <button
                       onClick={() => setActiveTab("downloads")}
-                      variant="ghost"
-                      className={`w-full justify-start gap-2.5 py-3 px-4.5 rounded-md ${activeTab === "downloads"
-                        ? "bg-blue text-white hover:bg-blue hover:text-white"
-                        : "text-dark-2 bg-gray-1 hover:bg-blue hover:text-white"
+                      className={`flex items-center rounded-md gap-2.5 py-3 px-4.5 ease-out duration-200 hover:bg-blue hover:text-white ${activeTab === "downloads"
+                        ? "text-white bg-blue"
+                        : "text-dark-2 bg-gray-1"
                         }`}
                     >
                       <svg
@@ -157,14 +155,13 @@ const MyAccount = ({ user }: MyAccountProps) => {
                         />
                       </svg>
                       Downloads
-                    </Button>
+                    </button>
 
-                    <Button
+                    <button
                       onClick={() => setActiveTab("addresses")}
-                      variant="ghost"
-                      className={`w-full justify-start gap-2.5 py-3 px-4.5 rounded-md ${activeTab === "addresses"
-                        ? "bg-blue text-white hover:bg-blue hover:text-white"
-                        : "text-dark-2 bg-gray-1 hover:bg-blue hover:text-white"
+                      className={`flex items-center rounded-md gap-2.5 py-3 px-4.5 ease-out duration-200 hover:bg-blue hover:text-white ${activeTab === "addresses"
+                        ? "text-white bg-blue"
+                        : "text-dark-2 bg-gray-1"
                         }`}
                     >
                       <svg
@@ -187,14 +184,13 @@ const MyAccount = ({ user }: MyAccountProps) => {
                         />
                       </svg>
                       Addresses
-                    </Button>
+                    </button>
 
-                    <Button
+                    <button
                       onClick={() => setActiveTab("account-details")}
-                      variant="ghost"
-                      className={`w-full justify-start gap-2.5 py-3 px-4.5 rounded-md ${activeTab === "account-details"
-                        ? "bg-blue text-white hover:bg-blue hover:text-white"
-                        : "text-dark-2 bg-gray-1 hover:bg-blue hover:text-white"
+                      className={`flex items-center rounded-md gap-2.5 py-3 px-4.5 ease-out duration-200 hover:bg-blue hover:text-white ${activeTab === "account-details"
+                        ? "text-white bg-blue"
+                        : "text-dark-2 bg-gray-1"
                         }`}
                     >
                       <svg
@@ -219,14 +215,13 @@ const MyAccount = ({ user }: MyAccountProps) => {
                         />
                       </svg>
                       Account Details
-                    </Button>
+                    </button>
 
-                    <Button
+                    <button
                       onClick={() => setActiveTab("logout")}
-                      variant="ghost"
-                      className={`w-full justify-start gap-2.5 py-3 px-4.5 rounded-md ${activeTab === "logout"
-                        ? "bg-blue text-white hover:bg-blue hover:text-white"
-                        : "text-dark-2 bg-gray-1 hover:bg-blue hover:text-white"
+                      className={`flex items-center rounded-md gap-2.5 py-3 px-4.5 ease-out duration-200 hover:bg-blue hover:text-white ${activeTab === "logout"
+                        ? "text-white bg-blue"
+                        : "text-dark-2 bg-gray-1"
                         }`}
                     >
                       <svg
@@ -247,7 +242,7 @@ const MyAccount = ({ user }: MyAccountProps) => {
                         />
                       </svg>
                       Logout
-                    </Button>
+                    </button>
                   </div>
                 </div>
               </div>
@@ -310,12 +305,9 @@ const MyAccount = ({ user }: MyAccountProps) => {
                     Shipping Address
                   </p>
 
-                  <Button
-                    size="icon"
-                    variant="ghost"
-                    aria-label="Editar dirección"
+                  <button
+                    className="text-dark ease-out duration-200 hover:text-blue"
                     onClick={openAddressModal}
-                    className="hover:text-blue hover:bg-transparent"
                   >
                     <svg
                       className="fill-current"
@@ -332,7 +324,7 @@ const MyAccount = ({ user }: MyAccountProps) => {
                         fill=""
                       />
                     </svg>
-                  </Button>
+                  </button>
                 </div>
 
                 <div className="p-4 sm:p-7.5">
@@ -445,12 +437,9 @@ const MyAccount = ({ user }: MyAccountProps) => {
                     Billing Address
                   </p>
 
-                  <Button
-                    size="icon"
-                    variant="ghost"
-                    aria-label="Editar dirección"
+                  <button
+                    className="text-dark ease-out duration-200 hover:text-blue"
                     onClick={openAddressModal}
-                    className="hover:text-blue hover:bg-transparent"
                   >
                     <svg
                       className="fill-current"
@@ -467,7 +456,7 @@ const MyAccount = ({ user }: MyAccountProps) => {
                         fill=""
                       />
                     </svg>
-                  </Button>
+                  </button>
                 </div>
 
                 <div className="p-4 sm:p-7.5">
@@ -647,7 +636,12 @@ const MyAccount = ({ user }: MyAccountProps) => {
                     </div>
                   </div>
 
-                  <Button type="submit">Save Changes</Button>
+                  <button
+                    type="submit"
+                    className="inline-flex font-medium text-white bg-blue py-3 px-7 rounded-md ease-out duration-200 hover:bg-blue-dark"
+                  >
+                    Save Changes
+                  </button>
                 </div>
 
                 <p className="text-custom-sm mt-5 mb-9">
@@ -705,7 +699,12 @@ const MyAccount = ({ user }: MyAccountProps) => {
                     />
                   </div>
 
-                  <Button type="submit">Change Password</Button>
+                  <button
+                    type="submit"
+                    className="inline-flex font-medium text-white bg-blue py-3 px-7 rounded-md ease-out duration-200 hover:bg-blue-dark"
+                  >
+                    Change Password
+                  </button>
                 </div>
               </form>
             </div>

@@ -3,10 +3,12 @@
 import { Button } from "@/components/ui/button";
 import { toast } from "@/components/ui/toast";
 import { formatCurrency } from "@/lib/utils";
-import { useCartStore } from "@/store/cart.store";
+import { addItemToCart } from "@/redux/features/cart-slice";
+import type { AppDispatch } from "@/redux/store";
 import { ShieldCheck, ShoppingCart, Zap } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
 
 interface Variant {
   id: string;
@@ -36,7 +38,7 @@ export default function ProductVariantSelector({
   primaryImageUrl,
 }: Props) {
   const [selected, setSelected] = useState<Variant>(variants[0]);
-  const addItem = useCartStore((s) => s.addItem);
+  const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
 
   function buildCartItem() {
@@ -60,12 +62,12 @@ export default function ProductVariantSelector({
   }
 
   function handleAddToCart() {
-    addItem(buildCartItem());
+    dispatch(addItemToCart(buildCartItem()));
     toast.success("Añadido al carrito");
   }
 
   function handleBuyNow() {
-    addItem(buildCartItem());
+    dispatch(addItemToCart(buildCartItem()));
     router.push("/cart");
   }
 

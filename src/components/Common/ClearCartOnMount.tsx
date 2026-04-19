@@ -1,12 +1,14 @@
 "use client";
-import { useCartStore } from "@/store/cart.store";
+import { removeAllItemsFromCart } from "@/redux/features/cart-slice";
+import type { AppDispatch } from "@/redux/store";
 import { useEffect } from "react";
+import { useDispatch } from "react-redux";
 
-/** Clears the cart once on mount — used after successful payment. */
+/** Dispatches cart clear once on mount — used after successful payment. */
 export function ClearCartOnMount() {
-  const clearCart = useCartStore((s) => s.clearCart);
+  const dispatch = useDispatch<AppDispatch>();
   useEffect(() => {
-    clearCart();
-  }, [clearCart]);
+    dispatch(removeAllItemsFromCart());
+  }, [dispatch]);
   return null;
 }

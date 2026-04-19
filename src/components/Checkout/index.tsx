@@ -2,7 +2,8 @@
 
 import { Button } from "@/components/ui/button";
 import { formatCurrency } from "@/lib/utils";
-import { useCartStore } from "@/store/cart.store";
+import { selectCartItems, selectTotalPrice } from "@/redux/features/cart-slice";
+import { useAppSelector } from "@/redux/store";
 import {
   Elements,
   PaymentElement,
@@ -58,8 +59,8 @@ function CheckoutForm({ billing }: { billing: BillingData }) {
 }
 
 const Checkout = () => {
-  const cartItems = useCartStore((s) => s.items);
-  const total = useCartStore((s) => s.totalPrice)();
+  const cartItems = useAppSelector(selectCartItems);
+  const total = useAppSelector(selectTotalPrice);
   const [billing, setBilling] = useState<BillingData>({ name: "", email: "", phone: "", address: "" });
   const [clientSecret, setClientSecret] = useState<string | null>(null);
   const [piError, setPiError] = useState<string | null>(null);
