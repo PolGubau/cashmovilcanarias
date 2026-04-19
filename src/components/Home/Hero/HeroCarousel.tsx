@@ -26,31 +26,26 @@ const HeroCarousal = () => {
       <SwiperSlide>
         <div className="flex items-center pt-6 sm:pt-0 flex-col-reverse sm:flex-row">
           <div className="max-w-[394px] py-10 sm:py-15 lg:py-24.5 pl-4 sm:pl-7.5 lg:pl-12.5">
-            <div className="flex items-center gap-4 mb-7.5 sm:mb-10">
-              <span className="block font-semibold text-heading-3 sm:text-heading-1 text-blue">
-                30%
-              </span>
-              <span className="block text-dark text-sm sm:text-custom-1 sm:leading-[24px]">
-                de
-                <br />
-                descuento
-              </span>
-            </div>
+            <span className="inline-block font-semibold text-xs text-blue bg-blue/10 rounded px-2.5 py-1 mb-6 uppercase tracking-wider">
+              Reacondicionado · 12 meses de garantía
+            </span>
 
             <h1 className="font-semibold text-dark text-xl sm:text-3xl mb-3">
-              <a href="/tienda">iPhone 15 Pro — Titanio, chip A17 Pro</a>
+              <a href="/tienda?brand=Apple&category=smartphone">
+                iPhone 15 Pro — Titanio, chip A17 Pro
+              </a>
             </h1>
 
-            <p>
-              El iPhone más avanzado jamás creado. Cámara de 48 MP, USB-C y
-              batería de larga duración. Reacondicionado con garantía de 12 meses.
+            <p className="text-dark-4">
+              Cámara de 48 MP, USB-C y batería de larga duración.
+              Reacondicionado en estado excelente con garantía incluida.
             </p>
 
             <a
-              href="/tienda"
+              href="/tienda?brand=Apple&category=smartphone"
               className="inline-flex font-medium text-white text-custom-sm rounded-md bg-dark py-3 px-9 ease-out duration-200 hover:bg-blue mt-10"
             >
-              Ver ofertas
+              Ver iPhone
             </a>
           </div>
 
@@ -67,31 +62,26 @@ const HeroCarousal = () => {
       <SwiperSlide>
         <div className="flex items-center pt-6 sm:pt-0 flex-col-reverse sm:flex-row">
           <div className="max-w-[394px] py-10 sm:py-15 lg:py-26 pl-4 sm:pl-7.5 lg:pl-12.5">
-            <div className="flex items-center gap-4 mb-7.5 sm:mb-10">
-              <span className="block font-semibold text-heading-3 sm:text-heading-1 text-blue">
-                20%
-              </span>
-              <span className="block text-dark text-sm sm:text-custom-1 sm:leading-[24px]">
-                de
-                <br />
-                descuento
-              </span>
-            </div>
+            <span className="inline-block font-semibold text-xs text-blue bg-blue/10 rounded px-2.5 py-1 mb-6 uppercase tracking-wider">
+              Reacondicionado · 12 meses de garantía
+            </span>
 
             <h1 className="font-semibold text-dark text-xl sm:text-3xl mb-3">
-              <a href="/tienda">Samsung Galaxy S24 Ultra — S Pen incluido</a>
+              <a href="/tienda?brand=Samsung&category=smartphone">
+                Samsung Galaxy S24 Ultra — S Pen incluido
+              </a>
             </h1>
 
-            <p>
+            <p className="text-dark-4">
               Pantalla Dynamic AMOLED 2X de 6,8&quot;, cámara de 200 MP y S Pen
               integrado. La experiencia Android más completa del mercado.
             </p>
 
             <a
-              href="/tienda"
+              href="/tienda?brand=Samsung&category=smartphone"
               className="inline-flex font-medium text-white text-custom-sm rounded-md bg-dark py-3 px-9 ease-out duration-200 hover:bg-blue mt-10"
             >
-              Ver ofertas
+              Ver Samsung
             </a>
           </div>
 

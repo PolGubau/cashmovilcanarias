@@ -25,72 +25,56 @@ const Hero = () => {
 
           <div className="xl:max-w-[393px] w-full">
             <div className="flex flex-col sm:flex-row xl:flex-col gap-5">
-              <div className="w-full relative rounded-[10px] bg-white p-4 sm:p-7.5">
-                <div className="flex items-center gap-14">
-                  <div>
-                    <h2 className="max-w-[153px] font-semibold text-dark text-xl mb-20">
-                      <a href="/tienda">iPhone 15 Pro — Titanio</a>
+              <a
+                href="/tienda?brand=Apple&category=smartphone"
+                className="w-full relative rounded-[10px] bg-white p-4 sm:p-7.5 hover:shadow-md transition-shadow duration-200"
+              >
+                <div className="flex items-center gap-6">
+                  <div className="flex-1 min-w-0">
+                    <span className="text-2xs font-semibold text-blue uppercase tracking-wider block mb-1">
+                      Reacondicionado
+                    </span>
+                    <h2 className="font-semibold text-dark text-lg leading-snug mb-3">
+                      iPhone 15 Pro — Titanio
                     </h2>
-
-                    <div>
-                      <p className="font-medium text-dark-4 text-custom-sm mb-1.5">
-                        Oferta por tiempo limitado
-                      </p>
-                      <span className="flex items-center gap-3">
-                        <span className="font-medium text-heading-5 text-red">
-                          899€
-                        </span>
-                        <span className="font-medium text-2xl text-dark-4 line-through">
-                          1.199€
-                        </span>
-                      </span>
-                    </div>
+                    <span className="text-sm text-dark-4">
+                      Con garantía incluida
+                    </span>
                   </div>
-
-                  <div>
-                    <Image
-                      src="/images/hero/hero-02.png"
-                      alt="mobile image"
-                      width={123}
-                      height={161}
-                    />
-                  </div>
+                  <Image
+                    src="/images/hero/hero-02.png"
+                    alt="iPhone 15 Pro"
+                    width={100}
+                    height={131}
+                    className="shrink-0"
+                  />
                 </div>
-              </div>
-              <div className="w-full relative rounded-[10px] bg-white p-4 sm:p-7.5">
-                <div className="flex items-center gap-14">
-                  <div>
-                    <h2 className="max-w-[153px] font-semibold text-dark text-xl mb-20">
-                      <a href="/tienda">iPad Pro M4 — 11&quot;</a>
+              </a>
+              <a
+                href="/tienda?category=tablet"
+                className="w-full relative rounded-[10px] bg-white p-4 sm:p-7.5 hover:shadow-md transition-shadow duration-200"
+              >
+                <div className="flex items-center gap-6">
+                  <div className="flex-1 min-w-0">
+                    <span className="text-2xs font-semibold text-blue uppercase tracking-wider block mb-1">
+                      Reacondicionado
+                    </span>
+                    <h2 className="font-semibold text-dark text-lg leading-snug mb-3">
+                      iPad Pro M4 — 11&quot;
                     </h2>
-
-                    <div>
-                      <p className="font-medium text-dark-4 text-custom-sm mb-1.5">
-                        Oferta por tiempo limitado
-                      </p>
-                      <span className="flex items-center gap-3">
-                        <span className="font-medium text-heading-5 text-red">
-                          999€
-                        </span>
-                        <span className="font-medium text-2xl text-dark-4 line-through">
-                          1.299€
-                        </span>
-                      </span>
-                    </div>
+                    <span className="text-sm text-dark-4">
+                      Con garantía incluida
+                    </span>
                   </div>
-
-                  <div>
-                    <Image
-                      src="/images/hero/hero-01.png"
-                      alt="mobile image"
-                      width={123}
-                      height={161}
-                    />
-                  </div>
+                  <Image
+                    src="/images/hero/hero-01.png"
+                    alt="iPad Pro M4"
+                    width={100}
+                    height={131}
+                    className="shrink-0"
+                  />
                 </div>
-              </div>
-
-
+              </a>
             </div>
           </div>
         </div>

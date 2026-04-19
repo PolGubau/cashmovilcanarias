@@ -1,5 +1,6 @@
 "use client";
 import { Button } from "@/components/ui";
+import { formatCurrency } from "@/lib/utils";
 import { useCartStore } from "@/store/cart.store";
 import { useUIStore } from "@/store/ui.store";
 import { Phone, Search, ShoppingCart, User } from "lucide-react";
@@ -33,7 +34,8 @@ const Header = () => {
 
   useEffect(() => {
     window.addEventListener("scroll", handleStickyMenu);
-  });
+    return () => window.removeEventListener("scroll", handleStickyMenu);
+  }, []);
 
   return (
     <header
@@ -145,7 +147,7 @@ const Header = () => {
                       carrito
                     </span>
                     <p className="font-medium text-custom-sm text-dark">
-                      ${totalPrice}
+                      {formatCurrency(totalPrice)}
                     </p>
                   </div>
                 </Button>
