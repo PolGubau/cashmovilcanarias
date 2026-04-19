@@ -1,6 +1,7 @@
 "use server";
 
 import { createClient } from "@/lib/supabase/server";
+import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
 export type SignInResult = { error: string } | { error: null };
@@ -79,4 +80,24 @@ export async function getSession() {
 		data: { user },
 	} = await supabase.auth.getUser();
 	return user;
+}
+
+export async function updateProfile(updates: {
+	full_name?: string;
+	phone?: string;
+}): Promise<{ error: string | null }> {
+	const supabase = await createClient();
+	const {
+		data: { user },
+	} = await supabase.auth.getUser();
+	if (!user) return { error: "No autenticado" };
+
+	const { error } = await (supabase as any)
+		.from("profiles")
+		.update(updates)
+		.eq("id", user.id);
+
+	if (error) return { error: error.message };
+	revalidatePath("/my-account");
+	return { error: null };
 }

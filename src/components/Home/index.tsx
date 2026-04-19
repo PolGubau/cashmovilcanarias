@@ -1,5 +1,4 @@
 import type { ProductFull } from "@/lib/supabase/types";
-import Newsletter from "../Common/Newsletter";
 import BestSeller from "./BestSeller";
 import Categories from "./Categories";
 import Hero from "./Hero";
@@ -14,7 +13,6 @@ const Home = ({ products }: { products: ProductFull[] }) => {
       <NewArrival products={products} />
       <BestSeller products={products} />
       <Testimonials />
-      <Newsletter />
     </main>
   );
 };

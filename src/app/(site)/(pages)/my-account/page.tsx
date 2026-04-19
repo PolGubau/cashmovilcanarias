@@ -1,5 +1,10 @@
 import MyAccount from "@/components/MyAccount";
 import { getSession } from "@/lib/actions/auth";
+import {
+  getCustomerByUserId,
+  getCustomerOrders,
+  getCustomerRepairs,
+} from "@/lib/actions/customers";
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 
@@ -17,9 +22,20 @@ export default async function MyAccountPage() {
     user.email?.split("@")[0] ||
     "Usuario";
 
+  const customer = await getCustomerByUserId(user.id).catch(() => null);
+
+  const [orders, repairs] = await Promise.all([
+    customer ? getCustomerOrders(customer.id).catch(() => []) : [],
+    customer ? getCustomerRepairs(customer.id).catch(() => []) : [],
+  ]);
+
   return (
     <main>
-      <MyAccount user={{ name: displayName, email: user.email ?? "" }} />
+      <MyAccount
+        user={{ name: displayName, email: user.email ?? "" }}
+        orders={orders}
+        repairs={repairs}
+      />
     </main>
   );
 }

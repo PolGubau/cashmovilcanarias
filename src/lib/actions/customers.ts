@@ -94,6 +94,16 @@ export async function getCustomerOrders(customerId: string) {
 	return data ?? [];
 }
 
+export async function getCustomerByUserId(userId: string) {
+	const supabase = (await createClient()) as any;
+	const { data } = await supabase
+		.from("customers")
+		.select("*")
+		.eq("user_id", userId)
+		.maybeSingle();
+	return data ?? null;
+}
+
 export async function getCustomerHistory(customerId: string) {
 	const supabase = (await createClient()) as any;
 	const { data, error } = await supabase

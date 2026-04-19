@@ -33,7 +33,9 @@ export default function RootLayout({
           <>
             <>
               <Header />
-              {children}
+              <main className="pt-30">
+                {children}
+              </main>
               <QuickViewModal />
               <CartSidebarModal />
               <PreviewSliderModal />

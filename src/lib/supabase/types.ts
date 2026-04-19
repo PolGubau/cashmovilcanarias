@@ -1,5 +1,35 @@
 export type UserRole = "admin" | "staff" | "customer";
-export type ProductCondition = "new" | "excellent" | "good" | "fair";
+export type ProductCondition = "new" | "like_new";
+
+// ─── Product category taxonomy (mirrors cashmovil.shop nav structure) ─────────
+export type ProductCategory =
+	| "smartphone"
+	| "tablet"
+	| "smartwatch"
+	| "auriculares"
+	| "fundas_protectores"
+	| "cargadores_cables"
+	| "power_bank"
+	| "gadgets"
+	| "accesorios_ordenador"
+	| "movilidad"
+	| "bolsos_mochilas"
+	| "guess";
+
+export const PRODUCT_CATEGORIES: Record<ProductCategory, string> = {
+	smartphone: "Smartphones",
+	tablet: "Tablets",
+	smartwatch: "Smartwatch",
+	auriculares: "Auriculares y Altavoces",
+	fundas_protectores: "Fundas y Protectores",
+	cargadores_cables: "Cargadores y Cables",
+	power_bank: "Power Bank",
+	gadgets: "Gadgets",
+	accesorios_ordenador: "Accesorios Ordenador",
+	movilidad: "Movilidad",
+	bolsos_mochilas: "Bolsos y Mochilas",
+	guess: "Guess",
+};
 export type DeviceCondition =
 	| "new"
 	| "excellent"
@@ -307,6 +337,7 @@ export interface Product {
 	name: string;
 	brand: string;
 	base_model: string;
+	category: ProductCategory | null;
 	description: string | null;
 	warranty_months: number;
 	is_published: boolean;
@@ -354,6 +385,9 @@ export interface ProductFull extends Product {
 	total_stock: number;
 	price_from: number | null;
 }
+
+// Re-export for convenience in consuming modules
+export { PRODUCT_CATEGORIES as CATEGORIES };
 
 export interface CustomerHistoryItem {
 	customer_id: string;

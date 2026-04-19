@@ -1,21 +1,21 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
-import { createProduct } from "@/lib/actions/products";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Plus, Trash2 } from "lucide-react";
 import { toast } from "@/components/ui/toast";
+import { createProduct } from "@/lib/actions/products";
+import { Plus, Trash2 } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 
-const CONDITIONS = ["new", "excellent", "good", "fair"] as const;
-const CONDITION_LABELS: Record<string, string> = { new: "Nuevo", excellent: "Excelente", good: "Bueno", fair: "Regular" };
+const CONDITIONS = ["new", "like_new"] as const;
+const CONDITION_LABELS: Record<string, string> = { new: "Nuevo", like_new: "Seminuevo" };
 
 type VariantRow = { capacity: string; color: string; condition: string; battery_health: string; stock: string; price: string; purchase_price: string; };
-const emptyVariant = (): VariantRow => ({ capacity: "", color: "", condition: "excellent", battery_health: "", stock: "1", price: "", purchase_price: "" });
+const emptyVariant = (): VariantRow => ({ capacity: "", color: "", condition: "new", battery_health: "", stock: "1", price: "", purchase_price: "" });
 
 export default function ProductForm() {
   const router = useRouter();
@@ -32,26 +32,26 @@ export default function ProductForm() {
     try {
       await createProduct(
         {
-          name:            fd.get("name") as string,
-          brand:           fd.get("brand") as string,
-          base_model:      fd.get("base_model") as string,
-          description:     (fd.get("description") as string) || null,
+          name: fd.get("name") as string,
+          brand: fd.get("brand") as string,
+          base_model: fd.get("base_model") as string,
+          description: (fd.get("description") as string) || null,
           warranty_months: Number(fd.get("warranty_months") || 6),
-          is_published:    false,
+          is_published: false,
         },
         variants
           .filter((v) => v.price)
           .map((v) => ({
             product_id: "",
-            capacity:        v.capacity || null,
-            color:           v.color || null,
-            condition:       (v.condition as any) || null,
-            battery_health:  v.battery_health ? Number(v.battery_health) : null,
-            stock:           Number(v.stock || 0),
-            price:           Number(v.price),
-            purchase_price:  v.purchase_price ? Number(v.purchase_price) : null,
-            sku:             null,
-            is_active:       true,
+            capacity: v.capacity || null,
+            color: v.color || null,
+            condition: (v.condition as any) || null,
+            battery_health: v.battery_health ? Number(v.battery_health) : null,
+            stock: Number(v.stock || 0),
+            price: Number(v.price),
+            purchase_price: v.purchase_price ? Number(v.purchase_price) : null,
+            sku: null,
+            is_active: true,
           })),
       );
       toast.success("Producto creado");

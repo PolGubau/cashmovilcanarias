@@ -14,9 +14,7 @@ export const metadata: Metadata = {
 
 const CONDITION_LABEL: Record<string, string> = {
   new: "Nuevo",
-  excellent: "Como nuevo",
-  good: "Bueno",
-  fair: "Aceptable",
+  like_new: "Seminuevo",
 };
 
 const CONDITIONS = Object.entries(CONDITION_LABEL);

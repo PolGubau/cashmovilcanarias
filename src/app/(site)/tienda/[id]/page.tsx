@@ -10,9 +10,7 @@ export const dynamic = "force-dynamic";
 
 const CONDITION_LABEL: Record<string, string> = {
   new: "Nuevo",
-  excellent: "Como nuevo",
-  good: "Bueno",
-  fair: "Aceptable",
+  like_new: "Seminuevo",
 };
 
 export async function generateMetadata({
@@ -48,33 +46,35 @@ export default async function ProductDetailPage({
   }));
 
   return (
-    <section className="container py-12">
-      <div className="grid lg:grid-cols-2 gap-12 items-start">
+    <section className="max-w-[1170px] mx-auto px-4 sm:px-6 xl:px-0 py-8 lg:py-14">
+      <div className="grid lg:grid-cols-2 gap-6 lg:gap-12 items-start">
         {/* Gallery */}
         <ProductImageGallery images={galleryImages} productName={product.name} />
 
         {/* Details */}
-        <div className="flex flex-col">
-          <p className="text-sm font-medium text-dark-4 uppercase tracking-widest">
+        <div className="flex flex-col px-1 sm:px-0">
+          <p className="text-xs font-semibold text-dark-4 uppercase tracking-widest">
             {product.brand}
           </p>
-          <h1 className="text-2xl font-bold text-dark mt-1">{product.name}</h1>
+          <h1 className="text-xl sm:text-2xl font-bold text-dark mt-1 leading-snug">
+            {product.name}
+          </h1>
 
           {/* Trust row */}
-          <div className="flex flex-wrap gap-4 mt-3">
+          <div className="flex flex-wrap gap-3 mt-3">
             <span className="flex items-center gap-1.5 text-sm text-green">
-              <ShieldCheck className="h-4 w-4" />
+              <ShieldCheck className="h-4 w-4 shrink-0" />
               {product.warranty_months} meses de garantía
             </span>
             <span className="flex items-center gap-1.5 text-sm text-dark-4">
-              <Truck className="h-4 w-4" />
+              <Truck className="h-4 w-4 shrink-0" />
               Envío a Canarias
             </span>
           </div>
 
           {/* Description */}
           {product.description && (
-            <p className="text-dark-3 text-sm mt-4 leading-relaxed">
+            <p className="text-dark-3 text-sm mt-4 leading-relaxed border-t border-gray-3 pt-4">
               {product.description}
             </p>
           )}
