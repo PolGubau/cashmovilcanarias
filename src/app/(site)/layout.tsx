@@ -8,10 +8,6 @@ import Header from "../../components/Header";
 import CartSidebarModal from "@/components/Common/CartSidebarModal";
 import PreviewSliderModal from "@/components/Common/PreviewSlider";
 import QuickViewModal from "@/components/Common/QuickViewModal";
-import { ReduxProvider } from "@/redux/provider";
-import { CartModalProvider } from "../context/CartSidebarModalContext";
-import { PreviewSliderProvider } from "../context/PreviewSliderContext";
-import { ModalProvider } from "../context/QuickViewModalContext";
 
 import PreLoader from "@/components/Common/PreLoader";
 import ScrollToTop from "@/components/Common/ScrollToTop";
@@ -35,20 +31,13 @@ export default function RootLayout({
           <PreLoader />
         ) : (
           <>
-            <ReduxProvider>
-              <CartModalProvider>
-                <ModalProvider>
-                  <PreviewSliderProvider>
-                    <Header />
-                    {children}
-
-                    <QuickViewModal />
-                    <CartSidebarModal />
-                    <PreviewSliderModal />
-                  </PreviewSliderProvider>
-                </ModalProvider>
-              </CartModalProvider>
-            </ReduxProvider>
+            <>
+              <Header />
+              {children}
+              <QuickViewModal />
+              <CartSidebarModal />
+              <PreviewSliderModal />
+            </>
             <Toaster position="top-right" />
             <ScrollToTop />
             <Footer />

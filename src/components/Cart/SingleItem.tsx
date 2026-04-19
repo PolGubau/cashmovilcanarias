@@ -1,32 +1,27 @@
 import { Button, QuantityStepper } from "@/components/ui";
-import {
-  removeItemFromCart,
-  updateCartItemQuantity,
-} from "@/redux/features/cart-slice";
-import type { AppDispatch } from "@/redux/store";
+import { useCartStore } from "@/store/cart.store";
 import { Trash2 } from "lucide-react";
 import Image from "next/image";
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
 
 const SingleItem = ({ item }) => {
   const [quantity, setQuantity] = useState(item.quantity);
+  const removeItem = useCartStore((s) => s.removeItem);
+  const updateQuantity = useCartStore((s) => s.updateQuantity);
 
-  const dispatch = useDispatch<AppDispatch>();
-
-  const handleRemoveFromCart = () => {
-    dispatch(removeItemFromCart(item.id));
-  };
+  const handleRemoveFromCart = () => removeItem(item.id);
 
   const handleIncreaseQuantity = () => {
-    setQuantity(quantity + 1);
-    dispatch(updateCartItemQuantity({ id: item.id, quantity: quantity + 1 }));
+    const next = quantity + 1;
+    setQuantity(next);
+    updateQuantity(item.id, next);
   };
 
   const handleDecreaseQuantity = () => {
     if (quantity > 1) {
-      setQuantity(quantity - 1);
-      dispatch(updateCartItemQuantity({ id: item.id, quantity: quantity - 1 }));
+      const prev = quantity - 1;
+      setQuantity(prev);
+      updateQuantity(item.id, prev);
     } else {
       return;
     }

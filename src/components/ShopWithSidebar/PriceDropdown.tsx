@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import { Slider } from 'radix-ui';
 import { useState } from 'react';
 
@@ -16,12 +17,12 @@ const PriceDropdown = () => {
         className="cursor-pointer flex items-center justify-between py-3 pl-6 pr-5.5"
       >
         <p className="text-dark">Price</p>
-        <button
+        <Button
+          size="icon"
+          variant="ghost"
           onClick={() => setToggleDropdown(!toggleDropdown)}
-          id="price-dropdown-btn"
-          aria-label="button for price dropdown"
-          className={`text-dark ease-out duration-200 ${toggleDropdown && 'rotate-180'
-            }`}
+          aria-label="Expandir precio"
+          className={`text-dark w-6 h-6 hover:bg-transparent hover:text-dark ease-out duration-200 ${toggleDropdown ? "rotate-180" : ""}`}
         >
           <svg
             className="fill-current"
@@ -38,7 +39,7 @@ const PriceDropdown = () => {
               fill=""
             />
           </svg>
-        </button>
+        </Button>
       </div>
 
       {/* // <!-- dropdown menu --> */}

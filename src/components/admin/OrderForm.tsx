@@ -1,8 +1,9 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
 import { createOrder } from "@/lib/actions/orders";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 const PAYMENT_METHODS = ["cash", "card", "transfer", "bizum"];
 const PAYMENT_LABELS: Record<string, string> = {
@@ -38,16 +39,16 @@ export default function OrderForm() {
 
       await createOrder(
         {
-          customer_id:       form.get("customer_id") as string,
-          status:            "confirmed",
-          subtotal:          0,
-          discount:          Number(form.get("discount") || 0),
-          total:             0,
-          payment_method:    (form.get("payment_method") as string) || null,
+          customer_id: form.get("customer_id") as string,
+          status: "confirmed",
+          subtotal: 0,
+          discount: Number(form.get("discount") || 0),
+          total: 0,
+          payment_method: (form.get("payment_method") as string) || null,
           payment_reference: (form.get("payment_reference") as string) || null,
-          paid_at:           null,
-          notes:             (form.get("notes") as string) || null,
-          created_by:        null,
+          paid_at: null,
+          notes: (form.get("notes") as string) || null,
+          created_by: null,
         },
         orderItems
       );
@@ -75,8 +76,8 @@ export default function OrderForm() {
       <div className="bg-white rounded-xl border border-gray-3 p-6 space-y-4">
         <div className="flex items-center justify-between border-b border-gray-3 pb-3">
           <h2 className="font-semibold text-dark">Dispositivos</h2>
-          <button type="button" onClick={addItem}
-            className="text-xs text-blue hover:underline font-medium">+ Añadir dispositivo</button>
+          <Button type="button" variant="ghost" onClick={addItem}
+            className="text-xs text-blue hover:underline font-medium px-0 h-auto">+ Añadir dispositivo</Button>
         </div>
         {items.map((item, i) => (
           <div key={i} className="flex gap-3 items-end">
@@ -95,8 +96,8 @@ export default function OrderForm() {
                 className="w-full border border-gray-3 rounded-lg px-3 py-2.5 text-sm text-dark focus:outline-none focus:ring-2 focus:ring-blue/20 focus:border-blue" />
             </div>
             {items.length > 1 && (
-              <button type="button" onClick={() => removeItem(i)}
-                className="text-red text-sm pb-2.5 hover:text-red-dark">✕</button>
+              <Button type="button" variant="ghost" onClick={() => removeItem(i)}
+                className="text-red text-sm pb-2.5 hover:text-red-dark px-1 h-auto">✕</Button>
             )}
           </div>
         ))}
@@ -125,14 +126,12 @@ export default function OrderForm() {
       </div>
 
       <div className="flex gap-3">
-        <button type="submit" disabled={loading}
-          className="bg-blue text-white text-sm font-medium px-6 py-2.5 rounded-lg hover:bg-blue-dark transition-colors disabled:opacity-50">
+        <Button type="submit" loading={loading}>
           {loading ? "Procesando..." : "Registrar venta"}
-        </button>
-        <button type="button" onClick={() => router.back()}
-          className="bg-white text-dark-3 text-sm font-medium px-6 py-2.5 rounded-lg border border-gray-3 hover:bg-gray-1 transition-colors">
+        </Button>
+        <Button type="button" variant="outline" onClick={() => router.back()}>
           Cancelar
-        </button>
+        </Button>
       </div>
     </form>
   );

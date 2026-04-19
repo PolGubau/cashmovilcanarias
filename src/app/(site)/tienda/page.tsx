@@ -1,12 +1,16 @@
-import shopData from "@/components/Shop/shopData";
 import { getPublishedProducts } from "@/lib/actions/products";
 import type { ProductWithRelations } from "@/lib/actions/products";
-import type { ProductCondition } from "@/lib/supabase/types";
 import { formatCurrency } from "@/lib/utils";
 import { Package, ShoppingBag } from "lucide-react";
+import type { Metadata } from "next";
 import Link from "next/link";
 
 export const dynamic = "force-dynamic";
+
+export const metadata: Metadata = {
+  title: "Tienda | CashMóvil Canarias",
+  description: "Móviles reacondicionados con garantía — iPhone, Samsung, Xiaomi y más.",
+};
 
 const CONDITION_LABEL: Record<string, string> = {
   new: "Nuevo",
@@ -15,95 +19,65 @@ const CONDITION_LABEL: Record<string, string> = {
   fair: "Aceptable",
 };
 
+const CONDITIONS = Object.entries(CONDITION_LABEL);
+
 export default async function TiendaPage({
   searchParams,
 }: {
-  searchParams: Promise<{ brand?: string; condition?: string }>;
+  searchParams: Promise<{ brand?: string; condition?: string; search?: string }>;
 }) {
   const sp = await searchParams;
-  const fromDb = await getPublishedProducts({ brand: sp.brand }).catch(
-    (): ProductWithRelations[] => [],
-  );
 
-  // Fall back to mock data when Supabase has no products yet
-  const products: ProductWithRelations[] =
-    fromDb.length > 0
-      ? fromDb
-      : shopData
-        .filter((p) => !sp.brand || p.brand?.toLowerCase() === sp.brand.toLowerCase())
-        .map((p) => ({
-          ...p,
-          description: p.description ?? null,
-          product_variants: p.price_from
-            ? [
-              {
-                id: `mock-v-${p.id}`,
-                product_id: p.id,
-                capacity: null,
-                color: null,
-                condition: "excellent" as ProductCondition,
-                battery_health: null,
-                stock: p.total_stock,
-                price: p.price_from,
-                purchase_price: null,
-                sku: null,
-                is_active: true,
-                created_at: p.created_at,
-                updated_at: p.updated_at,
-              },
-            ]
-            : [],
-          product_images: p.primary_image_url
-            ? [
-              {
-                id: `mock-i-${p.id}`,
-                product_id: p.id,
-                url: p.primary_image_url,
-                alt: p.name,
-                sort_order: 0,
-                is_primary: true,
-                created_at: p.created_at,
-              },
-            ]
-            : [],
-        }));
+  const products = await getPublishedProducts({
+    brand: sp.brand,
+    condition: sp.condition,
+    search: sp.search,
+  }).catch((): ProductWithRelations[] => []);
 
   // Extract unique brands for filter
   const brands = Array.from(
     new Set(products.map((p) => p.brand).filter(Boolean) as string[]),
   );
 
+  const buildUrl = (overrides: Record<string, string | undefined>) => {
+    const params = new URLSearchParams();
+    const merged = { brand: sp.brand, condition: sp.condition, search: sp.search, ...overrides };
+    for (const [k, v] of Object.entries(merged)) if (v) params.set(k, v);
+    const qs = params.toString();
+    return `/tienda${qs ? `?${qs}` : ""}`;
+  };
+
+  const chipCls = (active: boolean) =>
+    `px-4 py-1.5 rounded-full text-sm border transition-colors ${active ? "bg-dark text-white border-dark" : "bg-white text-dark-3 border-gray-3 hover:border-dark"}`;
+
   return (
     <section className="container pb-20 pt-10">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-dark">
-          Móviles de segunda mano
-        </h1>
+        <h1 className="text-3xl font-bold text-dark">Móviles reacondicionados</h1>
         <p className="text-dark-4 mt-1">
-          Dispositivos verificados con garantía
+          {sp.search ? `Resultados para "${sp.search}"` : "Dispositivos verificados con garantía"}
         </p>
       </div>
 
-      {/* Brand filters */}
-      {brands.length > 0 && (
-        <div className="flex flex-wrap gap-2 mb-8">
-          <Link
-            href="/tienda"
-            className={`px-4 py-1.5 rounded-full text-sm border transition-colors ${!sp.brand ? "bg-dark text-white border-dark" : "bg-white text-dark-3 border-gray-3 hover:border-dark"}`}
-          >
-            Todos
-          </Link>
-          {brands.map((brand) => (
-            <Link
-              key={brand as string}
-              href={`/tienda?brand=${brand}`}
-              className={`px-4 py-1.5 rounded-full text-sm border transition-colors ${sp.brand === brand ? "bg-dark text-white border-dark" : "bg-white text-dark-3 border-gray-3 hover:border-dark"}`}
-            >
-              {brand as string}
-            </Link>
+      {/* Filters */}
+      <div className="space-y-3 mb-8">
+        {/* Brand chips */}
+        {brands.length > 0 && (
+          <div className="flex flex-wrap gap-2">
+            <Link href={buildUrl({ brand: undefined })} className={chipCls(!sp.brand)}>Todas las marcas</Link>
+            {brands.map((brand) => (
+              <Link key={brand} href={buildUrl({ brand })} className={chipCls(sp.brand === brand)}>{brand}</Link>
+            ))}
+          </div>
+        )}
+        {/* Condition chips */}
+        <div className="flex flex-wrap gap-2">
+          <Link href={buildUrl({ condition: undefined })} className={chipCls(!sp.condition)}>Cualquier estado</Link>
+          {CONDITIONS.map(([val, label]) => (
+            <Link key={val} href={buildUrl({ condition: val })} className={chipCls(sp.condition === val)}>{label}</Link>
           ))}
         </div>
-      )}
+      </div>
 
       {products.length === 0 ? (
         <div className="flex flex-col items-center py-24 text-center">

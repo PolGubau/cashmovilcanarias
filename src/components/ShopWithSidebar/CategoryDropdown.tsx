@@ -1,14 +1,15 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
 import { useState } from "react";
 
 const CategoryItem = ({ category }) => {
   const [selected, setSelected] = useState(false);
   return (
-    <button
-      className={`${selected && "text-blue"
-        } group flex items-center justify-between ease-out duration-200 hover:text-blue `}
+    <Button
+      variant="ghost"
       onClick={() => setSelected(!selected)}
+      className={`w-full justify-between p-0 h-auto font-normal hover:bg-transparent group ${selected ? "text-blue" : ""} hover:text-blue`}
     >
       <div className="flex items-center gap-2">
         <div
@@ -42,7 +43,7 @@ const CategoryItem = ({ category }) => {
       >
         {category.products}
       </span>
-    </button>
+    </Button>
   );
 };
 
@@ -60,10 +61,11 @@ const CategoryDropdown = ({ categories }) => {
           }`}
       >
         <p className="text-dark">Category</p>
-        <button
-          aria-label="button for category dropdown"
-          className={`text-dark ease-out duration-200 ${toggleDropdown && "rotate-180"
-            }`}
+        <Button
+          size="icon"
+          variant="ghost"
+          aria-label="Expandir categorías"
+          className={`text-dark w-6 h-6 hover:bg-transparent hover:text-dark ease-out duration-200 ${toggleDropdown ? "rotate-180" : ""}`}
         >
           <svg
             className="fill-current"
@@ -80,7 +82,7 @@ const CategoryDropdown = ({ categories }) => {
               fill=""
             />
           </svg>
-        </button>
+        </Button>
       </div>
 
       {/* dropdown && 'shadow-filter */}

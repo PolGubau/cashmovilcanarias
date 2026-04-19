@@ -1,49 +1,38 @@
 "use client";
-import { useModalContext } from "@/app/context/QuickViewModalContext";
+import { Button } from "@/components/ui/button";
 import type { ProductFull } from "@/lib/supabase/types";
-import { addItemToCart } from "@/redux/features/cart-slice";
-import { updateQuickView } from "@/redux/features/quickView-slice";
-import { addItemToWishlist } from "@/redux/features/wishlist-slice";
-import type { AppDispatch } from "@/redux/store";
+import { useCartStore } from "@/store/cart.store";
+import { useUIStore } from "@/store/ui.store";
+import { useWishlistStore } from "@/store/wishlist.store";
 import Image from "next/image";
 import Link from "next/link";
-import { useDispatch } from "react-redux";
 
 const SingleItem = ({ item }: { item: ProductFull }) => {
-  const { openModal } = useModalContext();
-  const dispatch = useDispatch<AppDispatch>();
+  const { openQuickView } = useUIStore();
+  const addToCart = useCartStore((s) => s.addItem);
+  const addToWishlist = useWishlistStore((s) => s.addItem);
 
-  // update the QuickView state
-  const handleQuickViewUpdate = () => {
-    dispatch(updateQuickView({ ...item }));
-  };
+  const handleQuickViewUpdate = () => openQuickView(item);
 
-  // add to cart
-  const handleAddToCart = () => {
-    dispatch(
-      addItemToCart({
-        id: item.id,
-        name: item.name,
-        brand: item.brand,
-        price: item.price_from ?? 0,
-        primary_image_url: item.primary_image_url,
-        quantity: 1,
-      }),
-    );
-  };
+  const handleAddToCart = () =>
+    addToCart({
+      id: item.id,
+      name: item.name,
+      brand: item.brand,
+      price: item.price_from ?? 0,
+      primary_image_url: item.primary_image_url,
+      quantity: 1,
+    });
 
-  const handleItemToWishList = () => {
-    dispatch(
-      addItemToWishlist({
-        id: item.id,
-        name: item.name,
-        brand: item.brand,
-        price: item.price_from ?? 0,
-        primary_image_url: item.primary_image_url,
-        quantity: 1,
-      }),
-    );
-  };
+  const handleItemToWishList = () =>
+    addToWishlist({
+      id: item.id,
+      name: item.name,
+      brand: item.brand,
+      price: item.price_from ?? 0,
+      primary_image_url: item.primary_image_url,
+      quantity: 1,
+    });
 
   return (
     <div className="group">
@@ -100,14 +89,12 @@ const SingleItem = ({ item }: { item: ProductFull }) => {
         </div>
 
         <div className="absolute right-0 bottom-0 translate-x-full u-w-full flex flex-col gap-2 p-5.5 ease-linear duration-300 group-hover:translate-x-0">
-          <button
-            onClick={() => {
-              handleQuickViewUpdate();
-              openModal();
-            }}
-            aria-label="button for quick view"
-            id="bestOne"
-            className="flex items-center justify-center w-9 h-9 rounded-[5px] shadow-1 ease-out duration-200 text-dark bg-white hover:text-white hover:bg-blue"
+          <Button
+            size="icon"
+            variant="outline"
+            onClick={handleQuickViewUpdate}
+            aria-label="Vista rápida"
+            className="rounded-[5px] border-0 bg-white shadow-1 hover:text-white hover:bg-blue"
           >
             <svg
               className="fill-current"
@@ -131,13 +118,14 @@ const SingleItem = ({ item }: { item: ProductFull }) => {
                 fill=""
               />
             </svg>
-          </button>
+          </Button>
 
-          <button
-            onClick={() => handleAddToCart()}
-            aria-label="button for add to cart"
-            id="addCartOne"
-            className="flex items-center justify-center w-9 h-9 rounded-[5px] shadow-1 ease-out duration-200 text-dark bg-white hover:text-white hover:bg-blue"
+          <Button
+            size="icon"
+            variant="outline"
+            onClick={handleAddToCart}
+            aria-label="Añadir al carrito"
+            className="rounded-[5px] border-0 bg-white shadow-1 hover:text-white hover:bg-blue"
           >
             <svg
               className="fill-current"
@@ -166,15 +154,14 @@ const SingleItem = ({ item }: { item: ProductFull }) => {
                 fill=""
               />
             </svg>
-          </button>
+          </Button>
 
-          <button
-            onClick={() => {
-              handleItemToWishList();
-            }}
-            aria-label="button for add to fav"
-            id="addFavOne"
-            className="flex items-center justify-center w-9 h-9 rounded-[5px] shadow-1 ease-out duration-200 text-dark bg-white hover:text-white hover:bg-blue"
+          <Button
+            size="icon"
+            variant="outline"
+            onClick={handleItemToWishList}
+            aria-label="Añadir a favoritos"
+            className="rounded-[5px] border-0 bg-white shadow-1 hover:text-white hover:bg-blue"
           >
             <svg
               className="fill-current"
@@ -191,7 +178,7 @@ const SingleItem = ({ item }: { item: ProductFull }) => {
                 fill=""
               />
             </svg>
-          </button>
+          </Button>
         </div>
       </div>
     </div>

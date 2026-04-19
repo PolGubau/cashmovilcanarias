@@ -1,4 +1,5 @@
 "use client";
+import { Button } from "@/components/ui/button";
 import React, { useState } from "react";
 
 const SizeDropdown = () => {
@@ -7,17 +8,16 @@ const SizeDropdown = () => {
     <div className="bg-white shadow-1 rounded-lg">
       <div
         onClick={() => setToggleDropdown(!toggleDropdown)}
-        className={`cursor-pointer flex items-center justify-between py-3 pl-6 pr-5.5 ${
-          toggleDropdown && "shadow-filter"
-        }`}
+        className={`cursor-pointer flex items-center justify-between py-3 pl-6 pr-5.5 ${toggleDropdown && "shadow-filter"
+          }`}
       >
         <p className="text-dark">Size</p>
-        <button
+        <Button
+          size="icon"
+          variant="ghost"
           onClick={() => setToggleDropdown(!toggleDropdown)}
-          aria-label="button for size dropdown"
-          className={`text-dark ease-out duration-200 ${
-            toggleDropdown && "rotate-180"
-          }`}
+          aria-label="Expandir tallas"
+          className={`text-dark w-6 h-6 hover:bg-transparent hover:text-dark ease-out duration-200 ${toggleDropdown ? "rotate-180" : ""}`}
         >
           <svg
             className="fill-current"
@@ -34,14 +34,13 @@ const SizeDropdown = () => {
               fill=""
             />
           </svg>
-        </button>
+        </Button>
       </div>
 
       {/* // <!-- dropdown menu --> */}
       <div
-        className={`flex-wrap gap-2.5 p-6 ${
-          toggleDropdown ? "flex" : "hidden"
-        }`}
+        className={`flex-wrap gap-2.5 p-6 ${toggleDropdown ? "flex" : "hidden"
+          }`}
       >
         <label
           htmlFor="sizeM"

@@ -1,4 +1,5 @@
 "use client";
+import { Button } from "@/components/ui/button";
 import React, { useState, useEffect } from "react";
 import Breadcrumb from "../Common/Breadcrumb";
 import SingleGridItem from "../Shop/SingleGridItem";
@@ -109,16 +110,18 @@ const ShopWithSidebar = () => {
             {/* <!-- Sidebar Start --> */}
             <div
               className={`sidebar-content fixed xl:z-1 z-9999 left-0 top-0 xl:translate-x-0 xl:static max-w-[310px] xl:max-w-[270px] w-full ease-out duration-200 ${productSidebar
-                  ? "translate-x-0 bg-white p-5 h-screen overflow-y-auto"
-                  : "-translate-x-full"
+                ? "translate-x-0 bg-white p-5 h-screen overflow-y-auto"
+                : "-translate-x-full"
                 }`}
             >
-              <button
+              <Button
+                size="icon"
+                variant="outline"
                 onClick={() => setProductSidebar(!productSidebar)}
-                aria-label="button for product sidebar toggle"
-                className={`xl:hidden absolute -right-12.5 sm:-right-8 flex items-center justify-center w-8 h-8 rounded-md bg-white shadow-1 ${stickyMenu
-                    ? "lg:top-20 sm:top-34.5 top-35"
-                    : "lg:top-24 sm:top-39 top-37"
+                aria-label="Abrir/cerrar filtros"
+                className={`xl:hidden absolute -right-12.5 sm:-right-8 w-8 h-8 rounded-md bg-white border-0 shadow-1 ${stickyMenu
+                  ? "lg:top-20 sm:top-34.5 top-35"
+                  : "lg:top-24 sm:top-39 top-37"
                   }`}
               >
                 <svg
@@ -142,7 +145,7 @@ const ShopWithSidebar = () => {
                     fill=""
                   />
                 </svg>
-              </button>
+              </Button>
 
               <form onSubmit={(e) => e.preventDefault()}>
                 <div className="flex flex-col gap-6">
@@ -150,7 +153,7 @@ const ShopWithSidebar = () => {
                   <div className="bg-white shadow-1 rounded-lg py-4 px-5">
                     <div className="flex items-center justify-between">
                       <p>Filters:</p>
-                      <button className="text-blue">Clean All</button>
+                      <Button variant="ghost" className="text-blue hover:text-blue-dark px-0">Limpiar filtros</Button>
                     </div>
                   </div>
 
@@ -189,13 +192,15 @@ const ShopWithSidebar = () => {
 
                   {/* <!-- top bar right --> */}
                   <div className="flex items-center gap-2.5">
-                    <button
+                    <Button
+                      size="icon"
+                      variant="outline"
                       onClick={() => setProductStyle("grid")}
-                      aria-label="button for product grid tab"
-                      className={`${productStyle === "grid"
-                          ? "bg-blue border-blue text-white"
-                          : "text-dark bg-gray-1 border-gray-3"
-                        } flex items-center justify-center w-10.5 h-9 rounded-[5px] border ease-out duration-200 hover:bg-blue hover:border-blue hover:text-white`}
+                      aria-label="Vista en cuadrícula"
+                      className={`w-10.5 h-9 rounded-[5px] ease-out duration-200 hover:bg-blue hover:border-blue hover:text-white ${productStyle === "grid"
+                        ? "bg-blue border-blue text-white"
+                        : "text-dark bg-gray-1 border-gray-3"
+                        }`}
                     >
                       <svg
                         className="fill-current"
@@ -230,15 +235,17 @@ const ShopWithSidebar = () => {
                           fill=""
                         />
                       </svg>
-                    </button>
+                    </Button>
 
-                    <button
+                    <Button
+                      size="icon"
+                      variant="outline"
                       onClick={() => setProductStyle("list")}
-                      aria-label="button for product list tab"
-                      className={`${productStyle === "list"
-                          ? "bg-blue border-blue text-white"
-                          : "text-dark bg-gray-1 border-gray-3"
-                        } flex items-center justify-center w-10.5 h-9 rounded-[5px] border ease-out duration-200 hover:bg-blue hover:border-blue hover:text-white`}
+                      aria-label="Vista en lista"
+                      className={`w-10.5 h-9 rounded-[5px] ease-out duration-200 hover:bg-blue hover:border-blue hover:text-white ${productStyle === "list"
+                        ? "bg-blue border-blue text-white"
+                        : "text-dark bg-gray-1 border-gray-3"
+                        }`}
                     >
                       <svg
                         className="fill-current"
@@ -261,7 +268,7 @@ const ShopWithSidebar = () => {
                           fill=""
                         />
                       </svg>
-                    </button>
+                    </Button>
                   </div>
                 </div>
               </div>
@@ -269,8 +276,8 @@ const ShopWithSidebar = () => {
               {/* <!-- Products Grid Tab Content Start --> */}
               <div
                 className={`${productStyle === "grid"
-                    ? "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-7.5 gap-y-9"
-                    : "flex flex-col gap-7.5"
+                  ? "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-7.5 gap-y-9"
+                  : "flex flex-col gap-7.5"
                   }`}
               >
                 {shopData.map((item, key) =>
@@ -288,12 +295,13 @@ const ShopWithSidebar = () => {
                 <div className="bg-white shadow-1 rounded-md p-2">
                   <ul className="flex items-center">
                     <li>
-                      <button
-                        id="paginationLeft"
-                        aria-label="button for pagination left"
+                      <Button
+                        size="icon"
+                        variant="ghost"
                         type="button"
                         disabled
-                        className="flex items-center justify-center w-8 h-9 ease-out duration-200 rounded-[3px disabled:text-gray-4"
+                        aria-label="Página anterior"
+                        className="w-8 h-9 rounded-[3px] disabled:text-gray-4 hover:bg-blue hover:text-white"
                       >
                         <svg
                           className="fill-current"
@@ -308,7 +316,7 @@ const ShopWithSidebar = () => {
                             fill=""
                           />
                         </svg>
-                      </button>
+                      </Button>
                     </li>
 
                     <li>
@@ -375,11 +383,12 @@ const ShopWithSidebar = () => {
                     </li>
 
                     <li>
-                      <button
-                        id="paginationLeft"
-                        aria-label="button for pagination left"
+                      <Button
+                        size="icon"
+                        variant="ghost"
                         type="button"
-                        className="flex items-center justify-center w-8 h-9 ease-out duration-200 rounded-[3px] hover:text-white hover:bg-blue disabled:text-gray-4"
+                        aria-label="Página siguiente"
+                        className="w-8 h-9 rounded-[3px] hover:bg-blue hover:text-white"
                       >
                         <svg
                           className="fill-current"
@@ -394,7 +403,7 @@ const ShopWithSidebar = () => {
                             fill=""
                           />
                         </svg>
-                      </button>
+                      </Button>
                     </li>
                   </ul>
                 </div>

@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import React from "react";
 
 const Discount = () => {
@@ -22,12 +23,7 @@ const Discount = () => {
                 />
               </div>
 
-              <button
-                type="submit"
-                className="inline-flex font-medium text-white bg-blue py-3 px-8 rounded-md ease-out duration-200 hover:bg-blue-dark"
-              >
-                Aplicar
-              </button>
+              <Button type="submit">Aplicar</Button>
             </div>
           </div>
         </div>

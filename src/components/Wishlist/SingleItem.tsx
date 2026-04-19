@@ -1,28 +1,17 @@
 import { Button } from "@/components/ui";
-import type { AppDispatch } from "@/redux/store";
+import { useCartStore } from "@/store/cart.store";
+import { useWishlistStore } from "@/store/wishlist.store";
 import { Trash2 } from "lucide-react";
 import Image from "next/image";
 import React from "react";
-import { useDispatch } from "react-redux";
-
-import { addItemToCart } from "@/redux/features/cart-slice";
-import { removeItemFromWishlist } from "@/redux/features/wishlist-slice";
 
 const SingleItem = ({ item }) => {
-  const dispatch = useDispatch<AppDispatch>();
+  const removeFromWishlist = useWishlistStore((s) => s.removeItem);
+  const addToCart = useCartStore((s) => s.addItem);
 
-  const handleRemoveFromWishlist = () => {
-    dispatch(removeItemFromWishlist(item.id));
-  };
+  const handleRemoveFromWishlist = () => removeFromWishlist(item.id);
 
-  const handleAddToCart = () => {
-    dispatch(
-      addItemToCart({
-        ...item,
-        quantity: 1,
-      }),
-    );
-  };
+  const handleAddToCart = () => addToCart({ ...item, quantity: 1 });
 
   return (
     <div className="flex items-center border-t border-gray-3 py-5 px-10">

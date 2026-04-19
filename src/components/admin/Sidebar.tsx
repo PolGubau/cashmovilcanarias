@@ -1,5 +1,6 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
 import { signOut } from "@/lib/actions/auth";
 import {
   BarChart3, ClipboardList, LayoutDashboard, LogOut, Package,
@@ -85,14 +86,15 @@ export default function AdminSidebar() {
 
       {/* Footer */}
       <div className="px-3 py-4 border-t border-gray-100">
-        <form action={signOut}>
-          <button
+        <form action={() => signOut("/admin/login")}>
+          <Button
             type="submit"
-            className="group flex items-center gap-3 w-full px-3 py-2 rounded-lg text-[13px] font-medium text-gray-500 hover:bg-red-50 hover:text-red-600 transition-all border border-transparent"
+            variant="ghost"
+            className="group flex items-center gap-3 w-full px-3 py-2 rounded-lg text-[13px] font-medium text-gray-500 hover:bg-red-50 hover:text-red-600 justify-start h-auto"
           >
             <LogOut className="size-4 flex-shrink-0 text-gray-400 group-hover:text-red-500" />
             Cerrar sesión
-          </button>
+          </Button>
         </form>
       </div>
     </aside>

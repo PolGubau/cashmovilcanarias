@@ -2,7 +2,7 @@
 
 import Breadcrumb from "@/components/Common/Breadcrumb";
 import { Button, FormField, Input } from "@/components/ui";
-import { signIn } from "@/lib/actions/auth";
+import { signIn, signInWithGoogle } from "@/lib/actions/auth";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import type React from "react";
@@ -88,7 +88,14 @@ const Signin = () => {
                 </span>
 
                 <div className="flex flex-col gap-4.5 mt-4.5">
-                  <Button type="button" variant="outline" className="w-full gap-3.5 py-6">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    className="w-full gap-3.5 py-6"
+                    onClick={() =>
+                      signInWithGoogle(`${window.location.origin}/my-account`)
+                    }
+                  >
                     <svg
                       width="20"
                       height="20"

@@ -1,5 +1,6 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
 import { createRepair } from "@/lib/actions/repairs";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -89,14 +90,12 @@ export default function RepairForm() {
       </div>
 
       <div className="flex gap-3">
-        <button type="submit" disabled={loading}
-          className="bg-blue text-white text-sm font-medium px-6 py-2.5 rounded-lg hover:bg-blue-dark transition-colors disabled:opacity-50">
+        <Button type="submit" loading={loading}>
           {loading ? "Guardando..." : "Crear reparación"}
-        </button>
-        <button type="button" onClick={() => router.back()}
-          className="bg-white text-dark-3 text-sm font-medium px-6 py-2.5 rounded-lg border border-gray-3 hover:bg-gray-1 transition-colors">
+        </Button>
+        <Button type="button" variant="outline" onClick={() => router.back()}>
           Cancelar
-        </button>
+        </Button>
       </div>
     </form>
   );

@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import { Mail, MapPin, Phone } from "lucide-react";
 import React from "react";
 import Breadcrumb from "../Common/Breadcrumb";
@@ -113,12 +114,7 @@ const Contact = () => {
                   />
                 </div>
 
-                <button
-                  type="submit"
-                  className="inline-flex font-medium text-white bg-blue py-3 px-7 rounded-md ease-out duration-200 hover:bg-blue-dark"
-                >
-                  Send Message
-                </button>
+                <Button type="submit">Send Message</Button>
               </form>
             </div>
           </div>

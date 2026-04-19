@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import React, { useState } from "react";
 
 const Login = () => {
@@ -68,12 +69,7 @@ const Login = () => {
           />
         </div>
 
-        <button
-          type="submit"
-          className="inline-flex font-medium text-white bg-blue py-3 px-10.5 rounded-md ease-out duration-200 hover:bg-blue-dark"
-        >
-          Iniciar sesión
-        </button>
+        <Button type="submit">Iniciar sesión</Button>
       </div>
     </div>
   );

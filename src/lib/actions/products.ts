@@ -167,6 +167,7 @@ export async function deleteVariant(
 export async function getPublishedProducts(filters?: {
 	brand?: string;
 	condition?: string;
+	search?: string;
 	maxPrice?: number;
 }): Promise<ProductWithRelations[]> {
 	const supabase = (await createClient()) as any;
@@ -175,8 +176,24 @@ export async function getPublishedProducts(filters?: {
 		.select("*, product_variants(*), product_images(*)")
 		.eq("is_published", true)
 		.order("created_at", { ascending: false });
+
 	if (filters?.brand) query = query.ilike("brand", `%${filters.brand}%`);
+	if (filters?.search)
+		query = query.or(
+			`name.ilike.%${filters.search}%,brand.ilike.%${filters.search}%,base_model.ilike.%${filters.search}%`,
+		);
+
 	const { data, error } = await query;
 	if (error) throw new Error(error.message);
-	return (data ?? []) as ProductWithRelations[];
+
+	// condition filter is applied on variants (in-memory after fetch)
+	let results = (data ?? []) as ProductWithRelations[];
+	if (filters?.condition) {
+		results = results.filter((p) =>
+			p.product_variants?.some(
+				(v) => v.condition === filters.condition && v.is_active && v.stock > 0,
+			),
+		);
+	}
+	return results;
 }

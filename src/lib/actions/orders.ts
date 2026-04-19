@@ -105,6 +105,77 @@ export async function updateOrderStatus(
 	return data;
 }
 
+// ─── Ecommerce: crea cliente + pedido tras pago Stripe ───────────────────────
+
+export interface EcommerceCartItem {
+	variantId: string;
+	name: string;
+	qty: number;
+	price: number;
+}
+
+export interface EcommerceBilling {
+	name: string;
+	email: string;
+	phone: string;
+	address: string;
+}
+
+export async function createEcommerceOrder({
+	billing,
+	items,
+	total,
+	stripePaymentIntentId,
+}: {
+	billing: EcommerceBilling;
+	items: EcommerceCartItem[];
+	total: number;
+	stripePaymentIntentId: string;
+}) {
+	const supabase = (await createClient()) as any;
+
+	// 1. Upsert customer by email
+	const { data: customer, error: customerError } = await supabase
+		.from("customers")
+		.upsert(
+			{
+				full_name: billing.name,
+				email: billing.email,
+				phone: billing.phone,
+				address: billing.address,
+				is_supplier: false,
+				user_id: null,
+			},
+			{ onConflict: "email", ignoreDuplicates: false },
+		)
+		.select("id")
+		.single();
+
+	if (customerError) throw new Error(customerError.message);
+
+	// 2. Create order (items stored in notes until devices are assigned)
+	const notesPayload = JSON.stringify({
+		stripe_pi: stripePaymentIntentId,
+		items,
+	});
+
+	const { data: order, error: orderError } = await supabase
+		.from("orders")
+		.insert({
+			customer_id: customer.id,
+			status: "pending",
+			total,
+			notes: notesPayload,
+			paid_at: new Date().toISOString(),
+		})
+		.select()
+		.single();
+
+	if (orderError) throw new Error(orderError.message);
+	revalidatePath("/admin/orders");
+	return order as { id: string; invoice_number: string | null };
+}
+
 export async function getOrderStats() {
 	const supabase = (await createClient()) as any;
 	const { data, error } = await supabase.from("orders").select("status, total");

@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import React from "react";
 
 interface OrderActionsProps {
@@ -8,9 +9,12 @@ interface OrderActionsProps {
 const OrderActions = ({ toggleEdit, toggleDetails }: OrderActionsProps) => {
   return (
     <>
-      <button
+      <Button
+        size="icon"
+        variant="ghost"
         onClick={toggleDetails}
-        className="hover:bg-gray-2 rounded-sm p-2"
+        aria-label="Ver detalles"
+        className="w-8 h-8 rounded-sm hover:bg-gray-2"
       >
         <svg
           width="18"
@@ -32,8 +36,14 @@ const OrderActions = ({ toggleEdit, toggleDetails }: OrderActionsProps) => {
             fill="#495270"
           />
         </svg>
-      </button>
-      <button onClick={toggleEdit} className="hover:bg-gray-2 rounded-sm p-2">
+      </Button>
+      <Button
+        size="icon"
+        variant="ghost"
+        onClick={toggleEdit}
+        aria-label="Editar"
+        className="w-8 h-8 rounded-sm hover:bg-gray-2"
+      >
         <svg
           width="16"
           height="18"
@@ -48,7 +58,7 @@ const OrderActions = ({ toggleEdit, toggleDetails }: OrderActionsProps) => {
             fill="#495270"
           />
         </svg>
-      </button>
+      </Button>
     </>
   );
 };

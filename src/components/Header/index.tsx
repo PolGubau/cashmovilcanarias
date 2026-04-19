@@ -1,14 +1,12 @@
 "use client";
-import { useCartModalContext } from "@/app/context/CartSidebarModalContext";
 import { Button } from "@/components/ui";
-import { selectTotalPrice } from "@/redux/features/cart-slice";
-import { useAppSelector } from "@/redux/store";
-import { Heart, Phone, Search, ShoppingCart, User } from "lucide-react";
+import { useCartStore } from "@/store/cart.store";
+import { useUIStore } from "@/store/ui.store";
+import { Phone, Search, ShoppingCart, User } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import React, { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
-import CustomSelect from "./CustomSelect";
 import Dropdown from "./Dropdown";
 import { menuData } from "./menuData";
 
@@ -16,14 +14,13 @@ const Header = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [navigationOpen, setNavigationOpen] = useState(false);
   const [stickyMenu, setStickyMenu] = useState(false);
-  const { openCartModal } = useCartModalContext();
+  const openCartSidebar = useUIStore((s) => s.openCartSidebar);
+  const router = useRouter();
 
-  const product = useAppSelector((state) => state.cartReducer.items);
-  const totalPrice = useSelector(selectTotalPrice);
+  const cartItems = useCartStore((s) => s.items);
+  const totalPrice = useCartStore((s) => s.totalPrice)();
 
-  const handleOpenCartModal = () => {
-    openCartModal();
-  };
+
 
   // Sticky menu
   const handleStickyMenu = () => {
@@ -37,17 +34,6 @@ const Header = () => {
   useEffect(() => {
     window.addEventListener("scroll", handleStickyMenu);
   });
-
-  const options = [
-    { label: "All Categories", value: "0" },
-    { label: "Desktop", value: "1" },
-    { label: "Laptop", value: "2" },
-    { label: "Monitor", value: "3" },
-    { label: "Phone", value: "4" },
-    { label: "Watch", value: "5" },
-    { label: "Mouse", value: "6" },
-    { label: "Tablet", value: "7" },
-  ];
 
   return (
     <header
@@ -72,35 +58,35 @@ const Header = () => {
             </Link>
 
             <div className="max-w-[475px] w-full">
-              <form>
-                <div className="flex items-center">
-                  <CustomSelect options={options} />
-
-                  <div className="relative max-w-[333px] sm:min-w-[333px] w-full">
-                    {/* <!-- divider --> */}
-                    <span className="absolute left-0 top-1/2 -translate-y-1/2 inline-block w-px h-5.5 bg-gray-4" />
-                    <input
-                      onChange={(e) => setSearchQuery(e.target.value)}
-                      value={searchQuery}
-                      type="search"
-                      name="search"
-                      id="search"
-                      placeholder="¿Qué estás buscando?"
-                      autoComplete="off"
-                      className="custom-search w-full rounded-r-[5px] bg-gray-1 !border-l-0 border border-gray-3 py-2.5 pl-4 pr-10 outline-none ease-in duration-200"
-                    />
-
-                    <Button
-                      id="search-btn"
-                      type="submit"
-                      variant="ghost"
-                      size="icon"
-                      aria-label="Search"
-                      className="absolute right-0 top-1/2 -translate-y-1/2 h-full hover:text-blue"
-                    >
-                      <Search className="size-4.5" />
-                    </Button>
-                  </div>
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  if (searchQuery.trim()) {
+                    router.push(`/tienda?search=${encodeURIComponent(searchQuery.trim())}`);
+                  }
+                }}
+              >
+                <div className="relative w-full">
+                  <input
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    value={searchQuery}
+                    type="search"
+                    name="search"
+                    id="search"
+                    placeholder="Busca tu móvil..."
+                    autoComplete="off"
+                    className="custom-search w-full rounded-[5px] bg-gray-1 border border-gray-3 py-2.5 pl-4 pr-10 outline-none ease-in duration-200"
+                  />
+                  <Button
+                    id="search-btn"
+                    type="submit"
+                    variant="ghost"
+                    size="icon"
+                    aria-label="Buscar"
+                    className="absolute right-0 top-1/2 -translate-y-1/2 h-full hover:text-blue"
+                  >
+                    <Search className="size-4.5" />
+                  </Button>
                 </div>
               </form>
             </div>
@@ -116,7 +102,7 @@ const Header = () => {
                   SOPORTE 24/7
                 </span>
                 <p className="font-medium text-custom-sm text-dark">
-                  (+965) 7492-3477
+                  +34 922 000 000
                 </p>
               </div>
             </div>
@@ -139,16 +125,18 @@ const Header = () => {
                   </div>
                 </Link>
 
-                <button
+                <Button
                   type="button"
-                  onClick={handleOpenCartModal}
-                  className="flex items-center gap-2.5"
+                  variant="ghost"
+                  onClick={openCartSidebar}
+                  aria-label="Ver carrito"
+                  className="flex items-center gap-2.5 h-auto px-0 hover:bg-transparent"
                 >
                   <span className="inline-block relative">
                     <ShoppingCart className="w-6 h-6 text-blue" />
 
                     <span className="flex items-center justify-center font-medium text-2xs absolute -right-2 -top-2.5 bg-blue w-4.5 h-4.5 rounded-full text-white">
-                      {product.length}
+                      {cartItems.length}
                     </span>
                   </span>
 
@@ -160,15 +148,17 @@ const Header = () => {
                       ${totalPrice}
                     </p>
                   </div>
-                </button>
+                </Button>
               </div>
 
               {/* <!-- Hamburger Toggle BTN --> */}
-              <button
+              <Button
                 type="button"
+                variant="ghost"
+                size="icon"
                 id="Toggle"
-                aria-label="Toggler"
-                className="xl:hidden block"
+                aria-label="Abrir menú"
+                className="xl:hidden w-auto h-auto px-0 hover:bg-transparent"
                 onClick={() => setNavigationOpen(!navigationOpen)}
               >
                 <span className="block relative cursor-pointer w-5.5 h-5.5">
@@ -198,7 +188,7 @@ const Header = () => {
                     />
                   </span>
                 </span>
-              </button>
+              </Button>
               {/* //   <!-- Hamburger Toggle BTN --> */}
             </div>
           </div>
@@ -246,23 +236,19 @@ const Header = () => {
             </div>
             {/* // <!--=== Main Nav End ===--> */}
 
-            {/* // <!--=== Nav Right Start ===--> */}
+            {/* <!--=== Nav Right: contact link ===--> */}
             <div className="hidden xl:block">
               <ul className="flex items-center gap-5.5">
-
-
                 <li className="py-4">
                   <Link
-                    href="/wishlist"
-                    className="flex items-center gap-1.5 font-medium text-custom-sm text-dark hover:text-blue"
+                    href="/contact"
+                    className="font-medium text-custom-sm text-dark hover:text-blue"
                   >
-                    <Heart className="w-4.5 h-4.5" />
-                    Favoritos
+                    ¿Necesitas ayuda?
                   </Link>
                 </li>
               </ul>
             </div>
-            {/* <!--=== Nav Right End ===--> */}
           </div>
         </div>
       </div>

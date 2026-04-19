@@ -4,8 +4,8 @@ import type { ProductFull } from "@/lib/supabase/types";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "NextCommerce | Nextjs E-commerce template",
-  description: "This is Home for NextCommerce Template",
+  title: "CashMóvil Canarias | Móviles reacondicionados",
+  description: "Compra y vende móviles reacondicionados en Canarias. iPhone, Samsung, Xiaomi y más con garantía.",
 };
 
 export default async function HomePage() {

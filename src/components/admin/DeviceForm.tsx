@@ -1,9 +1,10 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
-import { createDevice } from "@/lib/actions/devices";
+import { Button } from "@/components/ui/button";
 import { getCustomers } from "@/lib/actions/customers";
+import { createDevice } from "@/lib/actions/devices";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 const CONDITIONS = ["new", "excellent", "good", "fair", "poor", "parts_only"];
 const CONDITION_LABELS: Record<string, string> = {
@@ -23,26 +24,26 @@ export default function DeviceForm() {
 
     try {
       await createDevice({
-        imei:             form.get("imei") as string,
-        imei2:            (form.get("imei2") as string) || null,
-        brand:            form.get("brand") as string,
-        model:            form.get("model") as string,
-        storage_gb:       form.get("storage_gb") ? Number(form.get("storage_gb")) : null,
-        color:            (form.get("color") as string) || null,
-        condition:        form.get("condition") as any,
-        status:           "in_stock",
-        cost_price:       Number(form.get("cost_price")),
-        purchase_date:    form.get("purchase_date") as string,
-        supplier_id:      (form.get("supplier_id") as string) || null,
+        imei: form.get("imei") as string,
+        imei2: (form.get("imei2") as string) || null,
+        brand: form.get("brand") as string,
+        model: form.get("model") as string,
+        storage_gb: form.get("storage_gb") ? Number(form.get("storage_gb")) : null,
+        color: (form.get("color") as string) || null,
+        condition: form.get("condition") as any,
+        status: "in_stock",
+        cost_price: Number(form.get("cost_price")),
+        purchase_date: form.get("purchase_date") as string,
+        supplier_id: (form.get("supplier_id") as string) || null,
         purchase_invoice: (form.get("purchase_invoice") as string) || null,
-        unlock_status:    (form.get("unlock_status") as string) || null,
-        battery_health:   form.get("battery_health") ? Number(form.get("battery_health")) : null,
-        notes:            (form.get("notes") as string) || null,
-        sale_price:       null,
-        sold_at:          null,
-        buyer_id:         null,
-        images:           null,
-        created_by:       null,
+        unlock_status: (form.get("unlock_status") as string) || null,
+        battery_health: form.get("battery_health") ? Number(form.get("battery_health")) : null,
+        notes: (form.get("notes") as string) || null,
+        sale_price: null,
+        sold_at: null,
+        buyer_id: null,
+        images: null,
+        created_by: null,
       });
       router.push("/admin/inventory");
     } catch (err: any) {
@@ -63,8 +64,8 @@ export default function DeviceForm() {
       <div className="bg-white rounded-xl border border-gray-3 p-6 space-y-4">
         <h2 className="font-semibold text-dark border-b border-gray-3 pb-3">Identificación</h2>
         <div className="grid grid-cols-2 gap-4">
-          <Field name="imei"  label="IMEI *"  placeholder="350000000000000" required />
-          <Field name="imei2" label="IMEI 2"  placeholder="350000000000001" />
+          <Field name="imei" label="IMEI *" placeholder="350000000000000" required />
+          <Field name="imei2" label="IMEI 2" placeholder="350000000000001" />
         </div>
       </div>
 
@@ -98,9 +99,9 @@ export default function DeviceForm() {
       <div className="bg-white rounded-xl border border-gray-3 p-6 space-y-4">
         <h2 className="font-semibold text-dark border-b border-gray-3 pb-3">Compra</h2>
         <div className="grid grid-cols-2 gap-4">
-          <Field name="cost_price"       label="Precio de coste (€) *" placeholder="0.00" type="number" required />
-          <Field name="purchase_date"    label="Fecha de compra *"      type="date"         required />
-          <Field name="supplier_id"      label="ID Proveedor (cliente)" placeholder="UUID del cliente" />
+          <Field name="cost_price" label="Precio de coste (€) *" placeholder="0.00" type="number" required />
+          <Field name="purchase_date" label="Fecha de compra *" type="date" required />
+          <Field name="supplier_id" label="ID Proveedor (cliente)" placeholder="UUID del cliente" />
           <Field name="purchase_invoice" label="Nº factura / referencia" placeholder="FAC-2024-001" />
         </div>
       </div>
@@ -112,14 +113,12 @@ export default function DeviceForm() {
       </div>
 
       <div className="flex gap-3">
-        <button type="submit" disabled={loading}
-          className="bg-blue text-white text-sm font-medium px-6 py-2.5 rounded-lg hover:bg-blue-dark transition-colors disabled:opacity-50">
+        <Button type="submit" loading={loading}>
           {loading ? "Guardando..." : "Registrar dispositivo"}
-        </button>
-        <button type="button" onClick={() => router.back()}
-          className="bg-white text-dark-3 text-sm font-medium px-6 py-2.5 rounded-lg border border-gray-3 hover:bg-gray-1 transition-colors">
+        </Button>
+        <Button type="button" variant="outline" onClick={() => router.back()}>
           Cancelar
-        </button>
+        </Button>
       </div>
     </form>
   );

@@ -1,5 +1,6 @@
 "use client";
-import { useAppSelector } from "@/redux/store";
+import { Button } from "@/components/ui/button";
+import { useCartStore } from "@/store/cart.store";
 import Link from "next/link";
 import React from "react";
 import Breadcrumb from "../Common/Breadcrumb";
@@ -8,7 +9,7 @@ import OrderSummary from "./OrderSummary";
 import SingleItem from "./SingleItem";
 
 const Cart = () => {
-  const cartItems = useAppSelector((state) => state.cartReducer.items);
+  const cartItems = useCartStore((s) => s.items);
 
   return (
     <>
@@ -22,7 +23,7 @@ const Cart = () => {
           <div className="max-w-[1170px] w-full mx-auto px-4 sm:px-8 xl:px-0">
             <div className="flex flex-wrap items-center justify-between gap-5 mb-7.5">
               <h2 className="font-medium text-dark text-2xl">Tu carrito</h2>
-              <button className="text-blue">Vaciar carrito</button>
+              <Button variant="ghost" className="text-blue hover:text-blue-dark px-0">Vaciar carrito</Button>
             </div>
 
             <div className="bg-white rounded-[10px] shadow-1">
@@ -54,8 +55,8 @@ const Cart = () => {
 
                   {/* <!-- cart item --> */}
                   {cartItems.length > 0 &&
-                    cartItems.map((item, key) => (
-                      <SingleItem item={item} key={key} />
+                    cartItems.map((item) => (
+                      <SingleItem item={item} key={item.id} />
                     ))}
                 </div>
               </div>

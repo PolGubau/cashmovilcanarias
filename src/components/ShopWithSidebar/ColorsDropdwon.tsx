@@ -1,4 +1,5 @@
 "use client";
+import { Button } from "@/components/ui/button";
 import React, { useState } from "react";
 
 const ColorsDropdwon = () => {
@@ -15,10 +16,11 @@ const ColorsDropdwon = () => {
           }`}
       >
         <p className="text-dark">Colors</p>
-        <button
-          aria-label="button for colors dropdown"
-          className={`text-dark ease-out duration-200 ${toggleDropdown && "rotate-180"
-            }`}
+        <Button
+          size="icon"
+          variant="ghost"
+          aria-label="Expandir colores"
+          className={`text-dark w-6 h-6 hover:bg-transparent hover:text-dark ease-out duration-200 ${toggleDropdown ? "rotate-180" : ""}`}
         >
           <svg
             className="fill-current"
@@ -35,7 +37,7 @@ const ColorsDropdwon = () => {
               fill=""
             />
           </svg>
-        </button>
+        </Button>
       </div>
 
       {/* <!-- dropdown menu --> */}

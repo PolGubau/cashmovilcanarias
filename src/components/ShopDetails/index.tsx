@@ -1,6 +1,6 @@
 "use client";
-import { usePreviewSlider } from "@/app/context/PreviewSliderContext";
-import { useAppSelector } from "@/redux/store";
+import { Button } from "@/components/ui/button";
+import { useUIStore } from "@/store/ui.store";
 import Image from "next/image";
 import React, { use, useEffect, useState } from "react";
 import Breadcrumb from "../Common/Breadcrumb";
@@ -9,7 +9,7 @@ import RecentlyViewdItems from "./RecentlyViewd";
 
 const ShopDetails = () => {
   const [activeColor, setActiveColor] = useState("blue");
-  const { openPreviewModal } = usePreviewSlider();
+  const { openPreviewSlider, previewProduct } = useUIStore();
   const [previewImg, setPreviewImg] = useState(0);
 
   const [storage, setStorage] = useState("gb128");
@@ -76,11 +76,7 @@ const ShopDetails = () => {
   const colors = ["red", "blue", "orange", "pink", "purple"];
 
   const alreadyExist = localStorage.getItem("productDetails");
-  const productFromStorage = useAppSelector(
-    (state) => state.productDetailsReducer.value
-  );
-
-  const product = alreadyExist ? JSON.parse(alreadyExist) : productFromStorage;
+  const product = alreadyExist ? JSON.parse(alreadyExist) : previewProduct;
 
   useEffect(() => {
     localStorage.setItem("productDetails", JSON.stringify(product));
@@ -88,7 +84,7 @@ const ShopDetails = () => {
 
   // pass the product here when you get the real data.
   const handlePreviewSlider = () => {
-    openPreviewModal();
+    openPreviewSlider(product);
   };
 
   return (
@@ -105,10 +101,12 @@ const ShopDetails = () => {
                 <div className="lg:max-w-[570px] w-full">
                   <div className="lg:min-h-[512px] rounded-lg shadow-1 bg-gray-2 p-4 sm:p-7.5 relative flex items-center justify-center">
                     <div>
-                      <button
+                      <Button
+                        size="icon"
+                        variant="ghost"
                         onClick={handlePreviewSlider}
-                        aria-label="button for zoom"
-                        className="gallery__Image w-11 h-11 rounded-[5px] bg-gray-1 shadow-1 flex items-center justify-center ease-out duration-200 text-dark hover:text-blue absolute top-4 lg:top-6 right-4 lg:right-6 z-50"
+                        aria-label="Ampliar imagen"
+                        className="gallery__Image w-11 h-11 rounded-[5px] bg-gray-1 shadow-1 text-dark hover:text-blue hover:bg-gray-1 absolute top-4 lg:top-6 right-4 lg:right-6 z-50"
                       >
                         <svg
                           className="fill-current"
@@ -125,7 +123,7 @@ const ShopDetails = () => {
                             fill=""
                           />
                         </svg>
-                      </button>
+                      </Button>
 
                       {product.imgs?.previews?.[previewImg] && (
                         <Image
@@ -141,10 +139,13 @@ const ShopDetails = () => {
                   {/* ?  &apos;border-blue &apos; :  &apos;border-transparent&apos; */}
                   <div className="flex flex-wrap sm:flex-nowrap gap-4.5 mt-6">
                     {product.imgs?.thumbnails.map((item, key) => (
-                      <button
+                      <Button
+                        size="icon"
+                        variant="ghost"
                         onClick={() => setPreviewImg(key)}
                         key={key}
-                        className={`flex items-center justify-center w-15 sm:w-25 h-15 sm:h-25 overflow-hidden rounded-lg bg-gray-2 shadow-1 ease-out duration-200 border-2 hover:border-blue ${key === previewImg
+                        aria-label={`Imagen ${key + 1}`}
+                        className={`w-15 sm:w-25 h-15 sm:h-25 overflow-hidden rounded-lg bg-gray-2 shadow-1 ease-out duration-200 border-2 hover:border-blue hover:bg-gray-2 ${key === previewImg
                           ? "border-blue"
                           : "border-transparent"
                           }`}
@@ -155,7 +156,7 @@ const ShopDetails = () => {
                           src={item}
                           alt="thumbnail"
                         />
-                      </button>
+                      </Button>
                     ))}
                   </div>
                 </div>
@@ -613,9 +614,11 @@ const ShopDetails = () => {
 
                     <div className="flex flex-wrap items-center gap-4.5">
                       <div className="flex items-center rounded-md border border-gray-3">
-                        <button
-                          aria-label="button for remove product"
-                          className="flex items-center justify-center w-12 h-12 ease-out duration-200 hover:text-blue"
+                        <Button
+                          size="icon"
+                          variant="ghost"
+                          aria-label="Reducir cantidad"
+                          className="w-12 h-12 rounded-none hover:text-blue hover:bg-transparent"
                           onClick={() =>
                             quantity > 1 && setQuantity(quantity - 1)
                           }
@@ -633,16 +636,18 @@ const ShopDetails = () => {
                               fill=""
                             />
                           </svg>
-                        </button>
+                        </Button>
 
                         <span className="flex items-center justify-center w-16 h-12 border-x border-gray-4">
                           {quantity}
                         </span>
 
-                        <button
+                        <Button
+                          size="icon"
+                          variant="ghost"
                           onClick={() => setQuantity(quantity + 1)}
-                          aria-label="button for add product"
-                          className="flex items-center justify-center w-12 h-12 ease-out duration-200 hover:text-blue"
+                          aria-label="Aumentar cantidad"
+                          className="w-12 h-12 rounded-none hover:text-blue hover:bg-transparent"
                         >
                           <svg
                             className="fill-current"
@@ -661,7 +666,7 @@ const ShopDetails = () => {
                               fill=""
                             />
                           </svg>
-                        </button>
+                        </Button>
                       </div>
 
                       <a
@@ -703,16 +708,17 @@ const ShopDetails = () => {
               {/* <!--== tab header start ==--> */}
               <div className="flex flex-wrap items-center bg-white rounded-[10px] shadow-1 gap-5 xl:gap-12.5 py-4.5 px-4 sm:px-6">
                 {tabs.map((item, key) => (
-                  <button
+                  <Button
                     key={key}
+                    variant="ghost"
                     onClick={() => setActiveTab(item.id)}
-                    className={`font-medium lg:text-lg ease-out duration-200 hover:text-blue relative before:h-0.5 before:bg-blue before:absolute before:left-0 before:bottom-0 before:ease-out before:duration-200 hover:before:w-full ${activeTab === item.id
+                    className={`font-medium lg:text-lg hover:text-blue hover:bg-transparent relative before:h-0.5 before:bg-blue before:absolute before:left-0 before:bottom-0 before:ease-out before:duration-200 hover:before:w-full px-0 h-auto ${activeTab === item.id
                       ? "text-blue before:w-full"
                       : "text-dark before:w-0"
                       }`}
                   >
                     {item.title}
-                  </button>
+                  </Button>
                 ))}
               </div>
               {/* <!--== tab header end ==--> */}
@@ -1419,12 +1425,7 @@ const ShopDetails = () => {
                           </div>
                         </div>
 
-                        <button
-                          type="submit"
-                          className="inline-flex font-medium text-white bg-blue py-3 px-7 rounded-md ease-out duration-200 hover:bg-blue-dark"
-                        >
-                          Submit Reviews
-                        </button>
+                        <Button type="submit">Submit Reviews</Button>
                       </div>
                     </form>
                   </div>

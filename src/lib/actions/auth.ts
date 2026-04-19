@@ -52,10 +52,25 @@ export async function signUp(
 	return { error: null, requiresConfirmation: !data.session };
 }
 
-export async function signOut() {
+export async function signOut(
+	destination: "/signin" | "/admin/login" = "/signin",
+) {
 	const supabase = await createClient();
 	await supabase.auth.signOut();
-	redirect("/admin/login");
+	redirect(destination);
+}
+
+export async function signInWithGoogle(redirectTo: string) {
+	const supabase = await createClient();
+	const { data, error } = await supabase.auth.signInWithOAuth({
+		provider: "google",
+		options: {
+			redirectTo,
+			queryParams: { access_type: "offline", prompt: "consent" },
+		},
+	});
+	if (error) return { error: mapAuthError(error.message) };
+	if (data.url) redirect(data.url);
 }
 
 export async function getSession() {

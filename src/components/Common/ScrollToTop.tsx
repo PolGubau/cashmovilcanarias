@@ -1,4 +1,5 @@
 "use client";
+import { Button } from "@/components/ui/button";
 import { ChevronUp } from "lucide-react";
 import { useEffect, useState } from "react";
 
@@ -32,13 +33,14 @@ export default function ScrollToTop() {
   return (
     <>
       {isVisible && (
-        <button
+        <Button
+          size="icon"
           onClick={scrollToTop}
-          className={`items-center justify-center w-10 h-10 rounded-[4px] shadow-lg bg-blue ease-out duration-200 hover:bg-blue-dark fixed bottom-8 right-8 z-999 ${isVisible ? "flex" : "hidden"
-            }`}
+          aria-label="Volver arriba"
+          className="rounded-[4px] shadow-lg fixed bottom-8 right-8 z-999"
         >
-          <ChevronUp className="size-5 text-white" />
-        </button>
+          <ChevronUp className="size-5" />
+        </Button>
       )}
     </>
   );

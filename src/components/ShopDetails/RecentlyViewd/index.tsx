@@ -1,12 +1,13 @@
 "use client";
-import React from "react";
-import shopData from "@/components/Shop/shopData";
 import ProductItem from "@/components/Common/ProductItem";
+import shopData from "@/components/Shop/shopData";
+import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
+import React from "react";
 
-import { Swiper, SwiperSlide } from "swiper/react";
 import { useCallback, useRef } from "react";
+import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css/navigation";
 import "swiper/css";
 
@@ -45,7 +46,7 @@ const RecentlyViewdItems = () => {
             </div>
 
             <div className="flex items-center gap-3">
-              <button onClick={handlePrev} className="swiper-button-prev">
+              <Button size="icon" variant="ghost" onClick={handlePrev} aria-label="Anterior" className="swiper-button-prev w-9 h-9 hover:text-blue hover:bg-gray-2">
                 <svg
                   className="fill-current"
                   width="24"
@@ -61,9 +62,9 @@ const RecentlyViewdItems = () => {
                     fill=""
                   />
                 </svg>
-              </button>
+              </Button>
 
-              <button onClick={handleNext} className="swiper-button-next">
+              <Button size="icon" variant="ghost" onClick={handleNext} aria-label="Siguiente" className="swiper-button-next w-9 h-9 hover:text-blue hover:bg-gray-2">
                 <svg
                   className="fill-current"
                   width="24"
@@ -79,7 +80,7 @@ const RecentlyViewdItems = () => {
                     fill=""
                   />
                 </svg>
-              </button>
+              </Button>
             </div>
           </div>
 

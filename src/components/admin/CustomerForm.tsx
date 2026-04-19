@@ -1,5 +1,6 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
 import { createCustomer } from "@/lib/actions/customers";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -53,11 +54,12 @@ export default function CustomerForm() {
             { value: false, label: "Cliente (comprador)" },
             { value: true, label: "Proveedor (vendedor)" },
           ].map(({ value, label }) => (
-            <button key={String(value)} type="button"
+            <Button key={String(value)} type="button"
               onClick={() => setIsSupplier(value)}
-              className={`flex-1 py-2.5 rounded-lg text-sm font-medium border transition-colors ${isSupplier === value ? "bg-dark text-white border-dark" : "bg-white text-dark-4 border-gray-3 hover:border-dark"}`}>
+              variant={isSupplier === value ? "primary" : "outline"}
+              className={`flex-1 py-2.5 text-sm ${isSupplier === value ? "" : "text-dark-4 border-gray-3 hover:border-dark"}`}>
               {label}
-            </button>
+            </Button>
           ))}
         </div>
       </div>
@@ -88,14 +90,12 @@ export default function CustomerForm() {
       </div>
 
       <div className="flex gap-3">
-        <button type="submit" disabled={loading}
-          className="bg-blue text-white text-sm font-medium px-6 py-2.5 rounded-lg hover:bg-blue-dark transition-colors disabled:opacity-50">
+        <Button type="submit" loading={loading}>
           {loading ? "Guardando..." : "Registrar contacto"}
-        </button>
-        <button type="button" onClick={() => router.back()}
-          className="bg-white text-dark-3 text-sm font-medium px-6 py-2.5 rounded-lg border border-gray-3 hover:bg-gray-1 transition-colors">
+        </Button>
+        <Button type="button" variant="outline" onClick={() => router.back()}>
           Cancelar
-        </button>
+        </Button>
       </div>
     </form>
   );

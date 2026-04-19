@@ -1,12 +1,10 @@
 import { Button } from "@/components/ui";
-import { selectTotalPrice } from "@/redux/features/cart-slice";
-import { useAppSelector } from "@/redux/store";
+import { useCartStore } from "@/store/cart.store";
 import React from "react";
-import { useSelector } from "react-redux";
 
 const OrderSummary = () => {
-  const cartItems = useAppSelector((state) => state.cartReducer.items);
-  const totalPrice = useSelector(selectTotalPrice);
+  const cartItems = useCartStore((s) => s.items);
+  const totalPrice = useCartStore((s) => s.totalPrice)();
 
   return (
     <div className="lg:max-w-[455px] w-full">

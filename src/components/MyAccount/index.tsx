@@ -1,11 +1,16 @@
 "use client";
+import { Button } from "@/components/ui/button";
+import Image from "next/image";
 import React, { useState } from "react";
 import Breadcrumb from "../Common/Breadcrumb";
-import Image from "next/image";
-import AddressModal from "./AddressModal";
 import Orders from "../Orders";
+import AddressModal from "./AddressModal";
 
-const MyAccount = () => {
+interface MyAccountProps {
+  user: { name: string; email: string };
+}
+
+const MyAccount = ({ user }: MyAccountProps) => {
   const [activeTab, setActiveTab] = useState("dashboard");
   const [addressModal, setAddressModal] = useState(false);
 
@@ -38,22 +43,20 @@ const MyAccount = () => {
                   </div>
 
                   <div>
-                    <p className="font-medium text-dark mb-0.5">
-                      James Septimus
-                    </p>
-                    <p className="text-custom-xs">Member Since Sep 2020</p>
+                    <p className="font-medium text-dark mb-0.5">{user.name}</p>
+                    <p className="text-custom-xs">{user.email}</p>
                   </div>
                 </div>
 
                 <div className="p-4 sm:p-7.5 xl:p-9">
                   <div className="flex flex-wrap xl:flex-nowrap xl:flex-col gap-4">
-                    <button
+                    <Button
                       onClick={() => setActiveTab("dashboard")}
-                      className={`flex items-center rounded-md gap-2.5 py-3 px-4.5 ease-out duration-200 hover:bg-blue hover:text-white ${
-                        activeTab === "dashboard"
-                          ? "text-white bg-blue"
-                          : "text-dark-2 bg-gray-1"
-                      }`}
+                      variant="ghost"
+                      className={`w-full justify-start gap-2.5 py-3 px-4.5 rounded-md ${activeTab === "dashboard"
+                        ? "bg-blue text-white hover:bg-blue hover:text-white"
+                        : "text-dark-2 bg-gray-1 hover:bg-blue hover:text-white"
+                        }`}
                     >
                       <svg
                         className="fill-current"
@@ -89,14 +92,14 @@ const MyAccount = () => {
                         />
                       </svg>
                       Dashboard
-                    </button>
-                    <button
+                    </Button>
+                    <Button
                       onClick={() => setActiveTab("orders")}
-                      className={`flex items-center rounded-md gap-2.5 py-3 px-4.5 ease-out duration-200 hover:bg-blue hover:text-white ${
-                        activeTab === "orders"
-                          ? "text-white bg-blue"
-                          : "text-dark-2 bg-gray-1"
-                      }`}
+                      variant="ghost"
+                      className={`w-full justify-start gap-2.5 py-3 px-4.5 rounded-md ${activeTab === "orders"
+                        ? "bg-blue text-white hover:bg-blue hover:text-white"
+                        : "text-dark-2 bg-gray-1 hover:bg-blue hover:text-white"
+                        }`}
                     >
                       <svg
                         className="fill-current"
@@ -126,15 +129,15 @@ const MyAccount = () => {
                         />
                       </svg>
                       Orders
-                    </button>
+                    </Button>
 
-                    <button
+                    <Button
                       onClick={() => setActiveTab("downloads")}
-                      className={`flex items-center rounded-md gap-2.5 py-3 px-4.5 ease-out duration-200 hover:bg-blue hover:text-white ${
-                        activeTab === "downloads"
-                          ? "text-white bg-blue"
-                          : "text-dark-2 bg-gray-1"
-                      }`}
+                      variant="ghost"
+                      className={`w-full justify-start gap-2.5 py-3 px-4.5 rounded-md ${activeTab === "downloads"
+                        ? "bg-blue text-white hover:bg-blue hover:text-white"
+                        : "text-dark-2 bg-gray-1 hover:bg-blue hover:text-white"
+                        }`}
                     >
                       <svg
                         className="fill-current"
@@ -154,15 +157,15 @@ const MyAccount = () => {
                         />
                       </svg>
                       Downloads
-                    </button>
+                    </Button>
 
-                    <button
+                    <Button
                       onClick={() => setActiveTab("addresses")}
-                      className={`flex items-center rounded-md gap-2.5 py-3 px-4.5 ease-out duration-200 hover:bg-blue hover:text-white ${
-                        activeTab === "addresses"
-                          ? "text-white bg-blue"
-                          : "text-dark-2 bg-gray-1"
-                      }`}
+                      variant="ghost"
+                      className={`w-full justify-start gap-2.5 py-3 px-4.5 rounded-md ${activeTab === "addresses"
+                        ? "bg-blue text-white hover:bg-blue hover:text-white"
+                        : "text-dark-2 bg-gray-1 hover:bg-blue hover:text-white"
+                        }`}
                     >
                       <svg
                         className="fill-current"
@@ -184,15 +187,15 @@ const MyAccount = () => {
                         />
                       </svg>
                       Addresses
-                    </button>
+                    </Button>
 
-                    <button
+                    <Button
                       onClick={() => setActiveTab("account-details")}
-                      className={`flex items-center rounded-md gap-2.5 py-3 px-4.5 ease-out duration-200 hover:bg-blue hover:text-white ${
-                        activeTab === "account-details"
-                          ? "text-white bg-blue"
-                          : "text-dark-2 bg-gray-1"
-                      }`}
+                      variant="ghost"
+                      className={`w-full justify-start gap-2.5 py-3 px-4.5 rounded-md ${activeTab === "account-details"
+                        ? "bg-blue text-white hover:bg-blue hover:text-white"
+                        : "text-dark-2 bg-gray-1 hover:bg-blue hover:text-white"
+                        }`}
                     >
                       <svg
                         className="fill-current"
@@ -216,15 +219,15 @@ const MyAccount = () => {
                         />
                       </svg>
                       Account Details
-                    </button>
+                    </Button>
 
-                    <button
+                    <Button
                       onClick={() => setActiveTab("logout")}
-                      className={`flex items-center rounded-md gap-2.5 py-3 px-4.5 ease-out duration-200 hover:bg-blue hover:text-white ${
-                        activeTab === "logout"
-                          ? "text-white bg-blue"
-                          : "text-dark-2 bg-gray-1"
-                      }`}
+                      variant="ghost"
+                      className={`w-full justify-start gap-2.5 py-3 px-4.5 rounded-md ${activeTab === "logout"
+                        ? "bg-blue text-white hover:bg-blue hover:text-white"
+                        : "text-dark-2 bg-gray-1 hover:bg-blue hover:text-white"
+                        }`}
                     >
                       <svg
                         className="fill-current"
@@ -244,7 +247,7 @@ const MyAccount = () => {
                         />
                       </svg>
                       Logout
-                    </button>
+                    </Button>
                   </div>
                 </div>
               </div>
@@ -256,9 +259,8 @@ const MyAccount = () => {
             {/* <!-- dashboard tab content start --> */}
 
             <div
-              className={`xl:max-w-[770px] w-full bg-white rounded-xl shadow-1 py-9.5 px-4 sm:px-7.5 xl:px-10 ${
-                activeTab === "dashboard" ? "block" : "hidden"
-              }`}
+              className={`xl:max-w-[770px] w-full bg-white rounded-xl shadow-1 py-9.5 px-4 sm:px-7.5 xl:px-10 ${activeTab === "dashboard" ? "block" : "hidden"
+                }`}
             >
               <p className="text-dark">
                 Hello Annie (not Annie?
@@ -281,9 +283,8 @@ const MyAccount = () => {
 
           <!-- orders tab content start --> */}
             <div
-              className={`xl:max-w-[770px] w-full bg-white rounded-xl shadow-1 ${
-                activeTab === "orders" ? "block" : "hidden"
-              }`}
+              className={`xl:max-w-[770px] w-full bg-white rounded-xl shadow-1 ${activeTab === "orders" ? "block" : "hidden"
+                }`}
             >
               <Orders />
             </div>
@@ -291,9 +292,8 @@ const MyAccount = () => {
 
           <!-- downloads tab content start --> */}
             <div
-              className={`xl:max-w-[770px] w-full bg-white rounded-xl shadow-1 py-9.5 px-4 sm:px-7.5 xl:px-10 ${
-                activeTab === "downloads" ? "block" : "hidden"
-              }`}
+              className={`xl:max-w-[770px] w-full bg-white rounded-xl shadow-1 py-9.5 px-4 sm:px-7.5 xl:px-10 ${activeTab === "downloads" ? "block" : "hidden"
+                }`}
             >
               <p>You don&apos;t have any download</p>
             </div>
@@ -301,9 +301,8 @@ const MyAccount = () => {
 
           <!-- addresses tab content start --> */}
             <div
-              className={`flex-col sm:flex-row gap-7.5 ${
-                activeTab === "addresses" ? "flex" : "hidden"
-              }`}
+              className={`flex-col sm:flex-row gap-7.5 ${activeTab === "addresses" ? "flex" : "hidden"
+                }`}
             >
               <div className="xl:max-w-[370px] w-full bg-white shadow-1 rounded-xl">
                 <div className="flex items-center justify-between py-5 px-4 sm:pl-7.5 sm:pr-6 border-b border-gray-3">
@@ -311,9 +310,12 @@ const MyAccount = () => {
                     Shipping Address
                   </p>
 
-                  <button
-                    className="text-dark ease-out duration-200 hover:text-blue"
+                  <Button
+                    size="icon"
+                    variant="ghost"
+                    aria-label="Editar dirección"
                     onClick={openAddressModal}
+                    className="hover:text-blue hover:bg-transparent"
                   >
                     <svg
                       className="fill-current"
@@ -330,7 +332,7 @@ const MyAccount = () => {
                         fill=""
                       />
                     </svg>
-                  </button>
+                  </Button>
                 </div>
 
                 <div className="p-4 sm:p-7.5">
@@ -357,7 +359,7 @@ const MyAccount = () => {
                           fill=""
                         />
                       </svg>
-                      Name: James Septimus
+                      {user.name}
                     </p>
 
                     <p className="flex items-center gap-2.5 text-custom-sm">
@@ -443,9 +445,12 @@ const MyAccount = () => {
                     Billing Address
                   </p>
 
-                  <button
-                    className="text-dark ease-out duration-200 hover:text-blue"
+                  <Button
+                    size="icon"
+                    variant="ghost"
+                    aria-label="Editar dirección"
                     onClick={openAddressModal}
+                    className="hover:text-blue hover:bg-transparent"
                   >
                     <svg
                       className="fill-current"
@@ -462,7 +467,7 @@ const MyAccount = () => {
                         fill=""
                       />
                     </svg>
-                  </button>
+                  </Button>
                 </div>
 
                 <div className="p-4 sm:p-7.5">
@@ -489,7 +494,7 @@ const MyAccount = () => {
                           fill=""
                         />
                       </svg>
-                      Name: James Septimus
+                      {user.name}
                     </p>
 
                     <p className="flex items-center gap-2.5 text-custom-sm">
@@ -573,9 +578,8 @@ const MyAccount = () => {
 
           <!-- details tab content start --> */}
             <div
-              className={`xl:max-w-[770px] w-full ${
-                activeTab === "account-details" ? "block" : "hidden"
-              }`}
+              className={`xl:max-w-[770px] w-full ${activeTab === "account-details" ? "block" : "hidden"
+                }`}
             >
               <form>
                 <div className="bg-white shadow-1 rounded-xl p-4 sm:p-8.5">
@@ -643,12 +647,7 @@ const MyAccount = () => {
                     </div>
                   </div>
 
-                  <button
-                    type="submit"
-                    className="inline-flex font-medium text-white bg-blue py-3 px-7 rounded-md ease-out duration-200 hover:bg-blue-dark"
-                  >
-                    Save Changes
-                  </button>
+                  <Button type="submit">Save Changes</Button>
                 </div>
 
                 <p className="text-custom-sm mt-5 mb-9">
@@ -706,12 +705,7 @@ const MyAccount = () => {
                     />
                   </div>
 
-                  <button
-                    type="submit"
-                    className="inline-flex font-medium text-white bg-blue py-3 px-7 rounded-md ease-out duration-200 hover:bg-blue-dark"
-                  >
-                    Change Password
-                  </button>
+                  <Button type="submit">Change Password</Button>
                 </div>
               </form>
             </div>

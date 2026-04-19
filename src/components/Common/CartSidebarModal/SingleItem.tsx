@@ -1,15 +1,14 @@
 import { Button } from "@/components/ui";
-import type { AppDispatch } from "@/redux/store";
+import { useCartStore } from "@/store/cart.store";
 import { Trash2 } from "lucide-react";
 import Image from "next/image";
 import React from "react";
-import { useDispatch } from "react-redux";
 
-const SingleItem = ({ item, removeItemFromCart }) => {
-  const dispatch = useDispatch<AppDispatch>();
+const SingleItem = ({ item }) => {
+  const removeItem = useCartStore((s) => s.removeItem);
 
   const handleRemoveFromCart = () => {
-    dispatch(removeItemFromCart(item.id));
+    removeItem(item.id);
   };
 
   return (

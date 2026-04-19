@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import type React from "react";
 import { useState } from "react";
 import toast from "react-hot-toast";
@@ -42,12 +43,12 @@ const EditOrder = ({ order, toggleModal }: EditOrderProps) => {
           <option value="cancelled">Cancelled</option>
         </select>
 
-        <button
-          className="mt-5 w-full rounded-[10px] border border-blue-1 bg-blue-1 text-white py-3.5 px-5 text-custom-sm bg-blue"
+        <Button
+          className="mt-5 w-full"
           onClick={handleSubmit}
         >
           Save Changes
-        </button>
+        </Button>
       </div>
     </div>
   );
