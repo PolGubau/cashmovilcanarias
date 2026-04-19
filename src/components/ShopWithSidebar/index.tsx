@@ -33,51 +33,28 @@ const ShopWithSidebar = () => {
   ];
 
   const categories = [
-    {
-      name: "Smartphones",
-      products: 42,
-      isRefined: true,
-    },
-    {
-      name: "iPhone",
-      products: 18,
-      isRefined: false,
-    },
-    {
-      name: "Samsung",
-      products: 15,
-      isRefined: false,
-    },
-    {
-      name: "Xiaomi",
-      products: 9,
-      isRefined: false,
-    },
-    {
-      name: "Tablets",
-      products: 14,
-      isRefined: false,
-    },
-    {
-      name: "iPad",
-      products: 8,
-      isRefined: false,
-    },
+    { name: "Smartphones", products: 0, isRefined: true },
+    { name: "iPhone", products: 0, isRefined: false },
+    { name: "Samsung", products: 0, isRefined: false },
+    { name: "Xiaomi", products: 0, isRefined: false },
+    { name: "Oppo", products: 0, isRefined: false },
+    { name: "Realme", products: 0, isRefined: false },
+    { name: "Honor", products: 0, isRefined: false },
+    { name: "Motorola", products: 0, isRefined: false },
+    { name: "Tablets", products: 0, isRefined: false },
+    { name: "iPad", products: 0, isRefined: false },
+    { name: "Smartwatch", products: 0, isRefined: false },
+    { name: "Auriculares", products: 0, isRefined: false },
+    { name: "Fundas y Protectores", products: 0, isRefined: false },
+    { name: "Cargadores y Cables", products: 0, isRefined: false },
+    { name: "Power Bank", products: 0, isRefined: false },
+    { name: "Gadgets", products: 0, isRefined: false },
+    { name: "Guess", products: 0, isRefined: false },
   ];
 
   const genders = [
-    {
-      name: "Nuevo",
-      products: 12,
-    },
-    {
-      name: "Excelente",
-      products: 28,
-    },
-    {
-      name: "Bueno",
-      products: 16,
-    },
+    { name: "Nuevo", products: 0 },
+    { name: "Seminuevo", products: 0 },
   ];
 
   useEffect(() => {

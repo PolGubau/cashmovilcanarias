@@ -1,5 +1,6 @@
 import { getPublishedProducts } from "@/lib/actions/products";
 import type { ProductWithRelations } from "@/lib/actions/products";
+import { PRODUCT_CATEGORIES, type ProductCategory } from "@/lib/supabase/types";
 import { formatCurrency } from "@/lib/utils";
 import { Package, ShoppingBag } from "lucide-react";
 import type { Metadata } from "next";
@@ -18,16 +19,18 @@ const CONDITION_LABEL: Record<string, string> = {
 };
 
 const CONDITIONS = Object.entries(CONDITION_LABEL);
+const CATEGORIES = Object.entries(PRODUCT_CATEGORIES) as [ProductCategory, string][];
 
 export default async function TiendaPage({
   searchParams,
 }: {
-  searchParams: Promise<{ brand?: string; condition?: string; search?: string }>;
+  searchParams: Promise<{ brand?: string; category?: string; condition?: string; search?: string }>;
 }) {
   const sp = await searchParams;
 
   const products = await getPublishedProducts({
     brand: sp.brand,
+    category: sp.category as ProductCategory | undefined,
     condition: sp.condition,
     search: sp.search,
   }).catch((): ProductWithRelations[] => []);
@@ -39,7 +42,7 @@ export default async function TiendaPage({
 
   const buildUrl = (overrides: Record<string, string | undefined>) => {
     const params = new URLSearchParams();
-    const merged = { brand: sp.brand, condition: sp.condition, search: sp.search, ...overrides };
+    const merged = { brand: sp.brand, category: sp.category, condition: sp.condition, search: sp.search, ...overrides };
     for (const [k, v] of Object.entries(merged)) if (v) params.set(k, v);
     const qs = params.toString();
     return `/tienda${qs ? `?${qs}` : ""}`;
@@ -59,8 +62,19 @@ export default async function TiendaPage({
 
       {/* Filters */}
       <div className="space-y-3 mb-8">
-        {/* Brand chips */}
-        {brands.length > 0 && (
+        {/* Category chips */}
+        <div className="flex flex-wrap gap-2">
+          <Link href={buildUrl({ category: undefined })} className={chipCls(!sp.category)}>
+            Todas las categorías
+          </Link>
+          {CATEGORIES.map(([val, label]) => (
+            <Link key={val} href={buildUrl({ category: val })} className={chipCls(sp.category === val)}>
+              {label}
+            </Link>
+          ))}
+        </div>
+        {/* Brand chips — only show when there are brands in results */}
+        {brands.length > 1 && (
           <div className="flex flex-wrap gap-2">
             <Link href={buildUrl({ brand: undefined })} className={chipCls(!sp.brand)}>Todas las marcas</Link>
             {brands.map((brand) => (

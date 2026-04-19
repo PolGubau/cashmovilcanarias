@@ -1,13 +1,16 @@
 // Mock data matching ProductFull from Supabase.
 // Replace with real Supabase queries when backend is ready.
+// The `category` field maps directly to the products.category column in Supabase.
 import type { ProductFull } from "@/lib/supabase/types";
 
 const shopData: ProductFull[] = [
+	// ── Smartphones ──────────────────────────────────────────────────────────
 	{
 		id: "a1b2c3d4-0001-0000-0000-000000000001",
 		name: "iPhone 15 Pro 256GB",
 		brand: "Apple",
 		base_model: "iPhone 15 Pro",
+		category: "smartphone",
 		description:
 			"iPhone 15 Pro con chip A17 Pro, cámara de 48 MP y titanio. Reacondicionado en estado excelente.",
 		warranty_months: 12,
@@ -24,6 +27,7 @@ const shopData: ProductFull[] = [
 		name: "iPhone 14 128GB",
 		brand: "Apple",
 		base_model: "iPhone 14",
+		category: "smartphone",
 		description:
 			'iPhone 14 reacondicionado en perfecto estado. Pantalla Super Retina XDR de 6,1". Batería >85%.',
 		warranty_months: 12,
@@ -40,6 +44,7 @@ const shopData: ProductFull[] = [
 		name: "Samsung Galaxy S24 Ultra 256GB",
 		brand: "Samsung",
 		base_model: "Galaxy S24 Ultra",
+		category: "smartphone",
 		description:
 			'Galaxy S24 Ultra con S Pen integrado, cámara de 200 MP y pantalla Dynamic AMOLED 2X de 6,8".',
 		warranty_months: 12,
@@ -56,6 +61,7 @@ const shopData: ProductFull[] = [
 		name: "Samsung Galaxy A55 128GB",
 		brand: "Samsung",
 		base_model: "Galaxy A55",
+		category: "smartphone",
 		description:
 			'Galaxy A55 con pantalla Super AMOLED de 6,6", triple cámara de 50 MP y batería de 5000 mAh.',
 		warranty_months: 12,
@@ -72,6 +78,7 @@ const shopData: ProductFull[] = [
 		name: "Xiaomi 14 Pro 512GB",
 		brand: "Xiaomi",
 		base_model: "Xiaomi 14 Pro",
+		category: "smartphone",
 		description:
 			'Xiaomi 14 Pro con cámaras Leica, pantalla LTPO AMOLED de 6,73" y carga rápida de 120W.',
 		warranty_months: 12,
@@ -88,6 +95,7 @@ const shopData: ProductFull[] = [
 		name: "Xiaomi Redmi Note 13 Pro 256GB",
 		brand: "Xiaomi",
 		base_model: "Redmi Note 13 Pro",
+		category: "smartphone",
 		description:
 			'Redmi Note 13 Pro con cámara de 200 MP, pantalla AMOLED de 6,67" y carga de 67W.',
 		warranty_months: 12,
@@ -99,11 +107,13 @@ const shopData: ProductFull[] = [
 		created_at: "2024-01-01T00:00:00.000Z",
 		updated_at: "2024-01-01T00:00:00.000Z",
 	},
+	// ── Tablets ───────────────────────────────────────────────────────────────
 	{
 		id: "a1b2c3d4-0007-0000-0000-000000000007",
 		name: 'Apple iPad Pro M4 11" 256GB',
 		brand: "Apple",
 		base_model: "iPad Pro M4 11-inch",
+		category: "tablet",
 		description:
 			'iPad Pro con chip M4, pantalla Ultra Retina XDR OLED de 11" y conectividad WiFi 6E.',
 		warranty_months: 12,
@@ -120,6 +130,7 @@ const shopData: ProductFull[] = [
 		name: "Samsung Galaxy Tab S9 FE 128GB",
 		brand: "Samsung",
 		base_model: "Galaxy Tab S9 FE",
+		category: "tablet",
 		description:
 			'Galaxy Tab S9 FE con pantalla TFT LCD de 10,9", S Pen incluido y batería de 8000 mAh.',
 		warranty_months: 12,
@@ -130,6 +141,199 @@ const shopData: ProductFull[] = [
 		price_from: 379.0,
 		created_at: "2024-01-01T00:00:00.000Z",
 		updated_at: "2024-01-01T00:00:00.000Z",
+	},
+	// ── Smartwatch ────────────────────────────────────────────────────────────
+	{
+		id: "a1b2c3d4-0009-0000-0000-000000000009",
+		name: "Apple Watch Series 9 41mm",
+		brand: "Apple",
+		base_model: "Apple Watch Series 9",
+		category: "smartwatch",
+		description:
+			"Apple Watch Series 9 con chip S9, pantalla Always-On Retina y detección de caída. GPS + Cellular.",
+		warranty_months: 12,
+		is_published: true,
+		primary_image_url: "/images/products/product-1-bg-1.png",
+		variant_count: 3,
+		total_stock: 8,
+		price_from: 399.0,
+		created_at: "2024-02-01T00:00:00.000Z",
+		updated_at: "2024-02-01T00:00:00.000Z",
+	},
+	{
+		id: "a1b2c3d4-0010-0000-0000-000000000010",
+		name: "Samsung Galaxy Watch 6 Classic 47mm",
+		brand: "Samsung",
+		base_model: "Galaxy Watch 6 Classic",
+		category: "smartwatch",
+		description:
+			"Galaxy Watch 6 Classic con bisel giratorio, monitorización de salud avanzada y batería de larga duración.",
+		warranty_months: 12,
+		is_published: true,
+		primary_image_url: "/images/products/product-2-bg-1.png",
+		variant_count: 2,
+		total_stock: 6,
+		price_from: 299.0,
+		created_at: "2024-02-01T00:00:00.000Z",
+		updated_at: "2024-02-01T00:00:00.000Z",
+	},
+	// ── Auriculares ───────────────────────────────────────────────────────────
+	{
+		id: "a1b2c3d4-0011-0000-0000-000000000011",
+		name: "Apple AirPods Pro 2ª generación",
+		brand: "Apple",
+		base_model: "AirPods Pro 2",
+		category: "auriculares",
+		description:
+			"AirPods Pro con cancelación activa de ruido, modo Transparencia y chip H2. Hasta 30h de batería con estuche.",
+		warranty_months: 12,
+		is_published: true,
+		primary_image_url: "/images/products/product-3-bg-1.png",
+		variant_count: 1,
+		total_stock: 15,
+		price_from: 229.0,
+		created_at: "2024-02-01T00:00:00.000Z",
+		updated_at: "2024-02-01T00:00:00.000Z",
+	},
+	{
+		id: "a1b2c3d4-0012-0000-0000-000000000012",
+		name: "Samsung Galaxy Buds2 Pro",
+		brand: "Samsung",
+		base_model: "Galaxy Buds2 Pro",
+		category: "auriculares",
+		description:
+			"Auriculares inalámbricos con ANC inteligente, sonido Hi-Fi 24bit y modo Ambiente.",
+		warranty_months: 12,
+		is_published: true,
+		primary_image_url: "/images/products/product-4-bg-1.png",
+		variant_count: 2,
+		total_stock: 12,
+		price_from: 149.0,
+		created_at: "2024-02-01T00:00:00.000Z",
+		updated_at: "2024-02-01T00:00:00.000Z",
+	},
+	// ── Fundas y Protectores ──────────────────────────────────────────────────
+	{
+		id: "a1b2c3d4-0013-0000-0000-000000000013",
+		name: "Funda iPhone 15 Pro Silicona",
+		brand: "Apple",
+		base_model: "Funda iPhone 15 Pro",
+		category: "fundas_protectores",
+		description:
+			"Funda de silicona oficial compatible con iPhone 15 Pro. Material suave con interior de microfibra.",
+		warranty_months: 0,
+		is_published: true,
+		primary_image_url: "/images/products/product-5-bg-1.png",
+		variant_count: 4,
+		total_stock: 40,
+		price_from: 29.0,
+		created_at: "2024-03-01T00:00:00.000Z",
+		updated_at: "2024-03-01T00:00:00.000Z",
+	},
+	{
+		id: "a1b2c3d4-0014-0000-0000-000000000014",
+		name: "Cristal Templado Samsung S24 Ultra",
+		brand: "Samsung",
+		base_model: "Protector S24 Ultra",
+		category: "fundas_protectores",
+		description:
+			"Protector de pantalla de cristal templado 9H con bordes curvados para Samsung Galaxy S24 Ultra.",
+		warranty_months: 0,
+		is_published: true,
+		primary_image_url: "/images/products/product-6-bg-1.png",
+		variant_count: 1,
+		total_stock: 60,
+		price_from: 12.0,
+		created_at: "2024-03-01T00:00:00.000Z",
+		updated_at: "2024-03-01T00:00:00.000Z",
+	},
+	// ── Cargadores y Cables ───────────────────────────────────────────────────
+	{
+		id: "a1b2c3d4-0015-0000-0000-000000000015",
+		name: "Cargador USB-C 65W GaN",
+		brand: "Genérico",
+		base_model: "Cargador GaN 65W",
+		category: "cargadores_cables",
+		description:
+			"Cargador USB-C GaN de 65W compatible con iPhone, Samsung, Xiaomi y portátiles. Carga rápida PD 3.0.",
+		warranty_months: 6,
+		is_published: true,
+		primary_image_url: "/images/products/product-7-bg-1.png",
+		variant_count: 1,
+		total_stock: 35,
+		price_from: 25.0,
+		created_at: "2024-03-01T00:00:00.000Z",
+		updated_at: "2024-03-01T00:00:00.000Z",
+	},
+	// ── Power Bank ────────────────────────────────────────────────────────────
+	{
+		id: "a1b2c3d4-0016-0000-0000-000000000016",
+		name: "Power Bank MagSafe 10.000 mAh",
+		brand: "Genérico",
+		base_model: "PowerBank MagSafe 10K",
+		category: "power_bank",
+		description:
+			"Batería externa magnética compatible con MagSafe y Qi. 10.000 mAh, carga inalámbrica 15W.",
+		warranty_months: 6,
+		is_published: true,
+		primary_image_url: "/images/products/product-8-bg-1.png",
+		variant_count: 2,
+		total_stock: 20,
+		price_from: 49.0,
+		created_at: "2024-03-01T00:00:00.000Z",
+		updated_at: "2024-03-01T00:00:00.000Z",
+	},
+	// ── Guess ─────────────────────────────────────────────────────────────────
+	{
+		id: "a1b2c3d4-0017-0000-0000-000000000017",
+		name: "Funda Guess iPhone 15 Pro Max Piel",
+		brand: "Guess",
+		base_model: "Funda Guess iPhone 15 Pro Max",
+		category: "guess",
+		description:
+			"Funda de piel genuina Guess con logo metálico para iPhone 15 Pro Max. Disponible en negro y marrón.",
+		warranty_months: 0,
+		is_published: true,
+		primary_image_url: "/images/products/product-1-bg-1.png",
+		variant_count: 2,
+		total_stock: 14,
+		price_from: 49.0,
+		created_at: "2024-04-01T00:00:00.000Z",
+		updated_at: "2024-04-01T00:00:00.000Z",
+	},
+	{
+		id: "a1b2c3d4-0018-0000-0000-000000000018",
+		name: "Auriculares Guess Bluetooth TWS",
+		brand: "Guess",
+		base_model: "Guess TWS",
+		category: "guess",
+		description:
+			"Auriculares Bluetooth Guess con logo bordado, cancelación de ruido y estuche de carga. Hasta 24h de batería.",
+		warranty_months: 6,
+		is_published: true,
+		primary_image_url: "/images/products/product-2-bg-1.png",
+		variant_count: 1,
+		total_stock: 9,
+		price_from: 89.0,
+		created_at: "2024-04-01T00:00:00.000Z",
+		updated_at: "2024-04-01T00:00:00.000Z",
+	},
+	{
+		id: "a1b2c3d4-0019-0000-0000-000000000019",
+		name: "Bolso Guess Crossbody Mini",
+		brand: "Guess",
+		base_model: "Guess Mini Crossbody",
+		category: "guess",
+		description:
+			"Bolso bandolera Guess de piel sintética con varios compartimentos. Incluye correa desmontable.",
+		warranty_months: 0,
+		is_published: true,
+		primary_image_url: "/images/products/product-3-bg-1.png",
+		variant_count: 3,
+		total_stock: 7,
+		price_from: 79.0,
+		created_at: "2024-04-01T00:00:00.000Z",
+		updated_at: "2024-04-01T00:00:00.000Z",
 	},
 ];
 

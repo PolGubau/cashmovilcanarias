@@ -3,6 +3,7 @@
 import { createClient } from "@/lib/supabase/server";
 import type {
 	Product,
+	ProductCategory,
 	ProductFull,
 	ProductImage,
 	ProductInsert,
@@ -23,6 +24,7 @@ export type ProductWithRelations = Product & {
 export async function getProducts(filters?: {
 	published?: boolean;
 	brand?: string;
+	category?: ProductCategory;
 	search?: string;
 }): Promise<ProductFull[]> {
 	const supabase = (await createClient()) as any;
@@ -33,6 +35,7 @@ export async function getProducts(filters?: {
 	if (filters?.published !== undefined)
 		query = query.eq("is_published", filters.published);
 	if (filters?.brand) query = query.ilike("brand", `%${filters.brand}%`);
+	if (filters?.category) query = query.eq("category", filters.category);
 	if (filters?.search)
 		query = query.or(
 			`name.ilike.%${filters.search}%,brand.ilike.%${filters.search}%,base_model.ilike.%${filters.search}%`,
@@ -166,6 +169,7 @@ export async function deleteVariant(
 
 export async function getPublishedProducts(filters?: {
 	brand?: string;
+	category?: ProductCategory;
 	condition?: string;
 	search?: string;
 	maxPrice?: number;
@@ -178,6 +182,7 @@ export async function getPublishedProducts(filters?: {
 		.order("created_at", { ascending: false });
 
 	if (filters?.brand) query = query.ilike("brand", `%${filters.brand}%`);
+	if (filters?.category) query = query.eq("category", filters.category);
 	if (filters?.search)
 		query = query.or(
 			`name.ilike.%${filters.search}%,brand.ilike.%${filters.search}%,base_model.ilike.%${filters.search}%`,
@@ -186,7 +191,7 @@ export async function getPublishedProducts(filters?: {
 	const { data, error } = await query;
 	if (error) throw new Error(error.message);
 
-	// condition filter is applied on variants (in-memory after fetch)
+	// condition filter applied in-memory on variants
 	let results = (data ?? []) as ProductWithRelations[];
 	if (filters?.condition) {
 		results = results.filter((p) =>

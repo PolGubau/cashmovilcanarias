@@ -1,43 +1,77 @@
-const data = [
+import type { Category } from "@/types/category";
+
+const data: Category[] = [
 	{
-		title: "iPhone",
 		id: 1,
+		title: "iPhone",
 		img: "/images/categories/categories-01.png",
+		href: "/tienda?brand=Apple&category=smartphone",
 	},
 	{
-		title: "Samsung",
 		id: 2,
+		title: "Samsung",
 		img: "/images/categories/categories-02.png",
+		href: "/tienda?brand=Samsung&category=smartphone",
 	},
 	{
-		title: "Xiaomi",
 		id: 3,
+		title: "Xiaomi",
 		img: "/images/categories/categories-03.png",
+		href: "/tienda?brand=Xiaomi&category=smartphone",
 	},
 	{
-		title: "iPad",
 		id: 4,
+		title: "iPad",
 		img: "/images/categories/categories-04.png",
+		href: "/tienda?brand=Apple&category=tablet",
 	},
 	{
-		title: "Tablets Android",
 		id: 5,
+		title: "Tablets Android",
 		img: "/images/categories/categories-05.png",
+		href: "/tienda?category=tablet",
 	},
 	{
-		title: "OnePlus",
 		id: 6,
+		title: "Smartwatch",
 		img: "/images/categories/categories-06.png",
+		href: "/tienda?category=smartwatch",
 	},
 	{
-		title: "Reacondicionados",
 		id: 7,
+		title: "Auriculares",
 		img: "/images/categories/categories-07.png",
+		href: "/tienda?category=auriculares",
 	},
 	{
-		title: "Accesorios",
 		id: 8,
+		title: "Fundas",
 		img: "/images/categories/categories-04.png",
+		href: "/tienda?category=fundas_protectores",
+	},
+	{
+		id: 9,
+		title: "Cargadores",
+		img: "/images/categories/categories-05.png",
+		href: "/tienda?category=cargadores_cables",
+	},
+	{
+		id: 10,
+		title: "Power Bank",
+		img: "/images/categories/categories-06.png",
+		href: "/tienda?category=power_bank",
+	},
+	{
+		id: 11,
+		title: "Guess",
+		img: "/images/categories/categories-03.png",
+		href: "/tienda?category=guess",
+	},
+	{
+		id: 12,
+		title: "Reacondicionados",
+		img: "/images/categories/categories-07.png",
+		href: "/tienda?condition=like_new",
 	},
 ];
 

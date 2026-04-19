@@ -5,4 +5,6 @@ export type Category = {
 	image_url?: string | null;
 	title?: string;
 	img?: string;
+	/** URL destino al hacer clic en la categoría (e.g. /tienda?category=smartwatch) */
+	href?: string;
 };
