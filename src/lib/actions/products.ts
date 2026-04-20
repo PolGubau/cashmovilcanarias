@@ -119,6 +119,20 @@ export async function toggleProductPublished(
 	return updateProduct(id, { is_published: published });
 }
 
+export async function deleteProduct(id: string): Promise<void> {
+	const supabase = (await createClient()) as any;
+
+	// Delete related data first to respect FK constraints
+	await supabase.from("product_images").delete().eq("product_id", id);
+	await supabase.from("product_variants").delete().eq("product_id", id);
+
+	const { error } = await supabase.from("products").delete().eq("id", id);
+	if (error) throw new Error(error.message);
+
+	revalidatePath("/admin/products");
+	revalidatePath("/");
+}
+
 // ─── Variants ────────────────────────────────────────────────────────────────
 
 export async function createVariant(

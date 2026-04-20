@@ -1,3 +1,4 @@
+import DeleteProductButton from "@/components/admin/DeleteProductButton";
 import PageHeader from "@/components/admin/PageHeader";
 import ProductForm from "@/components/admin/ProductForm";
 import { getProductById } from "@/lib/actions/products";
@@ -42,6 +43,7 @@ export default async function ProductEditPage({
         ]
           .filter(Boolean)
           .join(" · ")}
+        action={<DeleteProductButton productId={product.id} />}
       />
 
       <ProductForm
