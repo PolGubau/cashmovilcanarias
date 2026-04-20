@@ -5,7 +5,7 @@ import { createDevice } from "@/lib/actions/devices";
 import type { ProductOption, VariantOption } from "@/lib/actions/products";
 import { getVariantsForSelect } from "@/lib/actions/products";
 import type { Customer } from "@/lib/supabase/types";
-import { formatCurrency } from "@/lib/utils";
+import { cn, formatCurrency } from "@/lib/utils";
 import { Link2, Package, Search, X } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
@@ -17,7 +17,7 @@ const CONDITION_LABELS: Record<string, string> = {
 
 // Airbnb-style shared classes
 const inputCls = "w-full border border-[#E6DECC] rounded-xl px-3 py-2.5 text-sm text-[#5C5955] bg-white placeholder:text-[#8F8F8F] focus:outline-none focus:ring-2 focus:ring-[#5E6AD2]/20 focus:border-[#5E6AD2] transition-colors";
-const selectCls = inputCls + " bg-white";
+const selectCls = cn(inputCls, "bg-white");
 
 interface Props {
   products: ProductOption[];
@@ -101,20 +101,20 @@ export default function DeviceForm({ products, suppliers = [] }: Props) {
   return (
     <form onSubmit={handleSubmit} className="max-w-2xl space-y-6">
       {error && (
-        <div className="bg-red-light-6 border border-red-light-4 rounded-lg px-4 py-3 text-sm text-red-dark">{error}</div>
+        <div className="border border-[#E25275]/30 bg-[#E25275]/5 rounded-xl px-4 py-3 text-sm text-[#E25275]">{error}</div>
       )}
 
       {/* Vinculación al catálogo */}
-      <div className="bg-blue/5 border border-blue/20 rounded-xl p-6 space-y-4">
+      <div className="bg-[#EEEBE4] border border-[#E6DECC] rounded-xl p-6 space-y-4">
         <div className="flex items-center gap-2">
-          <Link2 className="size-4 text-blue" />
-          <h2 className="font-semibold text-dark text-sm">Vincular al catálogo de productos</h2>
-          <span className="text-xs text-dark-4 ml-1">(opcional)</span>
+          <Link2 className="size-4 text-[#5C5955]" />
+          <h2 className="text-[15px] font-medium text-[#5C5955]">Vincular al catálogo de productos</h2>
+          <span className="text-xs text-[#8F8F8F] ml-1">(opcional)</span>
         </div>
-        <p className="text-xs text-dark-4">Al vincular, el stock de la tienda se actualiza automáticamente con este dispositivo.</p>
+        <p className="text-sm text-[#8F8F8F]">Al vincular, el stock de la tienda se actualiza automáticamente con este dispositivo.</p>
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-medium text-dark-3 mb-1.5">Producto</label>
+            <label className="block text-sm font-medium text-[#5C5955] mb-1.5">Producto</label>
             <select value={selectedProductId} onChange={(e) => handleProductChange(e.target.value)} className={selectCls}>
               <option value="">— Sin vincular —</option>
               {products.map((p) => (
@@ -123,7 +123,7 @@ export default function DeviceForm({ products, suppliers = [] }: Props) {
             </select>
           </div>
           <div>
-            <label className="block text-sm font-medium text-dark-3 mb-1.5">Variante</label>
+            <label className="block text-sm font-medium text-[#5C5955] mb-1.5">Variante</label>
             <select value={selectedVariantId} onChange={(e) => setSelectedVariantId(e.target.value)} disabled={!selectedProductId || loadingVariants} className={selectCls}>
               <option value="">— Selecciona variante —</option>
               {variants.map((v) => (
@@ -135,25 +135,25 @@ export default function DeviceForm({ products, suppliers = [] }: Props) {
           </div>
         </div>
         {selectedVariant && (
-          <div className="flex items-center gap-2 bg-white border border-blue/20 rounded-lg px-3 py-2">
-            <Package className="size-3.5 text-blue flex-shrink-0" />
-            <span className="text-xs text-dark">
+          <div className="flex items-center gap-2 bg-white border border-[#E6DECC] rounded-xl px-3 py-2">
+            <Package className="size-3.5 text-[#5C5955] flex-shrink-0" />
+            <span className="text-sm text-[#5C5955]">
               Precio de venta: <strong>{formatCurrency(selectedVariant.price)}</strong> · Stock actual: <strong>{selectedVariant.device_stock} uds</strong>
             </span>
           </div>
         )}
       </div>
 
-      <div className="bg-white rounded-xl border border-gray-3 p-6 space-y-4">
-        <h2 className="font-semibold text-dark border-b border-gray-3 pb-3">Identificación</h2>
+      <div className="bg-white rounded-xl border border-[#E6DECC] p-6 space-y-4">
+        <h2 className="text-[15px] font-medium text-[#5C5955] border-b border-[#E6DECC] pb-3">Identificación</h2>
         <div className="grid grid-cols-2 gap-4">
           <Field name="imei" label="IMEI *" placeholder="350000000000000" required />
           <Field name="imei2" label="IMEI 2" placeholder="350000000000001" />
         </div>
       </div>
 
-      <div className="bg-white rounded-xl border border-gray-3 p-6 space-y-4">
-        <h2 className="font-semibold text-dark border-b border-gray-3 pb-3">Dispositivo</h2>
+      <div className="bg-white rounded-xl border border-[#E6DECC] p-6 space-y-4">
+        <h2 className="text-[15px] font-medium text-[#5C5955] border-b border-[#E6DECC] pb-3">Dispositivo</h2>
         <div className="grid grid-cols-2 gap-4">
           <Field name="brand" label="Marca *" placeholder="Apple" required />
           <Field name="model" label="Modelo *" placeholder="iPhone 13 Pro" required />
@@ -162,13 +162,13 @@ export default function DeviceForm({ products, suppliers = [] }: Props) {
         </div>
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-medium text-dark-3 mb-1.5">Condición *</label>
+            <label className="block text-sm font-medium text-[#5C5955] mb-1.5">Condición *</label>
             <select name="condition" required className={selectCls}>
               {CONDITIONS.map((c) => <option key={c} value={c}>{CONDITION_LABELS[c]}</option>)}
             </select>
           </div>
           <div>
-            <label className="block text-sm font-medium text-dark-3 mb-1.5">Estado SIM</label>
+            <label className="block text-sm font-medium text-[#5C5955] mb-1.5">Estado SIM</label>
             <select name="unlock_status" className={selectCls}>
               <option value="">Desconocido</option>
               <option value="unlocked">Libre</option>
@@ -210,7 +210,8 @@ export default function DeviceForm({ products, suppliers = [] }: Props) {
                 onFocus={() => setSupplierOpen(true)}
                 onBlur={() => setTimeout(() => setSupplierOpen(false), 150)}
                 placeholder="Buscar proveedor por nombre..."
-                className={inputCls + " pl-9"}
+                id="supplier-search"
+                className={`${inputCls} pl-9`}
               />
               {supplierOpen && filteredSuppliers.length > 0 && (
                 <ul className="absolute z-10 mt-1 w-full bg-white border border-[#E6DECC] rounded-xl shadow-sm max-h-48 overflow-auto">
@@ -234,10 +235,10 @@ export default function DeviceForm({ products, suppliers = [] }: Props) {
         </div>
       </div>
 
-      <div className="bg-white rounded-xl border border-gray-3 p-6">
-        <h2 className="font-semibold text-dark border-b border-gray-3 pb-3 mb-4">Notas</h2>
+      <div className="bg-white rounded-xl border border-[#E6DECC] p-6">
+        <h2 className="text-[15px] font-medium text-[#5C5955] border-b border-[#E6DECC] pb-3 mb-4">Notas</h2>
         <textarea name="notes" rows={3} placeholder="Observaciones adicionales..."
-          className="w-full border border-gray-3 rounded-lg px-3 py-2.5 text-sm text-dark focus:outline-none focus:ring-2 focus:ring-blue/20 focus:border-blue resize-none" />
+          className="w-full border border-[#E6DECC] rounded-xl px-3 py-2.5 text-sm text-[#5C5955] placeholder:text-[#8F8F8F] focus:outline-none focus:ring-2 focus:ring-[#5E6AD2]/20 focus:border-[#5E6AD2] resize-none transition-colors" />
       </div>
 
       <div className="flex gap-3">
@@ -253,9 +254,9 @@ function Field({ name, label, placeholder, type = "text", required }: {
 }) {
   return (
     <div>
-      <label htmlFor={name} className="block text-sm font-medium text-dark-3 mb-1.5">{label}</label>
+      <label htmlFor={name} className="block text-sm font-medium text-[#5C5955] mb-1.5">{label}</label>
       <input id={name} name={name} type={type} placeholder={placeholder} required={required}
-        className="w-full border border-gray-3 rounded-lg px-3 py-2.5 text-sm text-dark focus:outline-none focus:ring-2 focus:ring-blue/20 focus:border-blue" />
+        className="w-full border border-[#E6DECC] rounded-xl px-3 py-2.5 text-sm text-[#5C5955] placeholder:text-[#8F8F8F] focus:outline-none focus:ring-2 focus:ring-[#5E6AD2]/20 focus:border-[#5E6AD2] transition-colors" />
     </div>
   );
 }
