@@ -213,8 +213,8 @@ const MyAccount = ({ user, orders, repairs }: MyAccountProps) => {
                     <tbody className="divide-y divide-gray-3">
                       {repairs.map((r) => (
                         <tr key={r.id} className="hover:bg-gray-1 transition-colors">
-                          <td className="py-3.5 px-5 text-dark">{r.device_description ?? "—"}</td>
-                          <td className="py-3.5 px-5 text-dark-4 max-w-[160px] truncate">{r.issue}</td>
+                          <td className="py-3.5 px-5 text-dark">{[r.device_brand, r.device_model].filter(Boolean).join(" ") || "—"}</td>
+                          <td className="py-3.5 px-5 text-dark-4 max-w-[160px] truncate">{r.description}</td>
                           <td className="py-3.5 px-5"><StatusBadge status={r.status} type="repair" /></td>
                           <td className="py-3.5 px-5 text-dark-4">{formatDate(r.received_at)}</td>
                           <td className="py-3.5 px-5 text-right font-medium text-dark">{r.cost != null ? formatCurrency(r.cost) : "—"}</td>

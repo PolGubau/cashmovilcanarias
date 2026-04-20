@@ -32,8 +32,10 @@ export async function proxy(request: NextRequest) {
 		data: { user },
 	} = await supabase.auth.getUser();
 
-	const isAdminRoute = request.nextUrl.pathname.startsWith("/admin");
-	const isLoginPage = request.nextUrl.pathname === "/admin/login";
+	const { pathname } = request.nextUrl;
+	const isAdminRoute = pathname.startsWith("/admin");
+	const isLoginPage = pathname === "/admin/login";
+	const isMyAccount = pathname === "/my-account";
 
 	if (isAdminRoute && !isLoginPage && !user) {
 		const loginUrl = request.nextUrl.clone();
@@ -45,6 +47,12 @@ export async function proxy(request: NextRequest) {
 		const dashboardUrl = request.nextUrl.clone();
 		dashboardUrl.pathname = "/admin";
 		return NextResponse.redirect(dashboardUrl);
+	}
+
+	if (isMyAccount && !user) {
+		const signinUrl = request.nextUrl.clone();
+		signinUrl.pathname = "/signin";
+		return NextResponse.redirect(signinUrl);
 	}
 
 	return supabaseResponse;

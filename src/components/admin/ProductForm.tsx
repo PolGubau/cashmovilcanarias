@@ -26,6 +26,8 @@ import { Plus, Trash2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
+const selectCls = "w-full h-9 border border-gray-3 rounded-lg px-3 text-sm text-dark bg-white focus:outline-none focus:ring-2 focus:ring-blue/20 focus:border-blue";
+
 const CONDITIONS = ["new", "like_new"] as const;
 const CONDITION_LABELS: Record<string, string> = {
   new: "Nuevo",
@@ -236,7 +238,7 @@ export default function ProductForm({
               id="category"
               name="category"
               defaultValue={initialProduct?.category ?? ""}
-              className="mt-1.5 w-full h-9 border border-gray-3 rounded-lg px-3 text-sm text-dark bg-white focus:outline-none focus:ring-2 focus:ring-blue/20 focus:border-blue"
+              className={`mt-1.5 ${selectCls}`}
             >
               <option value="">Sin categoría</option>
               {CATEGORY_OPTIONS.map(([value, label]) => (
@@ -313,7 +315,7 @@ export default function ProductForm({
                 <select
                   value={v.condition}
                   onChange={(e) => updateVariantRow(i, "condition", e.target.value)}
-                  className="mt-1 w-full h-9 border border-gray-3 rounded-lg px-3 text-sm text-dark bg-white focus:outline-none focus:ring-2 focus:ring-blue/20 focus:border-blue"
+                  className={`mt-1 ${selectCls}`}
                 >
                   {CONDITIONS.map((c) => (
                     <option key={c} value={c}>
