@@ -1,9 +1,11 @@
 import DataTable from "@/components/admin/DataTable";
 import PageHeader from "@/components/admin/PageHeader";
+import SearchInput from "@/components/admin/SearchInput";
 import StatusBadge from "@/components/admin/StatusBadge";
 import { getRepairs } from "@/lib/actions/repairs";
 import type { RepairFull } from "@/lib/supabase/types";
 import Link from "next/link";
+import { Suspense } from "react";
 
 export const dynamic = "force-dynamic";
 
@@ -82,17 +84,22 @@ export default async function RepairsPage({
         action={{ label: "Nueva reparación", href: "/admin/repairs/new" }}
       />
 
-      <div className="flex gap-2 mb-6 flex-wrap">
-        <Link href="/admin/repairs"
-          className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors ${!searchParams.status ? "bg-dark text-white border-dark" : "bg-white text-dark-4 border-gray-3 hover:border-dark"}`}>
-          Todas
-        </Link>
-        {statuses.map((s) => (
-          <Link key={s} href={`/admin/repairs?status=${s}`}
-            className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors ${searchParams.status === s ? "bg-dark text-white border-dark" : "bg-white text-dark-4 border-gray-3 hover:border-dark"}`}>
-            {s.replace(/_/g, " ")}
+      <div className="flex items-center gap-3 mb-6 flex-wrap">
+        <div className="flex gap-2 flex-wrap flex-1">
+          <Link href="/admin/repairs"
+            className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors ${!searchParams.status ? "bg-dark text-white border-dark" : "bg-white text-dark-4 border-gray-3 hover:border-dark"}`}>
+            Todas
           </Link>
-        ))}
+          {statuses.map((s) => (
+            <Link key={s} href={`/admin/repairs?status=${s}`}
+              className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors ${searchParams.status === s ? "bg-dark text-white border-dark" : "bg-white text-dark-4 border-gray-3 hover:border-dark"}`}>
+              {s.replace(/_/g, " ")}
+            </Link>
+          ))}
+        </div>
+        <Suspense>
+          <SearchInput placeholder="Buscar cliente o IMEI..." />
+        </Suspense>
       </div>
 
       <DataTable columns={columns} data={repairs ?? []} emptyMessage="No hay reparaciones" />

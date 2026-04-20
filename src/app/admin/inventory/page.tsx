@@ -1,9 +1,11 @@
 import DataTable from "@/components/admin/DataTable";
 import PageHeader from "@/components/admin/PageHeader";
+import SearchInput from "@/components/admin/SearchInput";
 import StatusBadge from "@/components/admin/StatusBadge";
 import { getDevices } from "@/lib/actions/devices";
 import type { DeviceFull } from "@/lib/supabase/types";
 import Link from "next/link";
+import { Suspense } from "react";
 
 export const dynamic = "force-dynamic";
 
@@ -95,17 +97,22 @@ export default async function InventoryPage({
       />
 
       {/* Filters */}
-      <div className="flex gap-2 mb-6 flex-wrap">
-        <Link href="/admin/inventory"
-          className={`px-3 py-1.5 rounded-lg text-[12px] font-medium border transition-colors ${!searchParams.status ? "bg-gray-900 text-white border-gray-900" : "bg-white text-gray-500 border-gray-200 hover:border-gray-400 hover:text-gray-700"}`}>
-          Todos
-        </Link>
-        {statuses.map((s) => (
-          <Link key={s} href={`/admin/inventory?status=${s}`}
-            className={`px-3 py-1.5 rounded-lg text-[12px] font-medium border transition-colors ${searchParams.status === s ? "bg-gray-900 text-white border-gray-900" : "bg-white text-gray-500 border-gray-200 hover:border-gray-400 hover:text-gray-700"}`}>
-            {s.replace("_", " ")}
+      <div className="flex items-center gap-3 mb-6 flex-wrap">
+        <div className="flex gap-2 flex-wrap flex-1">
+          <Link href="/admin/inventory"
+            className={`px-3 py-1.5 rounded-lg text-[12px] font-medium border transition-colors ${!searchParams.status ? "bg-gray-900 text-white border-gray-900" : "bg-white text-gray-500 border-gray-200 hover:border-gray-400 hover:text-gray-700"}`}>
+            Todos
           </Link>
-        ))}
+          {statuses.map((s) => (
+            <Link key={s} href={`/admin/inventory?status=${s}`}
+              className={`px-3 py-1.5 rounded-lg text-[12px] font-medium border transition-colors ${searchParams.status === s ? "bg-gray-900 text-white border-gray-900" : "bg-white text-gray-500 border-gray-200 hover:border-gray-400 hover:text-gray-700"}`}>
+              {s.replace("_", " ")}
+            </Link>
+          ))}
+        </div>
+        <Suspense>
+          <SearchInput placeholder="Buscar IMEI, marca o modelo..." />
+        </Suspense>
       </div>
 
       <DataTable

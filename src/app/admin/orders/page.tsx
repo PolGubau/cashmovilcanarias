@@ -1,18 +1,20 @@
 import DataTable from "@/components/admin/DataTable";
 import PageHeader from "@/components/admin/PageHeader";
+import SearchInput from "@/components/admin/SearchInput";
 import StatusBadge from "@/components/admin/StatusBadge";
 import { getOrders } from "@/lib/actions/orders";
 import type { OrderFull } from "@/lib/supabase/types";
 import Link from "next/link";
+import { Suspense } from "react";
 
 export const dynamic = "force-dynamic";
 
 export default async function OrdersPage({
   searchParams,
 }: {
-  searchParams: { status?: string };
+  searchParams: { status?: string; search?: string };
 }) {
-  const orders = await getOrders({ status: searchParams.status }).catch(() => []);
+  const orders = await getOrders({ status: searchParams.status, search: searchParams.search }).catch(() => []);
   const statuses = ["pending", "confirmed", "completed", "cancelled", "refunded"];
 
   const columns = [
@@ -78,17 +80,22 @@ export default async function OrdersPage({
         action={{ label: "Nueva venta", href: "/admin/orders/new" }}
       />
 
-      <div className="flex gap-2 mb-6 flex-wrap">
-        <Link href="/admin/orders"
-          className={`px-3 py-1.5 rounded-lg text-[12px] font-medium border transition-colors ${!searchParams.status ? "bg-gray-900 text-white border-gray-900" : "bg-white text-gray-500 border-gray-200 hover:border-gray-400 hover:text-gray-700"}`}>
-          Todas
-        </Link>
-        {statuses.map((s) => (
-          <Link key={s} href={`/admin/orders?status=${s}`}
-            className={`px-3 py-1.5 rounded-lg text-[12px] font-medium border transition-colors ${searchParams.status === s ? "bg-gray-900 text-white border-gray-900" : "bg-white text-gray-500 border-gray-200 hover:border-gray-400 hover:text-gray-700"}`}>
-            {s}
+      <div className="flex items-center gap-3 mb-6 flex-wrap">
+        <div className="flex gap-2 flex-wrap flex-1">
+          <Link href="/admin/orders"
+            className={`px-3 py-1.5 rounded-lg text-[12px] font-medium border transition-colors ${!searchParams.status ? "bg-gray-900 text-white border-gray-900" : "bg-white text-gray-500 border-gray-200 hover:border-gray-400 hover:text-gray-700"}`}>
+            Todas
           </Link>
-        ))}
+          {statuses.map((s) => (
+            <Link key={s} href={`/admin/orders?status=${s}`}
+              className={`px-3 py-1.5 rounded-lg text-[12px] font-medium border transition-colors ${searchParams.status === s ? "bg-gray-900 text-white border-gray-900" : "bg-white text-gray-500 border-gray-200 hover:border-gray-400 hover:text-gray-700"}`}>
+              {s}
+            </Link>
+          ))}
+        </div>
+        <Suspense>
+          <SearchInput placeholder="Buscar cliente o factura..." />
+        </Suspense>
       </div>
 
       <DataTable columns={columns} data={orders ?? []} emptyMessage="No hay ventas registradas" />
