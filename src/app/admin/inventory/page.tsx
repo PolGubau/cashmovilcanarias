@@ -37,6 +37,18 @@ export default async function InventoryPage({
         </div>
       ),
     },
+    {
+      key: "product",
+      label: "Producto catálogo",
+      render: (d: DeviceFull) =>
+        d.product_name ? (
+          <Link href={`/admin/products/${d.product_id}`} className="text-xs text-blue hover:underline">
+            {d.product_name}
+          </Link>
+        ) : (
+          <span className="text-xs text-gray-400 italic">Sin vincular</span>
+        ),
+    },
     { key: "condition", label: "Estado físico", render: (d: DeviceFull) => d.condition },
     {
       key: "status",

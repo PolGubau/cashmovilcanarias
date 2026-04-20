@@ -5,7 +5,7 @@ import { getProducts } from "@/lib/actions/products";
 import { toggleProductPublished } from "@/lib/actions/products";
 import type { ProductFull } from "@/lib/supabase/types";
 import { formatCurrency } from "@/lib/utils";
-import { Eye, EyeOff, Package, Plus } from "lucide-react";
+import { Eye, EyeOff, Package, Plus, Smartphone } from "lucide-react";
 import Link from "next/link";
 
 export const dynamic = "force-dynamic";
@@ -40,7 +40,10 @@ export default async function ProductsPage() {
             <thead>
               <tr className="border-b border-gray-3 bg-gray-1">
                 <th className="text-left py-3 px-4 font-medium text-dark-3">Producto</th>
-                <th className="text-left py-3 px-4 font-medium text-dark-3">Stock</th>
+                <th className="text-left py-3 px-4 font-medium text-dark-3">
+                  Stock real
+                  <span className="ml-1 text-[10px] text-dark-4 font-normal">(desde inventario)</span>
+                </th>
                 <th className="text-left py-3 px-4 font-medium text-dark-3">Desde</th>
                 <th className="text-left py-3 px-4 font-medium text-dark-3">Garantía</th>
                 <th className="text-left py-3 px-4 font-medium text-dark-3">Estado</th>

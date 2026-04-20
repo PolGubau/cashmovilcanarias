@@ -2,6 +2,9 @@ import PageHeader from "@/components/admin/PageHeader";
 import StatusBadge from "@/components/admin/StatusBadge";
 import { getDeviceAuditTrail } from "@/lib/actions/audit";
 import { getDeviceById } from "@/lib/actions/devices";
+import { formatCurrency } from "@/lib/utils";
+import { ExternalLink } from "lucide-react";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 
 export const dynamic = "force-dynamic";
@@ -66,11 +69,41 @@ export default async function DeviceDetailPage({ params }: { params: { id: strin
           )}
         </div>
 
-        {/* Sidebar: status + audit trail */}
+        {/* Sidebar: status + catalogue link + audit trail */}
         <div className="space-y-6">
           <Section title="Estado actual">
             <StatusBadge status={device.status} type="device" />
           </Section>
+
+          {/* Product catalogue link */}
+          {device.product_name ? (
+            <Section title="Producto en catálogo">
+              <div className="space-y-2">
+                <Link
+                  href={`/admin/products/${device.product_id}`}
+                  className="flex items-center gap-1.5 text-sm font-medium text-blue hover:underline"
+                >
+                  {device.product_name}
+                  <ExternalLink className="size-3" />
+                </Link>
+                <div className="text-xs text-dark-4 space-y-0.5">
+                  {device.variant_capacity && <p>Capacidad: {device.variant_capacity}</p>}
+                  {device.variant_color && <p>Color: {device.variant_color}</p>}
+                  {device.variant_condition && <p>Condición: {device.variant_condition}</p>}
+                  {device.variant_price != null && (
+                    <p className="font-medium text-dark-3">Precio venta: {formatCurrency(device.variant_price)}</p>
+                  )}
+                </div>
+              </div>
+            </Section>
+          ) : (
+            <Section title="Producto en catálogo">
+              <p className="text-xs text-dark-4 italic">Sin vincular al catálogo</p>
+              <Link href="/admin/products" className="text-xs text-blue hover:underline mt-1 inline-block">
+                Ver productos →
+              </Link>
+            </Section>
+          )}
 
           <Section title="Historial de movimientos">
             {trail?.length === 0 ? (

@@ -6,6 +6,8 @@ const nextConfig = {
       { protocol: "https", hostname: "images.samsung.com" },
       { protocol: "https", hostname: "i01.appmifile.com" },
       { protocol: "https", hostname: "lh3.googleusercontent.com" },
+      // Supabase Storage (product images)
+      { protocol: "https", hostname: "*.supabase.co" },
     ],
   },
 };

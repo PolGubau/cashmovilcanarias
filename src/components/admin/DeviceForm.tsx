@@ -1,8 +1,11 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { getCustomers } from "@/lib/actions/customers";
 import { createDevice } from "@/lib/actions/devices";
+import type { ProductOption, VariantOption } from "@/lib/actions/products";
+import { getVariantsForSelect } from "@/lib/actions/products";
+import { formatCurrency } from "@/lib/utils";
+import { Link2, Package } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
@@ -11,10 +14,32 @@ const CONDITION_LABELS: Record<string, string> = {
   new: "Nuevo", excellent: "Excelente", good: "Bueno", fair: "Regular", poor: "Malo", parts_only: "Solo piezas",
 };
 
-export default function DeviceForm() {
+const selectCls = "w-full border border-gray-3 rounded-lg px-3 py-2.5 text-sm text-dark bg-white focus:outline-none focus:ring-2 focus:ring-blue/20 focus:border-blue";
+
+interface Props { products: ProductOption[] }
+
+export default function DeviceForm({ products }: Props) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [selectedProductId, setSelectedProductId] = useState<string>("");
+  const [variants, setVariants] = useState<VariantOption[]>([]);
+  const [loadingVariants, setLoadingVariants] = useState(false);
+  const [selectedVariantId, setSelectedVariantId] = useState<string>("");
+
+  async function handleProductChange(productId: string) {
+    setSelectedProductId(productId);
+    setSelectedVariantId("");
+    setVariants([]);
+    if (!productId) return;
+    setLoadingVariants(true);
+    try {
+      const v = await getVariantsForSelect(productId);
+      setVariants(v);
+    } finally {
+      setLoadingVariants(false);
+    }
+  }
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -39,11 +64,8 @@ export default function DeviceForm() {
         unlock_status: (form.get("unlock_status") as string) || null,
         battery_health: form.get("battery_health") ? Number(form.get("battery_health")) : null,
         notes: (form.get("notes") as string) || null,
-        sale_price: null,
-        sold_at: null,
-        buyer_id: null,
-        images: null,
-        created_by: null,
+        product_variant_id: selectedVariantId || null,
+        sale_price: null, sold_at: null, buyer_id: null, images: null, created_by: null,
       });
       router.push("/admin/inventory");
     } catch (err: any) {
@@ -53,13 +75,53 @@ export default function DeviceForm() {
     }
   }
 
+  const selectedVariant = variants.find((v) => v.id === selectedVariantId);
+
   return (
     <form onSubmit={handleSubmit} className="max-w-2xl space-y-6">
       {error && (
-        <div className="bg-red-light-6 border border-red-light-4 rounded-lg px-4 py-3 text-sm text-red-dark">
-          {error}
-        </div>
+        <div className="bg-red-light-6 border border-red-light-4 rounded-lg px-4 py-3 text-sm text-red-dark">{error}</div>
       )}
+
+      {/* Vinculación al catálogo */}
+      <div className="bg-blue/5 border border-blue/20 rounded-xl p-6 space-y-4">
+        <div className="flex items-center gap-2">
+          <Link2 className="size-4 text-blue" />
+          <h2 className="font-semibold text-dark text-sm">Vincular al catálogo de productos</h2>
+          <span className="text-xs text-dark-4 ml-1">(opcional)</span>
+        </div>
+        <p className="text-xs text-dark-4">Al vincular, el stock de la tienda se actualiza automáticamente con este dispositivo.</p>
+        <div className="grid grid-cols-2 gap-4">
+          <div>
+            <label className="block text-sm font-medium text-dark-3 mb-1.5">Producto</label>
+            <select value={selectedProductId} onChange={(e) => handleProductChange(e.target.value)} className={selectCls}>
+              <option value="">— Sin vincular —</option>
+              {products.map((p) => (
+                <option key={p.id} value={p.id}>{p.brand} · {p.name}</option>
+              ))}
+            </select>
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-dark-3 mb-1.5">Variante</label>
+            <select value={selectedVariantId} onChange={(e) => setSelectedVariantId(e.target.value)} disabled={!selectedProductId || loadingVariants} className={selectCls}>
+              <option value="">— Selecciona variante —</option>
+              {variants.map((v) => (
+                <option key={v.id} value={v.id}>
+                  {[v.capacity, v.color, v.condition].filter(Boolean).join(" · ")} — {formatCurrency(v.price)} ({v.device_stock} en stock)
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
+        {selectedVariant && (
+          <div className="flex items-center gap-2 bg-white border border-blue/20 rounded-lg px-3 py-2">
+            <Package className="size-3.5 text-blue flex-shrink-0" />
+            <span className="text-xs text-dark">
+              Precio de venta: <strong>{formatCurrency(selectedVariant.price)}</strong> · Stock actual: <strong>{selectedVariant.device_stock} uds</strong>
+            </span>
+          </div>
+        )}
+      </div>
 
       <div className="bg-white rounded-xl border border-gray-3 p-6 space-y-4">
         <h2 className="font-semibold text-dark border-b border-gray-3 pb-3">Identificación</h2>
@@ -80,13 +142,13 @@ export default function DeviceForm() {
         <div className="grid grid-cols-2 gap-4">
           <div>
             <label className="block text-sm font-medium text-dark-3 mb-1.5">Condición *</label>
-            <select name="condition" required className="w-full border border-gray-3 rounded-lg px-3 py-2.5 text-sm text-dark bg-white focus:outline-none focus:ring-2 focus:ring-blue/20 focus:border-blue">
+            <select name="condition" required className={selectCls}>
               {CONDITIONS.map((c) => <option key={c} value={c}>{CONDITION_LABELS[c]}</option>)}
             </select>
           </div>
           <div>
             <label className="block text-sm font-medium text-dark-3 mb-1.5">Estado SIM</label>
-            <select name="unlock_status" className="w-full border border-gray-3 rounded-lg px-3 py-2.5 text-sm text-dark bg-white focus:outline-none focus:ring-2 focus:ring-blue/20 focus:border-blue">
+            <select name="unlock_status" className={selectCls}>
               <option value="">Desconocido</option>
               <option value="unlocked">Libre</option>
               <option value="locked">Bloqueado</option>
@@ -113,12 +175,8 @@ export default function DeviceForm() {
       </div>
 
       <div className="flex gap-3">
-        <Button type="submit" loading={loading}>
-          {loading ? "Guardando..." : "Registrar dispositivo"}
-        </Button>
-        <Button type="button" variant="outline" onClick={() => router.back()}>
-          Cancelar
-        </Button>
+        <Button type="submit" loading={loading}>Registrar dispositivo</Button>
+        <Button type="button" variant="outline" onClick={() => router.back()}>Cancelar</Button>
       </div>
     </form>
   );

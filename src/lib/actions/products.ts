@@ -165,6 +165,174 @@ export async function deleteVariant(
 	revalidatePath(`/admin/products/${productId}`);
 }
 
+// ─── Images ──────────────────────────────────────────────────────────────────
+
+export async function uploadProductImage(
+	productId: string,
+	formData: FormData,
+): Promise<ProductImage> {
+	const supabase = (await createClient()) as any;
+	const file = formData.get("file") as File;
+	if (!file) throw new Error("No file provided");
+
+	const ext = file.name.split(".").pop()?.toLowerCase() ?? "jpg";
+	const path = `${productId}/${Date.now()}.${ext}`;
+
+	const { error: storageErr } = await supabase.storage
+		.from("product-images")
+		.upload(path, file, { contentType: file.type });
+	if (storageErr) throw new Error(storageErr.message);
+
+	const {
+		data: { publicUrl },
+	} = supabase.storage.from("product-images").getPublicUrl(path);
+
+	const { count } = await supabase
+		.from("product_images")
+		.select("id", { count: "exact", head: true })
+		.eq("product_id", productId);
+
+	const { data, error } = await supabase
+		.from("product_images")
+		.insert({
+			product_id: productId,
+			url: publicUrl,
+			alt: file.name.replace(/\.[^.]+$/, ""),
+			sort_order: count ?? 0,
+			is_primary: (count ?? 0) === 0,
+		})
+		.select()
+		.single();
+	if (error) throw new Error(error.message);
+
+	revalidatePath(`/admin/products/${productId}`);
+	revalidatePath("/admin/products");
+	return data;
+}
+
+export async function deleteProductImage(
+	imageId: string,
+	productId: string,
+): Promise<void> {
+	const supabase = (await createClient()) as any;
+	const { data: img } = await supabase
+		.from("product_images")
+		.select("url, is_primary")
+		.eq("id", imageId)
+		.single();
+
+	const { error } = await supabase
+		.from("product_images")
+		.delete()
+		.eq("id", imageId);
+	if (error) throw new Error(error.message);
+
+	if (img?.url) {
+		try {
+			const url = new URL(img.url);
+			const storagePath = url.pathname.split("/product-images/")[1];
+			if (storagePath) {
+				await supabase.storage.from("product-images").remove([storagePath]);
+			}
+		} catch {
+			// Storage cleanup is best-effort
+		}
+	}
+
+	if (img?.is_primary) {
+		const { data: next } = await supabase
+			.from("product_images")
+			.select("id")
+			.eq("product_id", productId)
+			.order("sort_order")
+			.limit(1)
+			.maybeSingle();
+		if (next) {
+			await supabase
+				.from("product_images")
+				.update({ is_primary: true })
+				.eq("id", next.id);
+		}
+	}
+
+	revalidatePath(`/admin/products/${productId}`);
+	revalidatePath("/admin/products");
+}
+
+export async function setPrimaryImage(
+	imageId: string,
+	productId: string,
+): Promise<void> {
+	const supabase = (await createClient()) as any;
+	await supabase
+		.from("product_images")
+		.update({ is_primary: false })
+		.eq("product_id", productId);
+	const { error } = await supabase
+		.from("product_images")
+		.update({ is_primary: true })
+		.eq("id", imageId);
+	if (error) throw new Error(error.message);
+	revalidatePath(`/admin/products/${productId}`);
+	revalidatePath("/admin/products");
+}
+
+export async function importImageFromUrl(
+	productId: string,
+	pageUrl: string,
+): Promise<ProductImage> {
+	const isDirectImage = /\.(jpe?g|png|webp|gif|avif)(\?.*)?$/i.test(pageUrl);
+	let imageUrl = isDirectImage ? pageUrl : "";
+
+	if (!isDirectImage) {
+		const res = await fetch(pageUrl, {
+			headers: {
+				"User-Agent": "Mozilla/5.0 (compatible; CashMovilBot/1.0)",
+				Accept: "text/html",
+			},
+		});
+		if (!res.ok) throw new Error("No se pudo acceder a esa URL");
+		const html = await res.text();
+		const ogMatch =
+			html.match(
+				/<meta[^>]+property=["']og:image["'][^>]+content=["']([^"']+)["']/i,
+			) ??
+			html.match(
+				/<meta[^>]+content=["']([^"']+)["'][^>]+property=["']og:image["']/i,
+			) ??
+			html.match(
+				/<meta[^>]+name=["']twitter:image["'][^>]+content=["']([^"']+)["']/i,
+			) ??
+			html.match(
+				/<meta[^>]+content=["']([^"']+)["'][^>]+name=["']twitter:image["']/i,
+			);
+		if (!ogMatch?.[1]) throw new Error("No se encontró imagen en esa página");
+		imageUrl = ogMatch[1];
+		if (imageUrl.startsWith("/")) {
+			const base = new URL(pageUrl);
+			imageUrl = `${base.protocol}//${base.host}${imageUrl}`;
+		}
+	}
+
+	const imgRes = await fetch(imageUrl, {
+		headers: { "User-Agent": "Mozilla/5.0 (compatible; CashMovilBot/1.0)" },
+	});
+	if (!imgRes.ok) throw new Error("No se pudo descargar la imagen");
+	const contentType = imgRes.headers.get("content-type") ?? "image/jpeg";
+	const ext = contentType.includes("png")
+		? "png"
+		: contentType.includes("webp")
+			? "webp"
+			: "jpg";
+	const buffer = await imgRes.arrayBuffer();
+	const file = new File([buffer], `import.${ext}`, {
+		type: contentType.split(";")[0],
+	});
+	const fd = new FormData();
+	fd.append("file", file);
+	return uploadProductImage(productId, fd);
+}
+
 // ─── Selectors (for forms) ───────────────────────────────────────────────────
 
 export interface ProductOption {
