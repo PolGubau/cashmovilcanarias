@@ -114,8 +114,8 @@ export default function DeviceForm({ products, suppliers = [] }: Props) {
         <p className="text-sm text-[#8F8F8F]">Al vincular, el stock de la tienda se actualiza automáticamente con este dispositivo.</p>
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-medium text-[#5C5955] mb-1.5">Producto</label>
-            <select value={selectedProductId} onChange={(e) => handleProductChange(e.target.value)} className={selectCls}>
+            <label className="block text-sm font-medium text-[#5C5955] mb-1.5" htmlFor="product">Producto</label>
+            <select value={selectedProductId} onChange={(e) => handleProductChange(e.target.value)} name="product" id="product" className={selectCls}>
               <option value="">— Sin vincular —</option>
               {products.map((p) => (
                 <option key={p.id} value={p.id}>{p.brand} · {p.name}</option>

@@ -1,10 +1,13 @@
 "use client";
 import { Button } from "@/components/ui";
+import { createClient } from "@/lib/supabase/client";
 import { formatCurrency } from "@/lib/utils";
 import { useCartStore } from "@/store/cart.store";
 import { useUIStore } from "@/store/ui.store";
-import { Phone, Search, ShoppingCart, User } from "lucide-react";
+import type { User } from "@supabase/supabase-js";
+import { LogOut, Search, ShoppingCart, User as UserIcon } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import React, { useState, useEffect } from "react";
 import Dropdown from "./Dropdown";
 import SearchModal from "./SearchModal";
@@ -14,11 +17,34 @@ const Header = () => {
   const [searchOpen, setSearchOpen] = useState(false);
   const [navigationOpen, setNavigationOpen] = useState(false);
   const [stickyMenu, setStickyMenu] = useState(false);
+  const [user, setUser] = useState<User | null>(null);
   const openCartSidebar = useUIStore((s) => s.openCartSidebar);
   const headerRef = React.useRef<HTMLElement>(null);
+  const router = useRouter();
 
   const cartItems = useCartStore((s) => s.items);
   const totalPrice = useCartStore((s) => s.totalPrice)();
+
+  // Subscribe to Supabase auth state — persists across reloads via cookies
+  useEffect(() => {
+    const supabase = createClient();
+    supabase.auth.getUser().then(({ data }) => setUser(data.user));
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null);
+    });
+    return () => subscription.unsubscribe();
+  }, []);
+
+  async function handleSignOut() {
+    const supabase = createClient();
+    await supabase.auth.signOut();
+    router.push("/signin");
+  }
+
+  const displayName =
+    (user?.user_metadata?.full_name as string | undefined)?.split(" ")[0] ||
+    user?.email?.split("@")[0] ||
+    null;
 
   useEffect(() => {
     const onScroll = () => setStickyMenu(window.scrollY >= 80);
@@ -89,36 +115,40 @@ const Header = () => {
 
             {/* <!-- header top right --> */}
             <div className="flex w-full lg:w-auto items-center gap-7.5">
-              <div className="hidden xl:flex items-center gap-3.5">
-                <Phone className="w-6 h-6 text-blue" />
-
-                <div>
-                  <span className="block text-2xs text-dark-4 uppercase">
-                    SOPORTE 24/7
-                  </span>
-                  <p className="font-medium text-custom-sm text-dark">
-                    +34 922 000 000
-                  </p>
-                </div>
-              </div>
-
               {/* <!-- divider --> */}
               <span className="hidden xl:block w-px h-7.5 bg-gray-4" />
 
               <div className="flex w-full lg:w-auto justify-between items-center gap-5">
                 <div className="flex items-center gap-5">
-                  <Link href="/signin" className="flex items-center gap-2.5">
-                    <User className="w-6 h-6 text-blue" />
-
-                    <div>
-                      <span className="block text-2xs text-dark-4 uppercase">
-                        cuenta
-                      </span>
-                      <p className="font-medium text-custom-sm text-dark">
-                        Iniciar sesión
-                      </p>
+                  {user ? (
+                    <div className="flex items-center gap-3">
+                      <Link href="/my-account" className="flex items-center gap-2.5">
+                        <UserIcon className="w-6 h-6 text-blue" />
+                        <div>
+                          <span className="block text-2xs text-dark-4 uppercase">cuenta</span>
+                          <p className="font-medium text-custom-sm text-dark truncate max-w-[100px]">
+                            {displayName}
+                          </p>
+                        </div>
+                      </Link>
+                      <button
+                        type="button"
+                        onClick={handleSignOut}
+                        aria-label="Cerrar sesión"
+                        className="text-dark-4 hover:text-dark transition-colors"
+                      >
+                        <LogOut className="w-4 h-4" />
+                      </button>
                     </div>
-                  </Link>
+                  ) : (
+                    <Link href="/signin" className="flex items-center gap-2.5">
+                      <UserIcon className="w-6 h-6 text-blue" />
+                      <div>
+                        <span className="block text-2xs text-dark-4 uppercase">cuenta</span>
+                        <p className="font-medium text-custom-sm text-dark">Iniciar sesión</p>
+                      </div>
+                    </Link>
+                  )}
 
                   <Button
                     type="button"
