@@ -14,14 +14,14 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       <body className="bg-[#f8f9fb]">
         <div className="flex min-h-screen">
           <AdminSidebar />
-          <main className="flex-1 ml-60 min-h-screen">
+          <main className="flex-1 lg:ml-60 min-h-screen">
             {/* Top bar */}
-            <div className="h-16 border-b border-gray-200 bg-white px-8 flex items-center sticky top-0 z-40">
-              <div className="flex items-center gap-2 text-sm text-gray-400">
+            <div className="h-16 border-b border-gray-200 bg-white px-4 sm:px-8 flex items-center sticky top-0 z-30">
+              <div className="flex items-center gap-2 text-sm text-gray-400 pl-10 lg:pl-0">
                 <span className="font-medium text-gray-700">CashMóvil Canarias</span>
               </div>
             </div>
-            <div className="p-8">
+            <div className="p-4 sm:p-6 lg:p-8">
               {children}
             </div>
           </main>

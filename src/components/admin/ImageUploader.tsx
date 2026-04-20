@@ -11,7 +11,7 @@ import {
 } from "@/lib/actions/products";
 import type { ProductImage } from "@/lib/supabase/types";
 import { ImagePlus, Link2, Loader2, Star, Trash2 } from "lucide-react";
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 export default function ImageUploader({
   productId,
@@ -21,15 +21,17 @@ export default function ImageUploader({
   initialImages: ProductImage[];
 }) {
   const [images, setImages] = useState<ProductImage[]>(initialImages);
-  const [uploading, setUploading] = useState(false);
+  const [uploadingCount, setUploadingCount] = useState(0);
   const [urlInput, setUrlInput] = useState("");
   const [dragging, setDragging] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
 
+  const isUploading = uploadingCount > 0;
+
   const doUpload = useCallback(
     async (file: File) => {
       if (!file.type.startsWith("image/")) return toast.error("Solo imágenes");
-      setUploading(true);
+      setUploadingCount((c) => c + 1);
       try {
         const fd = new FormData();
         fd.append("file", file);
@@ -39,7 +41,24 @@ export default function ImageUploader({
       } catch (e: unknown) {
         toast.error(e instanceof Error ? e.message : "Error al subir imagen");
       } finally {
-        setUploading(false);
+        setUploadingCount((c) => c - 1);
+      }
+    },
+    [productId],
+  );
+
+  const doImportUrl = useCallback(
+    async (url: string) => {
+      setUploadingCount((c) => c + 1);
+      try {
+        const img = await importImageFromUrl(productId, url);
+        setImages((p) => [...p, img]);
+        setUrlInput("");
+        toast.success("Imagen importada");
+      } catch (e: unknown) {
+        toast.error(e instanceof Error ? e.message : "Error al importar imagen");
+      } finally {
+        setUploadingCount((c) => c - 1);
       }
     },
     [productId],
@@ -54,31 +73,39 @@ export default function ImageUploader({
     if (e.dataTransfer.files.length) handleFiles(e.dataTransfer.files);
   };
 
-  const onPaste = (e: React.ClipboardEvent) => {
-    const item = Array.from(e.clipboardData.items).find((it) =>
-      it.type.startsWith("image/"),
-    );
-    const f = item?.getAsFile();
-    if (f) doUpload(f);
-  };
+  // Global paste: works regardless of which element has focus
+  useEffect(() => {
+    const handleGlobalPaste = (e: ClipboardEvent) => {
+      const target = e.target as HTMLElement;
+      // Let normal inputs handle their own paste
+      if (target.tagName === "INPUT" || target.tagName === "TEXTAREA" || target.isContentEditable) return;
 
-  const handleUrlImport = async () => {
-    const url = urlInput.trim();
-    if (!url) return;
-    setUploading(true);
-    try {
-      const img = await importImageFromUrl(productId, url);
-      setImages((p) => [...p, img]);
-      setUrlInput("");
-      toast.success("Imagen importada");
-    } catch (e: unknown) {
-      toast.error(
-        e instanceof Error ? e.message : "Error al importar imagen",
-      );
-    } finally {
-      setUploading(false);
-    }
-  };
+      const items = Array.from(e.clipboardData?.items ?? []);
+
+      // Image data (screenshot, copied image)
+      const imageItem = items.find((it) => it.type.startsWith("image/"));
+      if (imageItem) {
+        const f = imageItem.getAsFile();
+        if (f) { doUpload(f); return; }
+      }
+
+      // Text that looks like a URL → auto-populate input + import if direct image
+      const textItem = items.find((it) => it.type === "text/plain");
+      if (textItem) {
+        textItem.getAsString((text) => {
+          const trimmed = text.trim();
+          if (!trimmed.startsWith("http")) return;
+          setUrlInput(trimmed);
+          if (/\.(jpe?g|png|webp|gif|avif)(\?.*)?$/i.test(trimmed)) {
+            doImportUrl(trimmed);
+          }
+        });
+      }
+    };
+
+    window.addEventListener("paste", handleGlobalPaste);
+    return () => window.removeEventListener("paste", handleGlobalPaste);
+  }, [doUpload, doImportUrl]);
 
   const handleDelete = async (img: ProductImage) => {
     try {
@@ -108,24 +135,21 @@ export default function ImageUploader({
   return (
     <div className="space-y-4">
       {/* Drop zone: drag, click, paste */}
-      <div
-        role="button"
-        tabIndex={0}
+      <button
+        type="button"
         onDragOver={(e) => {
           e.preventDefault();
           setDragging(true);
         }}
         onDragLeave={() => setDragging(false)}
         onDrop={onDrop}
-        onPaste={onPaste}
         onClick={() => fileRef.current?.click()}
-        onKeyDown={(e) => e.key === "Enter" && fileRef.current?.click()}
-        className={`flex flex-col items-center justify-center gap-2 h-32 border-2 border-dashed rounded-xl cursor-pointer transition-all select-none ${dragging
+        className={`w-full flex flex-col items-center justify-center gap-2 h-32 border-2 border-dashed rounded-xl cursor-pointer transition-all select-none ${dragging
           ? "border-blue bg-blue/5 scale-[1.01]"
           : "border-gray-3 hover:border-blue/50 hover:bg-gray-1"
           }`}
       >
-        {uploading ? (
+        {isUploading ? (
           <Loader2 className="h-5 w-5 animate-spin text-blue" />
         ) : (
           <>
@@ -133,11 +157,11 @@ export default function ImageUploader({
             <p className="text-xs text-dark-4 text-center">
               Arrastra, pega{" "}
               <kbd className="px-1 bg-gray-2 rounded text-[10px]">Ctrl+V</kbd>{" "}
-              o haz clic para seleccionar
+              en cualquier lugar, o haz clic para seleccionar
             </p>
           </>
         )}
-      </div>
+      </button>
       <input
         ref={fileRef}
         type="file"
@@ -157,10 +181,10 @@ export default function ImageUploader({
             onKeyDown={(e) => {
               if (e.key === "Enter") {
                 e.preventDefault();
-                handleUrlImport();
+                doImportUrl(urlInput.trim());
               }
             }}
-            placeholder="URL de Amazon, Xataka… o imagen directa"
+            placeholder="URL de imagen directa (jpg, png, webp…)"
             className="pl-8 text-sm"
           />
         </div>
@@ -168,9 +192,9 @@ export default function ImageUploader({
           type="button"
           variant="outline"
           size="sm"
-          loading={uploading}
-          onClick={handleUrlImport}
-          disabled={!urlInput.trim() || uploading}
+          loading={isUploading}
+          onClick={() => doImportUrl(urlInput.trim())}
+          disabled={!urlInput.trim() || isUploading}
         >
           Importar
         </Button>

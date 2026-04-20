@@ -21,8 +21,8 @@ export default function DataTable<T extends object>({
 }: Props<T>) {
   return (
     <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
-      <div className="overflow-x-auto">
-        <table className="w-full text-sm">
+      <div className="overflow-x-auto scrollbar-thin scrollbar-thumb-gray-200">
+        <table className="w-full text-sm min-w-[600px]">
           <thead>
             <tr className="border-b border-gray-100 bg-gray-50/70">
               {columns.map((col) => (

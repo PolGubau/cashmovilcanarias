@@ -3,11 +3,12 @@
 import { Button } from "@/components/ui/button";
 import { signOut } from "@/lib/actions/auth";
 import {
-  BarChart3, ClipboardList, LayoutDashboard, LogOut, Package,
-  ShoppingCart, Smartphone, Users, Wrench,
+  BarChart3, ClipboardList, LayoutDashboard, LogOut, Menu, Package,
+  ShoppingCart, Smartphone, Users, Wrench, X,
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
 
 const navGroups = [
   {
@@ -37,11 +38,26 @@ const navGroups = [
 
 export default function AdminSidebar() {
   const pathname = usePathname();
+  const [isOpen, setIsOpen] = useState(false);
 
-  return (
-    <aside className="fixed left-0 top-0 h-full w-60 bg-white border-r border-gray-200 flex flex-col z-50">
+  // Close sidebar on route change (mobile)
+  useEffect(() => {
+    setIsOpen(false);
+  }, [pathname]);
+
+  // Close on escape key
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setIsOpen(false);
+    };
+    document.addEventListener("keydown", handler);
+    return () => document.removeEventListener("keydown", handler);
+  }, []);
+
+  const sidebarContent = (
+    <>
       {/* Brand */}
-      <div className="h-16 px-5 flex items-center border-b border-gray-100">
+      <div className="h-16 px-5 flex items-center justify-between border-b border-gray-100">
         <div className="flex items-center gap-3">
           <div className="w-8 h-8 bg-blue rounded-xl flex items-center justify-center shadow-sm">
             <Smartphone className="size-4 text-white" />
@@ -51,6 +67,15 @@ export default function AdminSidebar() {
             <p className="text-[11px] text-gray-400">Canarias · Admin</p>
           </div>
         </div>
+        {/* Close button — only visible on mobile */}
+        <button
+          type="button"
+          onClick={() => setIsOpen(false)}
+          className="lg:hidden p-1.5 rounded-lg text-gray-400 hover:text-gray-700 hover:bg-gray-100 transition-colors"
+          aria-label="Cerrar menú"
+        >
+          <X className="size-4" />
+        </button>
       </div>
 
       {/* Nav */}
@@ -97,6 +122,39 @@ export default function AdminSidebar() {
           </Button>
         </form>
       </div>
-    </aside>
+    </>
+  );
+
+  return (
+    <>
+      {/* Mobile hamburger button */}
+      <button
+        type="button"
+        onClick={() => setIsOpen(true)}
+        className="lg:hidden fixed top-4 left-4 z-50 p-2 rounded-lg bg-white border border-gray-200 shadow-sm text-gray-600 hover:text-gray-900 transition-colors"
+        aria-label="Abrir menú"
+      >
+        <Menu className="size-5" />
+      </button>
+
+      {/* Mobile overlay */}
+      {isOpen && (
+        <div
+          role="presentation"
+          className="lg:hidden fixed inset-0 bg-black/40 z-40 backdrop-blur-sm"
+          onClick={() => setIsOpen(false)}
+          onKeyDown={(e) => e.key === "Escape" && setIsOpen(false)}
+        />
+      )}
+
+      {/* Sidebar — desktop: always visible | mobile: drawer */}
+      <aside
+        className={`fixed left-0 top-0 h-full w-60 bg-white border-r border-gray-200 flex flex-col z-50 transition-transform duration-300 ease-in-out
+          ${isOpen ? "translate-x-0" : "-translate-x-full"}
+          lg:translate-x-0`}
+      >
+        {sidebarContent}
+      </aside>
+    </>
   );
 }

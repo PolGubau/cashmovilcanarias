@@ -277,6 +277,17 @@ export async function setPrimaryImage(
 	revalidatePath("/admin/products");
 }
 
+const BROWSER_HEADERS = {
+	"User-Agent":
+		"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+	Accept:
+		"text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
+	"Accept-Language": "es-ES,es;q=0.9,en;q=0.8",
+	"Accept-Encoding": "gzip, deflate, br",
+	"Cache-Control": "no-cache",
+	Pragma: "no-cache",
+};
+
 export async function importImageFromUrl(
 	productId: string,
 	pageUrl: string,
@@ -285,14 +296,21 @@ export async function importImageFromUrl(
 	let imageUrl = isDirectImage ? pageUrl : "";
 
 	if (!isDirectImage) {
-		const res = await fetch(pageUrl, {
-			headers: {
-				"User-Agent": "Mozilla/5.0 (compatible; CashMovilBot/1.0)",
-				Accept: "text/html",
-			},
-		});
-		if (!res.ok) throw new Error("No se pudo acceder a esa URL");
+		// Amazon blocks server-side scrapers — guide the user to paste a direct image URL
+		if (/amazon\.(com|es|co\.uk|de|fr|it)/i.test(pageUrl)) {
+			throw new Error(
+				'Amazon bloquea la importación automática. En la página del producto, haz clic derecho sobre la imagen → "Copiar imagen" y luego pégala aquí con Ctrl+V.',
+			);
+		}
+
+		const res = await fetch(pageUrl, { headers: BROWSER_HEADERS });
+		if (!res.ok)
+			throw new Error(
+				`No se pudo acceder a la URL (${res.status}). Prueba a copiar la imagen directamente.`,
+			);
 		const html = await res.text();
+
+		// Try og:image and twitter:image in all attribute orderings
 		const ogMatch =
 			html.match(
 				/<meta[^>]+property=["']og:image["'][^>]+content=["']([^"']+)["']/i,
@@ -301,12 +319,17 @@ export async function importImageFromUrl(
 				/<meta[^>]+content=["']([^"']+)["'][^>]+property=["']og:image["']/i,
 			) ??
 			html.match(
-				/<meta[^>]+name=["']twitter:image["'][^>]+content=["']([^"']+)["']/i,
+				/<meta[^>]+name=["']twitter:image(?::src)?["'][^>]+content=["']([^"']+)["']/i,
 			) ??
 			html.match(
-				/<meta[^>]+content=["']([^"']+)["'][^>]+name=["']twitter:image["']/i,
+				/<meta[^>]+content=["']([^"']+)["'][^>]+name=["']twitter:image(?::src)?["']/i,
 			);
-		if (!ogMatch?.[1]) throw new Error("No se encontró imagen en esa página");
+
+		if (!ogMatch?.[1])
+			throw new Error(
+				"No se encontró imagen en esa página. Copia la imagen directamente con Ctrl+V.",
+			);
+
 		imageUrl = ogMatch[1];
 		if (imageUrl.startsWith("/")) {
 			const base = new URL(pageUrl);
@@ -314,16 +337,17 @@ export async function importImageFromUrl(
 		}
 	}
 
-	const imgRes = await fetch(imageUrl, {
-		headers: { "User-Agent": "Mozilla/5.0 (compatible; CashMovilBot/1.0)" },
-	});
+	const imgRes = await fetch(imageUrl, { headers: BROWSER_HEADERS });
 	if (!imgRes.ok) throw new Error("No se pudo descargar la imagen");
+
 	const contentType = imgRes.headers.get("content-type") ?? "image/jpeg";
 	const ext = contentType.includes("png")
 		? "png"
 		: contentType.includes("webp")
 			? "webp"
-			: "jpg";
+			: contentType.includes("gif")
+				? "gif"
+				: "jpg";
 	const buffer = await imgRes.arrayBuffer();
 	const file = new File([buffer], `import.${ext}`, {
 		type: contentType.split(";")[0],

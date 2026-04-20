@@ -48,7 +48,7 @@ export default async function AdminDashboard() {
       </div>
 
       {/* KPIs */}
-      <div className="grid grid-cols-2 xl:grid-cols-4 gap-4 mb-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 mb-8">
         <StatsCard title="Móviles en stock" value={inStock} subtitle={`${totalStock} total registrados`} icon={Smartphone} color="blue" />
         <StatsCard title="En reparación" value={inRepair} subtitle={`${reserved} reservados`} icon={Wrench} color="orange" />
         <StatsCard title="Ventas completadas" value={orderStats.completed} subtitle={`${orderStats.pending} pendientes`} icon={ShoppingCart} color="green" />

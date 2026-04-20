@@ -33,13 +33,13 @@ export default function SearchInput({
   );
 
   return (
-    <div className="relative">
+    <div className="relative w-full sm:w-64">
       <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-gray-400" />
       <input
         defaultValue={searchParams.get(paramName) ?? ""}
         onChange={handleChange}
         placeholder={placeholder}
-        className="pl-9 pr-3 py-2 border border-gray-200 rounded-lg text-sm w-64 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-400"
+        className="pl-9 pr-3 py-2 border border-gray-200 rounded-lg text-sm w-full focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-400"
       />
     </div>
   );
