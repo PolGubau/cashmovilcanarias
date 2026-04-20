@@ -85,10 +85,15 @@ export default function ProductForm({
   const router = useRouter();
   const isEditing = !!initialProduct;
   const [loading, setLoading] = useState(false);
+  const [navigating, setNavigating] = useState(false);
+  const [createdProductId, setCreatedProductId] = useState<string | null>(null);
   const [variants, setVariants] = useState<VariantRow[]>(
     initialVariants?.length ? initialVariants.map(variantToRow) : [emptyVariant()],
   );
   const [deletedIds, setDeletedIds] = useState<string[]>([]);
+
+  // Derived: the product id available for images (either editing or just created)
+  const imageProductId = initialProduct?.id ?? createdProductId;
 
   const updateVariantRow = (i: number, key: keyof VariantRow, val: string) =>
     setVariants((prev) =>
@@ -164,8 +169,8 @@ export default function ProductForm({
               is_active: true,
             })),
         );
-        toast.success("Producto creado — ahora añade imágenes");
-        router.push(`/admin/products/${prod.id}`);
+        setCreatedProductId(prod.id);
+        toast.success("Producto creado. Añade imágenes o guarda y continúa.");
       }
     } catch (err: any) {
       toast.error(err.message);
@@ -372,15 +377,15 @@ export default function ProductForm({
         </CardContent>
       </Card>
 
-      {/* Images — only available once the product is saved (has an id) */}
-      {isEditing && (
+      {/* Images — available once the product has an id (editing or just created) */}
+      {imageProductId && (
         <Card>
           <CardHeader>
             <CardTitle>Imágenes</CardTitle>
           </CardHeader>
           <CardContent>
             <ImageUploader
-              productId={initialProduct.id}
+              productId={imageProductId}
               initialImages={initialImages}
             />
           </CardContent>
@@ -388,11 +393,25 @@ export default function ProductForm({
       )}
 
       <div className="flex gap-3">
-        <Button type="submit" loading={loading}>
-          {isEditing ? "Guardar cambios" : "Crear producto"}
-        </Button>
+        {!createdProductId && (
+          <Button type="submit" loading={loading}>
+            {isEditing ? "Guardar cambios" : "Crear producto"}
+          </Button>
+        )}
+        {createdProductId && (
+          <Button
+            type="button"
+            loading={navigating}
+            onClick={() => {
+              setNavigating(true);
+              router.push(`/admin/products/${createdProductId}`);
+            }}
+          >
+            Ir al producto
+          </Button>
+        )}
         <Button type="button" variant="outline" onClick={() => router.back()}>
-          Cancelar
+          {createdProductId ? "Volver al listado" : "Cancelar"}
         </Button>
       </div>
     </form>
