@@ -4,21 +4,27 @@ import { Button } from "@/components/ui/button";
 import { createDevice } from "@/lib/actions/devices";
 import type { ProductOption, VariantOption } from "@/lib/actions/products";
 import { getVariantsForSelect } from "@/lib/actions/products";
+import type { Customer } from "@/lib/supabase/types";
 import { formatCurrency } from "@/lib/utils";
-import { Link2, Package } from "lucide-react";
+import { Link2, Package, Search, X } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 
 const CONDITIONS = ["new", "excellent", "good", "fair", "poor", "parts_only"];
 const CONDITION_LABELS: Record<string, string> = {
   new: "Nuevo", excellent: "Excelente", good: "Bueno", fair: "Regular", poor: "Malo", parts_only: "Solo piezas",
 };
 
-const selectCls = "w-full border border-gray-3 rounded-lg px-3 py-2.5 text-sm text-dark bg-white focus:outline-none focus:ring-2 focus:ring-blue/20 focus:border-blue";
+// Airbnb-style shared classes
+const inputCls = "w-full border border-[#E6DECC] rounded-xl px-3 py-2.5 text-sm text-[#5C5955] bg-white placeholder:text-[#8F8F8F] focus:outline-none focus:ring-2 focus:ring-[#5E6AD2]/20 focus:border-[#5E6AD2] transition-colors";
+const selectCls = inputCls + " bg-white";
 
-interface Props { products: ProductOption[] }
+interface Props {
+  products: ProductOption[];
+  suppliers?: Customer[];
+}
 
-export default function DeviceForm({ products }: Props) {
+export default function DeviceForm({ products, suppliers = [] }: Props) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -26,6 +32,21 @@ export default function DeviceForm({ products }: Props) {
   const [variants, setVariants] = useState<VariantOption[]>([]);
   const [loadingVariants, setLoadingVariants] = useState(false);
   const [selectedVariantId, setSelectedVariantId] = useState<string>("");
+
+  // Supplier combobox
+  const [supplierSearch, setSupplierSearch] = useState("");
+  const [selectedSupplier, setSelectedSupplier] = useState<Customer | null>(null);
+  const [supplierOpen, setSupplierOpen] = useState(false);
+
+  const filteredSuppliers = useMemo(
+    () =>
+      suppliers.filter(
+        (s) =>
+          s.full_name.toLowerCase().includes(supplierSearch.toLowerCase()) ||
+          (s.phone ?? "").includes(supplierSearch),
+      ),
+    [suppliers, supplierSearch],
+  );
 
   async function handleProductChange(productId: string) {
     setSelectedProductId(productId);
@@ -59,7 +80,7 @@ export default function DeviceForm({ products }: Props) {
         status: "in_stock",
         cost_price: Number(form.get("cost_price")),
         purchase_date: form.get("purchase_date") as string,
-        supplier_id: (form.get("supplier_id") as string) || null,
+        supplier_id: selectedSupplier?.id ?? null,
         purchase_invoice: (form.get("purchase_invoice") as string) || null,
         unlock_status: (form.get("unlock_status") as string) || null,
         battery_health: form.get("battery_health") ? Number(form.get("battery_health")) : null,
@@ -158,13 +179,58 @@ export default function DeviceForm({ products }: Props) {
         <Field name="battery_health" label="Salud batería (%)" placeholder="85" type="number" />
       </div>
 
-      <div className="bg-white rounded-xl border border-gray-3 p-6 space-y-4">
-        <h2 className="font-semibold text-dark border-b border-gray-3 pb-3">Compra</h2>
+      <div className="bg-white rounded-xl border border-[#E6DECC] p-6 space-y-4">
+        <h2 className="text-[15px] font-medium text-[#5C5955] border-b border-[#E6DECC] pb-3">Compra</h2>
         <div className="grid grid-cols-2 gap-4">
           <Field name="cost_price" label="Precio de coste (€) *" placeholder="0.00" type="number" required />
           <Field name="purchase_date" label="Fecha de compra *" type="date" required />
-          <Field name="supplier_id" label="ID Proveedor (cliente)" placeholder="UUID del cliente" />
           <Field name="purchase_invoice" label="Nº factura / referencia" placeholder="FAC-2024-001" />
+        </div>
+
+        {/* Supplier combobox */}
+        <div className="relative">
+          <label htmlFor="supplier-search" className="block text-sm font-medium text-[#5C5955] mb-1.5">Proveedor</label>
+          {selectedSupplier ? (
+            <div className="flex items-center justify-between border border-[#E6DECC] rounded-xl px-3 py-2.5 bg-[#EEEBE4]">
+              <span className="text-sm text-[#5C5955]">
+                {selectedSupplier.full_name}
+                {selectedSupplier.phone && <span className="text-[#8F8F8F] ml-2">{selectedSupplier.phone}</span>}
+              </span>
+              <button type="button" onClick={() => { setSelectedSupplier(null); setSupplierSearch(""); }}
+                aria-label="Quitar proveedor" className="text-[#8F8F8F] hover:text-[#5C5955]">
+                <X className="size-4" />
+              </button>
+            </div>
+          ) : (
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-[#8F8F8F] pointer-events-none" />
+              <input
+                value={supplierSearch}
+                onChange={(e) => { setSupplierSearch(e.target.value); setSupplierOpen(true); }}
+                onFocus={() => setSupplierOpen(true)}
+                onBlur={() => setTimeout(() => setSupplierOpen(false), 150)}
+                placeholder="Buscar proveedor por nombre..."
+                className={inputCls + " pl-9"}
+              />
+              {supplierOpen && filteredSuppliers.length > 0 && (
+                <ul className="absolute z-10 mt-1 w-full bg-white border border-[#E6DECC] rounded-xl shadow-sm max-h-48 overflow-auto">
+                  {filteredSuppliers.map((s) => (
+                    <li key={s.id}
+                      onMouseDown={() => { setSelectedSupplier(s); setSupplierSearch(""); setSupplierOpen(false); }}
+                      className="flex items-center gap-2 px-3 py-2 text-sm cursor-pointer hover:bg-[#EEEBE4]">
+                      <span className="font-medium text-[#5C5955]">{s.full_name}</span>
+                      {s.phone && <span className="text-[#8F8F8F]">{s.phone}</span>}
+                    </li>
+                  ))}
+                </ul>
+              )}
+              {supplierOpen && suppliers.length === 0 && (
+                <div className="absolute z-10 mt-1 w-full bg-white border border-[#E6DECC] rounded-xl px-3 py-2 text-sm text-[#8F8F8F]">
+                  No hay proveedores registrados. <a href="/admin/customers/new" className="text-[#5E6AD2] underline">Crear uno</a>
+                </div>
+              )}
+            </div>
+          )}
         </div>
       </div>
 

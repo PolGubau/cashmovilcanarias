@@ -256,22 +256,22 @@ export default function OrderForm({ customers, devices }: OrderFormProps) {
         <h2 className="font-semibold text-gray-900 border-b border-gray-100 pb-3">Pago</h2>
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-medium text-gray-600 mb-1.5">Metodo de pago</label>
-            <select value={paymentMethod} onChange={(e) => setPaymentMethod(e.target.value)}
+            <label htmlFor="paymentMethod" className="block text-sm font-medium text-gray-600 mb-1.5">Método de pago</label>
+            <select value={paymentMethod} id="paymentMethod" onChange={(e) => setPaymentMethod(e.target.value)}
               className="w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/20">
               <option value="">Seleccionar...</option>
               {PAYMENT_METHODS.map((m) => <option key={m} value={m}>{PAYMENT_LABELS[m]}</option>)}
             </select>
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-600 mb-1.5">Referencia de pago</label>
-            <input value={paymentRef} onChange={(e) => setPaymentRef(e.target.value)}
+            <label htmlFor="payment-ref" className="block text-sm font-medium text-gray-600 mb-1.5">Referencia de pago</label>
+            <input id="payment-ref" value={paymentRef} onChange={(e) => setPaymentRef(e.target.value)}
               placeholder="N transaccion"
               className="w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20" />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-600 mb-1.5">Descuento (EUR)</label>
-            <input type="number" value={discount} onChange={(e) => setDiscount(e.target.value)}
+            <label htmlFor="discount" className="block text-sm font-medium text-gray-600 mb-1.5">Descuento (EUR)</label>
+            <input id="discount" type="number" value={discount} onChange={(e) => setDiscount(e.target.value)}
               placeholder="0.00"
               className="w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20" />
           </div>
@@ -285,8 +285,8 @@ export default function OrderForm({ customers, devices }: OrderFormProps) {
           </div>
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-600 mb-1.5">Notas</label>
-          <textarea value={notes} onChange={(e) => setNotes(e.target.value)} rows={2}
+          <label htmlFor="notes" className="block text-sm font-medium text-gray-600 mb-1.5">Notas</label>
+          <textarea id="notes" value={notes} onChange={(e) => setNotes(e.target.value)} rows={2}
             placeholder="Observaciones..."
             className="w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 resize-none" />
         </div>
