@@ -1,4 +1,4 @@
-export type UserRole = "admin" | "staff" | "customer";
+export type UserRole = "superadmin" | "admin" | "staff" | "customer";
 export type ProductCondition = "new" | "like_new";
 
 // ─── Product category taxonomy (mirrors cashmovil.shop nav structure) ─────────

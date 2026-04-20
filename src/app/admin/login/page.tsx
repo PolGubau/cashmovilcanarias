@@ -5,13 +5,15 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "@/components/ui/toast";
 import { signIn } from "@/lib/actions/auth";
-import { Smartphone } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { AlertCircle, Smartphone } from "lucide-react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 
 export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const forbidden = searchParams.get("forbidden") === "1";
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -38,6 +40,15 @@ export default function LoginPage() {
           <h1 className="text-xl font-semibold text-dark">CashMóvil Canarias</h1>
           <p className="text-sm text-dark-4 mt-1">Panel de gestión</p>
         </div>
+
+        {forbidden && (
+          <div className="mb-4 flex items-start gap-2.5 bg-red-50 border border-red-200 rounded-lg px-4 py-3">
+            <AlertCircle className="h-4 w-4 text-red-500 mt-0.5 shrink-0" />
+            <p className="text-sm text-red-700">
+              Tu cuenta no tiene permisos para acceder al panel. Contacta con un administrador.
+            </p>
+          </div>
+        )}
 
         <div className="bg-white rounded-xl border border-gray-3 shadow-1 p-6">
           <h2 className="text-base font-semibold text-dark mb-5">Iniciar sesión</h2>

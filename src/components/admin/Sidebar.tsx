@@ -2,9 +2,10 @@
 
 import { Button } from "@/components/ui/button";
 import { signOut } from "@/lib/actions/auth";
+import type { UserRole } from "@/lib/supabase/types";
 import {
   BarChart3, ClipboardList, LayoutDashboard, LogOut, Menu, Package,
-  ShoppingCart, Smartphone, Users, Wrench, X,
+  ShieldCheck, ShoppingCart, Smartphone, Users, Wrench, X,
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -36,7 +37,7 @@ const navGroups = [
   },
 ];
 
-export default function AdminSidebar() {
+export default function AdminSidebar({ role }: { role: UserRole }) {
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
 
@@ -107,6 +108,33 @@ export default function AdminSidebar() {
             </div>
           </div>
         ))}
+
+        {/* Sistema — solo visible para admin */}
+        {role === "admin" && (
+          <div>
+            <p className="px-3 mb-1.5 text-[10px] font-semibold tracking-widest text-gray-400 uppercase">
+              Sistema
+            </p>
+            <div className="space-y-0.5">
+              {(() => {
+                const href = "/admin/users";
+                const isActive = pathname.startsWith(href);
+                return (
+                  <Link
+                    href={href}
+                    className={`group flex items-center gap-3 px-3 py-2 rounded-lg text-[13px] font-medium transition-all ${isActive
+                      ? "bg-blue/8 text-blue border border-blue/12"
+                      : "text-gray-600 hover:bg-gray-50 hover:text-gray-900 border border-transparent"
+                      }`}
+                  >
+                    <ShieldCheck className={`size-4 shrink-0 ${isActive ? "text-blue" : "text-gray-400 group-hover:text-gray-600"}`} />
+                    Usuarios
+                  </Link>
+                );
+              })()}
+            </div>
+          </div>
+        )}
       </nav>
 
       {/* Footer */}

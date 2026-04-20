@@ -82,6 +82,32 @@ export async function getSession() {
 	return user;
 }
 
+/**
+ * Verifies that the currently authenticated user has one of the required roles.
+ * Throws an error (which Next.js surfaces as a 403) if the check fails.
+ * Use this at the top of any server action that must be role-gated.
+ */
+export async function requireRole(
+	...roles: import("@/lib/supabase/types").UserRole[]
+): Promise<void> {
+	const supabase = await createClient();
+	const {
+		data: { user },
+	} = await supabase.auth.getUser();
+
+	if (!user) throw new Error("No autenticado");
+
+	const { data: profile } = await (supabase as any)
+		.from("profiles")
+		.select("role")
+		.eq("id", user.id)
+		.single();
+
+	if (!profile || !roles.includes(profile.role)) {
+		throw new Error("Sin permisos suficientes");
+	}
+}
+
 export async function updateProfile(updates: {
 	full_name?: string;
 	phone?: string;
