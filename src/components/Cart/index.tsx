@@ -5,7 +5,7 @@ import { ShoppingCart } from "lucide-react";
 import Link from "next/link";
 import React from "react";
 import Breadcrumb from "../Common/Breadcrumb";
-import Discount from "./Discount";
+
 import OrderSummary from "./OrderSummary";
 import SingleItem from "./SingleItem";
 
@@ -64,7 +64,6 @@ const Cart = () => {
             </div>
 
             <div className="flex flex-col lg:flex-row gap-7.5 xl:gap-11 mt-9">
-              <Discount />
               <OrderSummary />
             </div>
           </div>
