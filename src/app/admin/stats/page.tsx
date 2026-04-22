@@ -1,3 +1,4 @@
+import { ExportButton } from "@/components/admin/ExportButton";
 import PageHeader from "@/components/admin/PageHeader";
 import StatsCard from "@/components/admin/StatsCard";
 import StatsFilters from "@/components/admin/StatsFilters";
@@ -146,7 +147,27 @@ export default async function StatsPage({
 
       {/* Tabla márgenes */}
       <div className="bg-white rounded-xl border border-gray-200 p-6">
-        <h2 className="font-semibold text-gray-800 mb-4 text-sm">Últimas ventas — margen por dispositivo</h2>
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="font-semibold text-gray-800 text-sm">Últimas ventas — margen por dispositivo</h2>
+          <ExportButton
+            label="Exportar márgenes"
+            filename={`margenes-${new Date().toISOString().slice(0, 10)}`}
+            title="Informe de márgenes por dispositivo"
+            data={margins as unknown as Record<string, unknown>[]}
+            columns={[
+              { key: "imei", label: "IMEI" },
+              { key: "brand", label: "Marca" },
+              { key: "model", label: "Modelo" },
+              { key: "cost_price", label: "Coste (€)", format: (v) => Number(v).toFixed(2) },
+              { key: "price_sold", label: "Venta (€)", format: (v) => Number(v).toFixed(2) },
+              { key: "margin", label: "Margen (€)", format: (v) => Number(v).toFixed(2) },
+              { key: "margin_pct", label: "Margen (%)", format: (v) => `${Number(v).toFixed(1)}%` },
+              { key: "buyer_name", label: "Comprador" },
+              { key: "invoice_number", label: "Factura" },
+              { key: "paid_at", label: "Fecha venta", format: (v) => v ? new Date(v as string).toLocaleDateString("es-ES") : "" },
+            ]}
+          />
+        </div>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>

@@ -91,3 +91,28 @@ export async function getInventoryStats() {
 	if (error) throw new Error(error.message);
 	return data;
 }
+
+/** Todos los dispositivos vendidos — para el informe policial */
+export async function getSoldDevicesReport() {
+	const supabase = (await createClient()) as any;
+	const { data, error } = await supabase
+		.from("v_devices_full")
+		.select("*")
+		.eq("status", "sold")
+		.order("sold_at", { ascending: false });
+	if (error) throw new Error(error.message);
+	return data ?? [];
+}
+
+/** Dispositivos comprados desde el 1 de enero del año en curso hasta hoy */
+export async function getYearlyPurchasesReport() {
+	const yearStart = `${new Date().getFullYear()}-01-01`;
+	const supabase = (await createClient()) as any;
+	const { data, error } = await supabase
+		.from("v_devices_full")
+		.select("*")
+		.gte("purchase_date", yearStart)
+		.order("purchase_date", { ascending: false });
+	if (error) throw new Error(error.message);
+	return data ?? [];
+}

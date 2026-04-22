@@ -13,11 +13,11 @@ import type {
 	ProductVariantUpdate,
 } from "@/lib/supabase/types";
 import { revalidatePath } from "next/cache";
-
-export type ProductWithRelations = Product & {
-	product_variants: ProductVariant[];
-	product_images: ProductImage[];
-};
+import {
+	type PaginatedProducts,
+	type ProductWithRelations,
+	STORE_PAGE_SIZE,
+} from "./products.constants";
 
 // ─── Products ────────────────────────────────────────────────────────────────
 
@@ -443,14 +443,30 @@ export async function getPublishedProducts(filters?: {
 	condition?: string;
 	search?: string;
 	maxPrice?: number;
-}): Promise<ProductWithRelations[]> {
+	page?: number;
+	pageSize?: number;
+}): Promise<PaginatedProducts> {
 	const supabase = (await createClient()) as any;
+	const page = Math.max(1, filters?.page ?? 1);
+	const pageSize = filters?.pageSize ?? STORE_PAGE_SIZE;
+	const from = (page - 1) * pageSize;
+	const to = from + pageSize - 1;
+
+	// Always inner-join variants so products with zero in-stock active variants
+	// are excluded at DB level — count and pagination are accurate.
 	let query = supabase
 		.from("products")
-		.select("*, product_variants(*), product_images(*)")
+		.select("*, product_variants!inner(*), product_images(*)", {
+			count: "exact",
+		})
 		.eq("is_published", true)
+		.eq("product_variants.is_active", true)
+		.gt("product_variants.stock", 0)
 		.order("created_at", { ascending: false });
 
+	if (filters?.condition) {
+		query = query.eq("product_variants.condition", filters.condition);
+	}
 	if (filters?.brand) query = query.ilike("brand", `%${filters.brand}%`);
 	if (filters?.category) query = query.eq("category", filters.category);
 	if (filters?.search)
@@ -458,18 +474,32 @@ export async function getPublishedProducts(filters?: {
 			`name.ilike.%${filters.search}%,brand.ilike.%${filters.search}%,base_model.ilike.%${filters.search}%`,
 		);
 
-	const { data, error } = await query;
+	query = query.range(from, to);
+
+	const { data, error, count } = await query;
 	if (error) throw new Error(error.message);
 
-	// condition filter applied in-memory on variants
-	// Stock is now derived from physical devices; v.stock is kept for legacy compat
-	let results = (data ?? []) as ProductWithRelations[];
-	if (filters?.condition) {
-		results = results.filter((p) =>
-			p.product_variants?.some(
-				(v) => v.condition === filters.condition && v.is_active,
-			),
+	return {
+		products: (data ?? []) as ProductWithRelations[],
+		total: count ?? 0,
+	};
+}
+
+/** Fetches all distinct brands for published products (used for filter chips, never paginated). */
+export async function getPublishedProductBrands(
+	search?: string,
+): Promise<string[]> {
+	const supabase = (await createClient()) as any;
+	let query = supabase
+		.from("products")
+		.select("brand")
+		.eq("is_published", true);
+	if (search)
+		query = query.or(
+			`name.ilike.%${search}%,brand.ilike.%${search}%,base_model.ilike.%${search}%`,
 		);
-	}
-	return results;
+	const { data } = await query;
+	return Array.from(
+		new Set((data ?? []).map((p: any) => p.brand).filter(Boolean) as string[]),
+	).sort();
 }
