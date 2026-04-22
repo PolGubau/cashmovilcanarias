@@ -176,18 +176,140 @@ export async function createEcommerceOrder({
 	return order as { id: string; invoice_number: string | null };
 }
 
-export async function getOrderStats() {
+export async function getOrderStats(filters?: {
+	dateFrom?: string;
+	dateTo?: string;
+	brand?: string;
+}) {
 	const supabase = (await createClient()) as any;
-	const { data, error } = await supabase.from("orders").select("status, total");
+	let query = supabase
+		.from("orders")
+		.select("status, total, paid_at, created_at");
+	if (filters?.dateFrom) query = query.gte("created_at", filters.dateFrom);
+	if (filters?.dateTo)
+		query = query.lte("created_at", filters.dateTo + "T23:59:59");
+	const { data, error } = await query;
 	if (error) throw new Error(error.message);
 
 	const stats = {
 		total_orders: data.length,
-		completed: data.filter((o) => o.status === "completed").length,
-		pending: data.filter((o) => o.status === "pending").length,
+		completed: data.filter((o: any) => o.status === "completed").length,
+		pending: data.filter((o: any) => o.status === "pending").length,
 		revenue: data
-			.filter((o) => o.status === "completed")
-			.reduce((sum, o) => sum + (o.total || 0), 0),
+			.filter((o: any) => o.status === "completed")
+			.reduce((sum: number, o: any) => sum + (o.total || 0), 0),
 	};
 	return stats;
+}
+
+export async function getSalesChartData(filters?: {
+	dateFrom?: string;
+	dateTo?: string;
+	brand?: string;
+}) {
+	const supabase = (await createClient()) as any;
+	// Join through order_items → devices to support brand filter
+	let query = supabase
+		.from("order_items")
+		.select(
+			"price_sold, orders!inner(status, paid_at, created_at), devices!inner(brand)",
+		)
+		.eq("orders.status", "completed");
+
+	if (filters?.dateFrom)
+		query = query.gte("orders.created_at", filters.dateFrom);
+	if (filters?.dateTo)
+		query = query.lte("orders.created_at", filters.dateTo + "T23:59:59");
+	if (filters?.brand) query = query.eq("devices.brand", filters.brand);
+
+	const { data, error } = await query;
+	if (error) {
+		// Fallback: fetch orders directly without brand filter
+		let q2 = supabase
+			.from("orders")
+			.select("total, created_at, status")
+			.eq("status", "completed")
+			.order("created_at", { ascending: true });
+		if (filters?.dateFrom) q2 = q2.gte("created_at", filters.dateFrom);
+		if (filters?.dateTo)
+			q2 = q2.lte("created_at", filters.dateTo + "T23:59:59");
+		const { data: d2, error: e2 } = await q2;
+		if (e2) throw new Error(e2.message);
+		// Group by day
+		const byDay: Record<string, number> = {};
+		(d2 ?? []).forEach((o: any) => {
+			const day = o.created_at.slice(0, 10);
+			byDay[day] = (byDay[day] ?? 0) + (o.total || 0);
+		});
+		return Object.entries(byDay)
+			.sort(([a], [b]) => a.localeCompare(b))
+			.map(([date, revenue]) => ({ date, revenue }));
+	}
+
+	const byDay: Record<string, number> = {};
+	(data ?? []).forEach((item: any) => {
+		const day = (item.orders?.created_at ?? "").slice(0, 10);
+		if (!day) return;
+		byDay[day] = (byDay[day] ?? 0) + (item.price_sold || 0);
+	});
+	return Object.entries(byDay)
+		.sort(([a], [b]) => a.localeCompare(b))
+		.map(([date, revenue]) => ({ date, revenue }));
+}
+
+export async function getTopSellers(filters?: {
+	dateFrom?: string;
+	dateTo?: string;
+	brand?: string;
+	limit?: number;
+}) {
+	const supabase = (await createClient()) as any;
+	let query = supabase
+		.from("order_items")
+		.select(
+			"price_sold, devices!inner(brand, model, cost_price), orders!inner(status, created_at)",
+		)
+		.eq("orders.status", "completed");
+
+	if (filters?.dateFrom)
+		query = query.gte("orders.created_at", filters.dateFrom);
+	if (filters?.dateTo)
+		query = query.lte("orders.created_at", filters.dateTo + "T23:59:59");
+	if (filters?.brand) query = query.eq("devices.brand", filters.brand);
+
+	const { data, error } = await query;
+	if (error) throw new Error(error.message);
+
+	// Aggregate by brand+model
+	const map: Record<
+		string,
+		{
+			brand: string;
+			model: string;
+			units: number;
+			revenue: number;
+			margin: number;
+		}
+	> = {};
+	(data ?? []).forEach((item: any) => {
+		const key = `${item.devices?.brand} ${item.devices?.model}`;
+		if (!map[key]) {
+			map[key] = {
+				brand: item.devices?.brand,
+				model: item.devices?.model,
+				units: 0,
+				revenue: 0,
+				margin: 0,
+			};
+		}
+		const sold = item.price_sold || 0;
+		const cost = item.devices?.cost_price || 0;
+		map[key].units += 1;
+		map[key].revenue += sold;
+		map[key].margin += sold - cost;
+	});
+
+	return Object.values(map)
+		.sort((a, b) => b.revenue - a.revenue)
+		.slice(0, filters?.limit ?? 10);
 }

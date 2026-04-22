@@ -87,14 +87,8 @@ const Header = () => {
           >
             {/* <!-- header top left --> */}
             <div className="xl:w-auto flex-col sm:flex-row w-full flex sm:justify-between sm:items-center gap-5 sm:gap-10">
-              <Link className="flex-shrink-0 flex items-center gap-2.5" href="/">
-                <span className="flex items-center justify-center w-9 h-9 rounded-xl bg-blue">
-                  <svg width="20" height="20" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M11.1445 10.4995L18.0015 18.0426V25.4995H11.1445L11.1445 10.4995Z" fill="white" />
-                    <path opacity="0.7" d="M24.8574 25.5L18.0004 17.9569L18.0004 10.5L24.8574 10.5L24.8574 25.5Z" fill="white" />
-                  </svg>
-                </span>
-                <span className="text-xl font-bold text-dark tracking-tight">Cash Movil</span>
+              <Link className="flex-shrink-0 flex items-center" href="/">
+                <span className="text-xl font-bold text-dark tracking-tight">CashMóvil Canarias</span>
               </Link>
 
               {/* Search trigger — abre el modal ⌘K */}

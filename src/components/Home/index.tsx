@@ -7,7 +7,7 @@ import NewArrival from "./NewArrivals";
 const Home = ({ products }: { products: ProductFull[] }) => {
   return (
     <main>
-      <Hero />
+      <Hero products={products} />
       <Categories />
       <NewArrival products={products} />
       <BestSeller products={products} />
