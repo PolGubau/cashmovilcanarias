@@ -15,7 +15,8 @@ export interface UserProfile {
 
 export async function getProfilesWithEmail(): Promise<UserProfile[]> {
 	await requireRole("admin");
-	const supabase = await createServiceClient();
+	// biome-ignore lint/suspicious/noExplicitAny: Supabase generic resolution fails with partial selects; pattern used across all actions
+	const supabase = (await createServiceClient()) as any;
 
 	const [
 		{ data: authData, error: authError },
@@ -28,7 +29,15 @@ export async function getProfilesWithEmail(): Promise<UserProfile[]> {
 	if (authError) throw new Error(authError.message);
 	if (profileError) throw new Error(profileError.message);
 
-	const profileMap = new Map((profiles ?? []).map((p) => [p.id, p]));
+	type ProfileRow = {
+		id: string;
+		role: string;
+		full_name: string | null;
+		created_at: string;
+	};
+	const profileMap = new Map<string, ProfileRow>(
+		(profiles ?? []).map((p: ProfileRow) => [p.id, p]),
+	);
 
 	return (authData?.users ?? []).map((u) => ({
 		id: u.id,
@@ -44,7 +53,8 @@ export async function updateUserRole(
 	role: UserRole,
 ): Promise<void> {
 	await requireRole("admin");
-	const supabase = await createServiceClient();
+	// biome-ignore lint/suspicious/noExplicitAny: same typing issue as above
+	const supabase = (await createServiceClient()) as any;
 	const { error } = await supabase
 		.from("profiles")
 		.update({ role })

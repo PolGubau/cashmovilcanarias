@@ -5,14 +5,15 @@ import type { UserRole } from "@/lib/supabase/types";
 import { useState, useTransition } from "react";
 
 const ROLES: { value: UserRole; label: string; description: string }[] = [
-  { value: "admin",    label: "Admin",    description: "Panel completo + gestión de usuarios" },
-  { value: "staff",    label: "Staff",    description: "Panel completo sin gestión de usuarios" },
-  { value: "customer", label: "Cliente",  description: "Sin acceso al panel admin" },
+  { value: "admin", label: "Admin", description: "Panel completo + gestión de usuarios" },
+  { value: "staff", label: "Staff", description: "Panel completo sin gestión de usuarios" },
+  { value: "customer", label: "Cliente", description: "Sin acceso al panel admin" },
 ];
 
 const roleColors: Record<UserRole, string> = {
-  admin:    "bg-blue/10 text-blue border-blue/20",
-  staff:    "bg-green/10 text-green-dark border-green/20",
+  superadmin: "bg-red-100 text-red-700 border-red-200",
+  admin: "bg-blue/10 text-blue border-blue/20",
+  staff: "bg-green/10 text-green-dark border-green/20",
   customer: "bg-gray-100 text-gray-500 border-gray-200",
 };
 
