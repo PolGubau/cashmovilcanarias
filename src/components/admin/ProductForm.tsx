@@ -238,14 +238,15 @@ export default function ProductForm({
             />
           </div>
           <div>
-            <Label htmlFor="category">Categoría</Label>
+            <Label htmlFor="category" required>Categoría</Label>
             <select
               id="category"
               name="category"
               defaultValue={initialProduct?.category ?? ""}
+              required
               className={`mt-1.5 ${selectCls}`}
             >
-              <option value="">Sin categoría</option>
+              <option value="" disabled>Selecciona una categoría</option>
               {CATEGORY_OPTIONS.map(([value, label]) => (
                 <option key={value} value={value}>
                   {label}

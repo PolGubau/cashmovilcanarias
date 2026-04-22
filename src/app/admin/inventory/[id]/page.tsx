@@ -9,10 +9,11 @@ import { notFound } from "next/navigation";
 
 export const dynamic = "force-dynamic";
 
-export default async function DeviceDetailPage({ params }: { params: { id: string } }) {
+export default async function DeviceDetailPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
   const [device, trail] = await Promise.all([
-    getDeviceById(params.id).catch(() => null),
-    getDeviceAuditTrail(params.id).catch(() => []),
+    getDeviceById(id).catch(() => null),
+    getDeviceAuditTrail(id).catch(() => []),
   ]);
 
   if (!device) notFound();
