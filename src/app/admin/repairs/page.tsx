@@ -1,4 +1,5 @@
 import DataTable from "@/components/admin/DataTable";
+import FilterTabs from "@/components/admin/FilterTabs";
 import PageHeader from "@/components/admin/PageHeader";
 import SearchInput from "@/components/admin/SearchInput";
 import StatusBadge from "@/components/admin/StatusBadge";
@@ -12,11 +13,20 @@ export const dynamic = "force-dynamic";
 export default async function RepairsPage({
   searchParams,
 }: {
-  searchParams: { status?: string };
+  searchParams: Promise<{ status?: string }>;
 }) {
-  const repairs = await getRepairs({ status: searchParams.status }).catch(() => []);
+  const sp = await searchParams;
+  const repairs = await getRepairs({ status: sp.status }).catch(() => []);
 
-  const statuses = ["received", "diagnosing", "waiting_parts", "in_progress", "ready", "delivered", "cancelled"];
+  const REPAIR_TABS = [
+    { value: "received", label: "Recibido" },
+    { value: "diagnosing", label: "Diagnosticando" },
+    { value: "waiting_parts", label: "Esperando piezas" },
+    { value: "in_progress", label: "En proceso" },
+    { value: "ready", label: "Listo para recoger" },
+    { value: "delivered", label: "Entregado" },
+    { value: "cancelled", label: "Cancelado" },
+  ];
 
   const columns = [
     {
@@ -85,17 +95,13 @@ export default async function RepairsPage({
       />
 
       <div className="flex items-center gap-3 mb-6 flex-wrap">
-        <div className="flex gap-2 flex-wrap flex-1">
-          <Link href="/admin/repairs"
-            className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors ${!searchParams.status ? "bg-dark text-white border-dark" : "bg-white text-dark-4 border-gray-3 hover:border-dark"}`}>
-            Todas
-          </Link>
-          {statuses.map((s) => (
-            <Link key={s} href={`/admin/repairs?status=${s}`}
-              className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors ${searchParams.status === s ? "bg-dark text-white border-dark" : "bg-white text-dark-4 border-gray-3 hover:border-dark"}`}>
-              {s.replace(/_/g, " ")}
-            </Link>
-          ))}
+        <div className="flex-1">
+          <FilterTabs
+            tabs={REPAIR_TABS}
+            activeValue={sp.status}
+            baseHref="/admin/repairs"
+            allLabel="Todas"
+          />
         </div>
         <Suspense>
           <SearchInput placeholder="Buscar cliente o IMEI..." />

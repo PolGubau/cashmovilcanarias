@@ -9,9 +9,10 @@ export const dynamic = "force-dynamic";
 export default async function CustomersPage({
   searchParams,
 }: {
-  searchParams: { type?: string };
+  searchParams: Promise<{ type?: string }>;
 }) {
-  const isSupplier = searchParams.type === "supplier" ? true : searchParams.type === "buyer" ? false : undefined;
+  const sp = await searchParams;
+  const isSupplier = sp.type === "supplier" ? true : sp.type === "buyer" ? false : undefined;
   const customers = await getCustomers({ is_supplier: isSupplier }).catch(() => []);
 
   const columns = [
@@ -60,9 +61,9 @@ export default async function CustomersPage({
 
       <div className="flex gap-2 mb-6">
         {[
-          { href: "/admin/customers", label: "Todos", active: !searchParams.type },
-          { href: "/admin/customers?type=buyer", label: "Clientes", active: searchParams.type === "buyer" },
-          { href: "/admin/customers?type=supplier", label: "Proveedores", active: searchParams.type === "supplier" },
+          { href: "/admin/customers", label: "Todos", active: !sp.type },
+          { href: "/admin/customers?type=buyer", label: "Clientes", active: sp.type === "buyer" },
+          { href: "/admin/customers?type=supplier", label: "Proveedores", active: sp.type === "supplier" },
         ].map(({ href, label, active }) => (
           <Link key={href} href={href}
             className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors ${active ? "bg-dark text-white border-dark" : "bg-white text-dark-4 border-gray-3 hover:border-dark"}`}>

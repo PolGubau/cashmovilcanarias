@@ -1,4 +1,5 @@
 import DataTable from "@/components/admin/DataTable";
+import FilterTabs from "@/components/admin/FilterTabs";
 import PageHeader from "@/components/admin/PageHeader";
 import SearchInput from "@/components/admin/SearchInput";
 import StatusBadge from "@/components/admin/StatusBadge";
@@ -12,10 +13,17 @@ export const dynamic = "force-dynamic";
 export default async function OrdersPage({
   searchParams,
 }: {
-  searchParams: { status?: string; search?: string };
+  searchParams: Promise<{ status?: string; search?: string }>;
 }) {
-  const orders = await getOrders({ status: searchParams.status, search: searchParams.search }).catch(() => []);
-  const statuses = ["pending", "confirmed", "completed", "cancelled", "refunded"];
+  const sp = await searchParams;
+  const orders = await getOrders({ status: sp.status, search: sp.search }).catch(() => []);
+  const ORDER_TABS = [
+    { value: "pending", label: "Pendiente" },
+    { value: "confirmed", label: "Confirmado" },
+    { value: "completed", label: "Completado" },
+    { value: "cancelled", label: "Cancelado" },
+    { value: "refunded", label: "Reembolsado" },
+  ];
 
   const columns = [
     {
@@ -81,17 +89,13 @@ export default async function OrdersPage({
       />
 
       <div className="flex items-center gap-3 mb-6 flex-wrap">
-        <div className="flex gap-2 flex-wrap flex-1">
-          <Link href="/admin/orders"
-            className={`px-3 py-1.5 rounded-lg text-[12px] font-medium border transition-colors ${!searchParams.status ? "bg-gray-900 text-white border-gray-900" : "bg-white text-gray-500 border-gray-200 hover:border-gray-400 hover:text-gray-700"}`}>
-            Todas
-          </Link>
-          {statuses.map((s) => (
-            <Link key={s} href={`/admin/orders?status=${s}`}
-              className={`px-3 py-1.5 rounded-lg text-[12px] font-medium border transition-colors ${searchParams.status === s ? "bg-gray-900 text-white border-gray-900" : "bg-white text-gray-500 border-gray-200 hover:border-gray-400 hover:text-gray-700"}`}>
-              {s}
-            </Link>
-          ))}
+        <div className="flex-1">
+          <FilterTabs
+            tabs={ORDER_TABS}
+            activeValue={sp.status}
+            baseHref="/admin/orders"
+            allLabel="Todas"
+          />
         </div>
         <Suspense>
           <SearchInput placeholder="Buscar cliente o factura..." />

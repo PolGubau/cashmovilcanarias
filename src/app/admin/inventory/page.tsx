@@ -1,4 +1,5 @@
 import DataTable from "@/components/admin/DataTable";
+import FilterTabs from "@/components/admin/FilterTabs";
 import PageHeader from "@/components/admin/PageHeader";
 import SearchInput from "@/components/admin/SearchInput";
 import StatusBadge from "@/components/admin/StatusBadge";
@@ -12,11 +13,12 @@ export const dynamic = "force-dynamic";
 export default async function InventoryPage({
   searchParams,
 }: {
-  searchParams: { status?: string; search?: string };
+  searchParams: Promise<{ status?: string; search?: string }>;
 }) {
+  const sp = await searchParams;
   const devices = await getDevices({
-    status: searchParams.status,
-    search: searchParams.search,
+    status: sp.status,
+    search: sp.search,
   }).catch(() => []);
 
   const columns = [
@@ -86,7 +88,14 @@ export default async function InventoryPage({
     },
   ];
 
-  const statuses = ["in_stock", "reserved", "sold", "in_repair", "returned", "written_off"];
+  const DEVICE_TABS = [
+    { value: "in_stock", label: "En stock" },
+    { value: "reserved", label: "Reservado" },
+    { value: "in_repair", label: "En reparación" },
+    { value: "sold", label: "Vendido" },
+    { value: "returned", label: "Devuelto" },
+    { value: "written_off", label: "Dado de baja" },
+  ];
 
   return (
     <div>
@@ -96,19 +105,14 @@ export default async function InventoryPage({
         action={{ label: "Registrar dispositivo", href: "/admin/inventory/new" }}
       />
 
-      {/* Filters */}
       <div className="flex items-center gap-3 mb-6 flex-wrap">
-        <div className="flex gap-2 flex-wrap flex-1">
-          <Link href="/admin/inventory"
-            className={`px-3 py-1.5 rounded-lg text-[12px] font-medium border transition-colors ${!searchParams.status ? "bg-gray-900 text-white border-gray-900" : "bg-white text-gray-500 border-gray-200 hover:border-gray-400 hover:text-gray-700"}`}>
-            Todos
-          </Link>
-          {statuses.map((s) => (
-            <Link key={s} href={`/admin/inventory?status=${s}`}
-              className={`px-3 py-1.5 rounded-lg text-[12px] font-medium border transition-colors ${searchParams.status === s ? "bg-gray-900 text-white border-gray-900" : "bg-white text-gray-500 border-gray-200 hover:border-gray-400 hover:text-gray-700"}`}>
-              {s.replace("_", " ")}
-            </Link>
-          ))}
+        <div className="flex-1">
+          <FilterTabs
+            tabs={DEVICE_TABS}
+            activeValue={sp.status}
+            baseHref="/admin/inventory"
+            allLabel="Todos"
+          />
         </div>
         <Suspense>
           <SearchInput placeholder="Buscar IMEI, marca o modelo..." />
